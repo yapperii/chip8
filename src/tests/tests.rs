@@ -4,9 +4,8 @@ mod chip8;
 mod tests {
 
     #[test]
-    fn power_on_stack_capacity() {
-        machine: chip8::Machine;
-        chip8::power_on(&machine);
+    fn creation_stack_capacity() {
+        machine: chip8::Machine = chip8::create_machine()();
         assert_eq!(0, machine.stack.capacity());
     }
 }

@@ -23,7 +23,7 @@ pub fn create_machine() -> Machine {
     Machine {ram: ram, registers: registers, stack: Vec::with_capacity(STACK_SIZE)}
 }
 
-pub fn push_stacK(val: u16, machine: &mut Machine) {
+pub fn push_stack(val: u16, machine: &mut Machine) {
     if machine.stack.len() >= STACK_SIZE {
         panic!("stack overrun!")
     }
