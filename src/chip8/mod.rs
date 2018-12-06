@@ -1,5 +1,5 @@
 const MEM_SIZE: usize = 4096;
-const USER_SPACE_MIN: usize = 0x200;
+const START_USER_SPACE: usize = 0x200;
 const NUM_REGISTERS: usize = 16;
 const STACK_SIZE: usize = 24;
 
