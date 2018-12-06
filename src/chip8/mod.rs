@@ -53,6 +53,14 @@ mod tests {
     }
 
     #[test]
+    fn creation_registers_are_zeroes() {
+        let machine = create_machine();
+        for i in 0 .. NUM_REGISTERS {
+            assert_eq!(0, machine.registers.registers[i])
+        }
+    }
+
+    #[test]
     fn creation_stack_len() {
         let machine = create_machine();
         assert_eq!(0, machine.stack.len());
