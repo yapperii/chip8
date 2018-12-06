@@ -8,7 +8,8 @@ pub struct Ram {
 }
 
 pub struct Registers {
-    registers: [u16; NUM_REGISTERS],
+    general_registers: [u16; NUM_REGISTERS],
+    address_register: u16,
 }
 
 pub struct Machine {
@@ -19,7 +20,7 @@ pub struct Machine {
 
 pub fn create_machine() -> Machine {
     let ram = Ram {memory: [0; MEM_SIZE]};
-    let registers = Registers {registers: [0; NUM_REGISTERS]};
+    let registers = Registers {general_registers: [0; NUM_REGISTERS], address_register: 0};
     Machine {ram: ram, registers: registers, stack: Vec::with_capacity(STACK_SIZE)}
 }
 
@@ -56,8 +57,10 @@ mod tests {
     fn creation_registers_are_zeroes() {
         let machine = create_machine();
         for i in 0 .. NUM_REGISTERS {
-            assert_eq!(0, machine.registers.registers[i])
+            assert_eq!(0, machine.registers.general_registers[i])
         }
+
+        assert_eq!(0, machine.registers.address_register);
     }
 
     #[test]
