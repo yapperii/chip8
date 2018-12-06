@@ -38,3 +38,23 @@ pub fn pop_stack(machine: &mut Machine) -> u16 {
         None => panic!("stack underrun!")
     }
 }    
+
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn creation_ram_is_zeroes() {
+        let machine = create_machine();
+        for i in 0 .. MEM_SIZE {
+            assert_eq!(0, machine.ram.memory[i])
+        }
+    }
+
+    #[test]
+    fn creation_stack_len() {
+        let machine = create_machine();
+        assert_eq!(0, machine.stack.len());
+    }
+}
