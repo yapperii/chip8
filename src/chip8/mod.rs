@@ -16,12 +16,13 @@ pub struct Machine {
     ram: Ram,
     registers: Registers,
     stack: Vec<u16>,
+    program_counter: u16,
 }
 
 pub fn create_machine() -> Machine {
     let ram = Ram {memory: [0; MEM_SIZE]};
     let registers = Registers {general_registers: [0; NUM_REGISTERS], address_register: 0};
-    Machine {ram: ram, registers: registers, stack: Vec::with_capacity(STACK_SIZE)}
+    Machine {ram: ram, registers: registers, stack: Vec::with_capacity(STACK_SIZE), program_counter: 0}
 }
 
 pub fn push_stack(val: u16, machine: &mut Machine) {
