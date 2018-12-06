@@ -65,4 +65,39 @@ mod tests {
         let machine = create_machine();
         assert_eq!(0, machine.stack.len());
     }
+
+    #[test]
+    fn push_pop() {
+        let mut machine = create_machine();
+        push_stack(1, &mut machine);
+        assert_eq!(1, pop_stack(&mut machine));
+
+        push_stack(1, &mut machine);
+        push_stack(2, &mut machine);
+        push_stack(3, &mut machine);
+
+        assert_eq!(3, machine.stack.len());
+
+        assert_eq!(3, pop_stack(&mut machine));
+        assert_eq!(2, pop_stack(&mut machine));
+        assert_eq!(1, pop_stack(&mut machine));
+
+        assert_eq!(0, machine.stack.len());
+    }
+
+    #[test]
+    #[should_panic]
+    fn stack_overflow() {
+        let mut machine = create_machine();
+        for _i in 0 .. (STACK_SIZE + 1) {
+            push_stack(0, &mut machine);
+        }
+    }
+
+    #[test]
+    #[should_panic]
+    fn stack_underflow() {
+        let mut machine = create_machine();
+        pop_stack(&mut machine);
+    }
 }
