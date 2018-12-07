@@ -1,4 +1,5 @@
-pub enum Codes {
+#[derive(Debug)]
+pub enum Code {
     ZERO_ZERO_EE = 0x00ee,
     ZERO_ZERO_E_ZERO = 0x00e0,
     ZERO_NNN = 0x0000,
@@ -35,6 +36,15 @@ pub enum Codes {
     FX_FIVE_FIVE = 0xf055,
     FX_SIX_FIVE = 0xf065,
 }
+const NUM_OPCODES: usize = 35;
+const CODE_ARRAY: [Code; NUM_OPCODES] = [Code::ZERO_ZERO_EE, Code::ZERO_ZERO_E_ZERO, Code::ZERO_NNN, Code::ONE_NNN,
+                                         Code::TWO_NNN, Code::THREE_XNN, Code::FOUR_XNN, Code::FIVE_XY_ZERO, Code::SIX_XNN,
+                                         Code::SEVEN_XNN, Code::EIGHT_XY_ONE, Code::EIGHT_XY_TWO, Code::EIGHT_XY_THREE,
+                                         Code::EIGHT_XY_FOUR, Code::EIGHT_XY_FIVE, Code::EIGHT_XY_SIX, Code::EIGHT_XY_SEVEN,
+                                         Code::EIGHT_XY_E, Code::EIGHT_XY_ZERO, Code::NINE_XY_ZERO, Code::ANNN, Code::BNNN,
+                                         Code::CXNN, Code::DXYN, Code::EX_NINE_E, Code::EXA_ONE, Code::FX_ZERO_SEVEN,
+                                         Code::FX_ZERO_A, Code::FX_ONE_FIVE, Code::FX_ONE_EIGHT, Code::FX_ONE_E,
+                                         Code::FX_TWO_NINE, Code::FX_THREE_THREE, Code::FX_FIVE_FIVE, Code::FX_SIX_FIVE];
 pub struct OpCode {
     opcode: u16,
 }
@@ -47,6 +57,18 @@ pub fn create_opcode(a: u8, b: u8) -> OpCode {
     return opcode;
 }
 
+pub fn identify_opcode(val: u16) -> Code {
+    for i in 0..NUM_OPCODES {
+        let code: u16 = CODE_ARRAY[i].Copy() as u16;
+        let masked: u16 = val & code;
+        if masked == code {
+            return CODE_ARRAY[i];
+        }
+    }
+
+    panic!("unknown opcode");
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -55,5 +77,11 @@ mod tests {
     fn creation_combined() {
         let opcode = create_opcode(1, 1);
         assert_eq!(257, opcode.opcode);
+    }
+
+    #[test]
+    fn identify_opcodes() {
+        assert_eq!(Code::ZERO_ZERO_EE, identify_opcode(0x00EE));
+        assert_eq!(Code::ZERO_ZERO_EE, identify_opcode(0x05EE));
     }
 }
