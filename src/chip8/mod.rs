@@ -8,7 +8,7 @@ pub struct Ram {
 }
 
 pub struct Registers {
-    general_registers: [u16; NUM_REGISTERS],
+    general_registers: [u8; NUM_REGISTERS],
     address_register: u16,
 }
 
