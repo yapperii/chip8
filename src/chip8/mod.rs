@@ -71,6 +71,12 @@ mod tests {
     }
 
     #[test]
+    fn creation_program_counter_is_zero() {
+        let machine = create_machine();
+        assert_eq!(0, machine.program_counter);
+    }
+
+    #[test]
     fn push_pop() {
         let mut machine = create_machine();
         push_stack(1, &mut machine);
