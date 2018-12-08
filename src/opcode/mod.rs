@@ -1,5 +1,5 @@
 #[derive(Debug)]
-pub enum Code {
+pub enum Code_Mask {
     ZERO_ZERO_EE = 0x00ee,
     ZERO_ZERO_E_ZERO = 0x00e0,
     ZERO_NNN = 0x0000,
@@ -36,15 +36,50 @@ pub enum Code {
     FX_FIVE_FIVE = 0xf055,
     FX_SIX_FIVE = 0xf065,
 }
+
+pub struct OpCode
+{
+    code_mask: Code_Mask,
+    data_masks: vec<u16>,
+    // op function
+}
+
 const NUM_OPCODES: usize = 35;
-const CODE_ARRAY: [Code; NUM_OPCODES] = [Code::ZERO_ZERO_EE, Code::ZERO_ZERO_E_ZERO, Code::ZERO_NNN, Code::ONE_NNN,
-                                         Code::TWO_NNN, Code::THREE_XNN, Code::FOUR_XNN, Code::FIVE_XY_ZERO, Code::SIX_XNN,
-                                         Code::SEVEN_XNN, Code::EIGHT_XY_ONE, Code::EIGHT_XY_TWO, Code::EIGHT_XY_THREE,
-                                         Code::EIGHT_XY_FOUR, Code::EIGHT_XY_FIVE, Code::EIGHT_XY_SIX, Code::EIGHT_XY_SEVEN,
-                                         Code::EIGHT_XY_E, Code::EIGHT_XY_ZERO, Code::NINE_XY_ZERO, Code::ANNN, Code::BNNN,
-                                         Code::CXNN, Code::DXYN, Code::EX_NINE_E, Code::EXA_ONE, Code::FX_ZERO_SEVEN,
-                                         Code::FX_ZERO_A, Code::FX_ONE_FIVE, Code::FX_ONE_EIGHT, Code::FX_ONE_E,
-                                         Code::FX_TWO_NINE, Code::FX_THREE_THREE, Code::FX_FIVE_FIVE, Code::FX_SIX_FIVE];
+const CODE_ARRAY: [OpCode; NUM_OPCODES] = [ OpCode {code_mask: Code_Mask::ZERO_ZERO_EE, data_masks: Vec::new()}, 
+                                            OpCode {code_mask: Code_Mask::ZERO_ZERO_E_ZERO, data_masks: Vec::new()},
+                                            OpCode {code_mask: Code_Mask::ZERO_NNN, data_masks: Vec::new()},
+                                            OpCode {code_mask: Code_Mask::ONE_NNN, data_masks: Vec::new()},
+                                            OpCode {code_mask: Code_Mask::TWO_NNN, data_masks: Vec::new()},
+                                            OpCode {code_mask: Code_Mask::THREE_XNN, data_masks: Vec::New()},
+                                            OpCode {code_mask: Code_Mask::FOUR_XNN, data_masks: Vec::new()},
+                                            OpCode {code_mask: Code_Mask::FIVE_XY_ZERO, data_masks: Vec::new()},
+                                            OpCode {code_mask: Code_Mask::SIX_XNN, data_masks: Vec::new()},
+                                            OpCode {code_mask: Code_Mask::SEVEN_XNN, data_masks: Vec::new()},
+                                            OpCode {code_mask: Code_Mask::EIGHT_XY_ONE, data_masks: Vec::new()},
+                                            OpCode {code_mask: Code_Mask::EIGHT_XY_TWO, data_masks: Vec::new()},
+                                            OpCode {code_mask: Code_Mask::EIGHT_XY_THREE, data_masks: Vec::new()},
+                                            OpCode {code_mask: Code_Mask::EIGHT_XY_FOUR, data_masks: Vec::new()},
+                                            OpCode {code_mask: Code_Mask::EIGHT_XY_FIVE, data_masks: Vec::new()},
+                                            OpCode {code_mask: Code_Mask::EIGHT_XY_SIX, data_masks: Vec::new()},
+                                            OpCode {code_mask: Code_Mask::EIGHT_XY_SEVEN, data_masks: Vec::new()},
+                                            OpCode {code_mask: Code_Mask::EIGHT_XY_E, data_masks: Vec::new()},
+                                            OpCode {code_mask: Code_Mask::EIGHT_XY_ZERO, data_masks: Vec::new()},
+                                            OpCode {code_mask: Code_Mask::NINE_XY_ZERO, data_masks: Vec::new()},
+                                            OpCode {code_mask: Code_Mask::ANNN, data_masks: Vec::new()},
+                                            OpCode {code_mask: Code_Mask::BNNN, data_masks: Vec::new()},
+                                            OpCode {code_mask: Code_Mask::CXNN, data_masks: Vec::new()},
+                                            OpCode {code_mask: Code_Mask::DXYN, data_masks: Vec::new()},
+                                            OpCode {code_mask: Code_Mask::EX_NINE_E, data_masks: Vec::new()},
+                                            OpCode {code_mask: Code_Mask::EXA_ONE, data_masks: Vec::new()},
+                                            OpCode {code_mask: Code_Mask::FX_ZERO_SEVEN, data_masks: Vec::new()},
+                                            OpCode {code_mask: Code_Mask::FX_ZERO_A, data_masks: Vec::new()},
+                                            OpCode {code_mask: Code_Mask::FX_ONE_FIVE, data_masks: Vec::new()},
+                                            OpCode {code_mask: Code_Mask::FX_ONE_EIGHT, data_masks: Vec::new()},
+                                            OpCode {code_mask: Code_Mask::FX_ONE_E, data_masks: Vec::new()},
+                                            OpCode {code_mask: Code_Mask::FX_TWO_NINE, data_masks: Vec::new()},
+                                            OpCode {code_mask: Code_Mask::FX_THREE_THREE, data_masks: Vec::new()},
+                                            OpCode {code_mask: Code_Mask::FX_FIVE_FIVE, data_masks: Vec::new()},
+                                            OpCode {code_mask: Code_Mask::FX_SIX_FIVE, data_masks: Vec::new()}];
 pub struct OpCode {
     opcode: u16,
 }
@@ -81,7 +116,7 @@ mod tests {
 
     #[test]
     fn identify_opcodes() {
-        assert_eq!(Code::ZERO_ZERO_EE, identify_opcode(0x00EE));
-        assert_eq!(Code::ZERO_ZERO_EE, identify_opcode(0x05EE));
+        assert_eq!(Code_Mask::ZERO_ZERO_EE, identify_opcode(0x00EE));
+        assert_eq!(Code_Mask::ZERO_ZERO_EE, identify_opcode(0x05EE));
     }
 }
