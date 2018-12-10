@@ -1,8 +1,8 @@
 #[derive(Debug, Clone)]
 pub enum Code_Mask {
-    ZERO_ZERO_EE = 0x00ee,
-    ZERO_ZERO_E_ZERO = 0x00e0,
     ZERO_NNN = 0x0000,
+    ZERO_ZERO_E_ZERO = 0x00e0,
+    ZERO_ZERO_EE = 0x00ee,
     ONE_NNN = 0x1000,
     TWO_NNN = 0x2000,
     THREE_XNN = 0x3000,
@@ -55,10 +55,10 @@ pub struct OpCode_Lib {
 }
 
 pub fn create_opcode_lib() -> OpCode_Lib {
-    OpCode_Lib {code_array: [   
-        OpCode {raw: 0, code_mask: Code_Mask::ZERO_ZERO_EE, x_mask: 0x0, y_mask:0x0, n_mask: 0x0}, 
+    OpCode_Lib {code_array: [
+        OpCode {raw: 0, code_mask: Code_Mask::ZERO_NNN, x_mask: 0x0, y_mask:0x0, n_mask: 0x0fff}, 
         OpCode {raw: 0, code_mask: Code_Mask::ZERO_ZERO_E_ZERO, x_mask: 0x0, y_mask:0x0, n_mask: 0x0},
-        OpCode {raw: 0, code_mask: Code_Mask::ZERO_NNN, x_mask: 0x0, y_mask:0x0, n_mask: 0x0fff},
+        OpCode {raw: 0, code_mask: Code_Mask::ZERO_ZERO_EE, x_mask: 0x0, y_mask:0x0, n_mask: 0x0},
         OpCode {raw: 0, code_mask: Code_Mask::ONE_NNN, x_mask: 0x0, y_mask:0x0, n_mask: 0x0fff},
         OpCode {raw: 0, code_mask: Code_Mask::TWO_NNN, x_mask: 0x0, y_mask:0x0, n_mask: 0x0fff},
         OpCode {raw: 0, code_mask: Code_Mask::THREE_XNN, x_mask: 0x0f00, y_mask:0x0, n_mask: 0x00ff},
@@ -66,6 +66,7 @@ pub fn create_opcode_lib() -> OpCode_Lib {
         OpCode {raw: 0, code_mask: Code_Mask::FIVE_XY_ZERO, x_mask: 0x0f00, y_mask:0x00f0, n_mask: 0x0},
         OpCode {raw: 0, code_mask: Code_Mask::SIX_XNN, x_mask: 0x0f00, y_mask:0x0, n_mask: 0x00ff},
         OpCode {raw: 0, code_mask: Code_Mask::SEVEN_XNN, x_mask: 0x0f00, y_mask:0x0, n_mask: 0x00ff},
+        OpCode {raw: 0, code_mask: Code_Mask::EIGHT_XY_ZERO, x_mask: 0x0f00, y_mask:0x00f0, n_mask: 0x0},
         OpCode {raw: 0, code_mask: Code_Mask::EIGHT_XY_ONE, x_mask: 0x0f00, y_mask:0x00f0, n_mask: 0x0},
         OpCode {raw: 0, code_mask: Code_Mask::EIGHT_XY_TWO, x_mask: 0x0f00, y_mask:0x00f0, n_mask: 0x0},
         OpCode {raw: 0, code_mask: Code_Mask::EIGHT_XY_THREE, x_mask: 0x0f00, y_mask:0x00f0, n_mask: 0x0},
@@ -74,7 +75,6 @@ pub fn create_opcode_lib() -> OpCode_Lib {
         OpCode {raw: 0, code_mask: Code_Mask::EIGHT_XY_SIX, x_mask: 0x0f00, y_mask:0x00f0, n_mask: 0x0},
         OpCode {raw: 0, code_mask: Code_Mask::EIGHT_XY_SEVEN, x_mask: 0x0f00, y_mask:0x00f0, n_mask: 0x0},
         OpCode {raw: 0, code_mask: Code_Mask::EIGHT_XY_E, x_mask: 0x0f00, y_mask:0x00f0, n_mask: 0x0},
-        OpCode {raw: 0, code_mask: Code_Mask::EIGHT_XY_ZERO, x_mask: 0x0f00, y_mask:0x00f0, n_mask: 0x0},
         OpCode {raw: 0, code_mask: Code_Mask::NINE_XY_ZERO, x_mask: 0x0f00, y_mask:0x00f0, n_mask: 0x0},
         OpCode {raw: 0, code_mask: Code_Mask::ANNN, x_mask: 0x0, y_mask:0x0, n_mask: 0x0fff},
         OpCode {raw: 0, code_mask: Code_Mask::BNNN, x_mask: 0x0, y_mask:0x0, n_mask: 0x0fff},
@@ -90,12 +90,12 @@ pub fn create_opcode_lib() -> OpCode_Lib {
         OpCode {raw: 0, code_mask: Code_Mask::FX_TWO_NINE, x_mask: 0x0f00, y_mask: 0x0, n_mask: 0x0},
         OpCode {raw: 0, code_mask: Code_Mask::FX_THREE_THREE, x_mask: 0x0f00, y_mask: 0x0, n_mask: 0x0},
         OpCode {raw: 0, code_mask: Code_Mask::FX_FIVE_FIVE, x_mask: 0x0f00, y_mask: 0x0, n_mask: 0x0},
-        OpCode {raw: 0, code_mask: Code_Mask::FX_SIX_FIVE, x_mask: 0x0f00, y_mask: 0x0, n_mask: 0x0}
+        OpCode {raw: 0, code_mask: Code_Mask::FX_SIX_FIVE, x_mask: 0x0f00, y_mask: 0x0, n_mask: 0x0},
     ]}
 }
 
 fn identify_opcode(val: u16, lib: &OpCode_Lib) -> usize {
-    for i in 0..NUM_OPCODES {
+    for i in (0..NUM_OPCODES).rev() {
         let code: u16 = lib.code_array[i].code_mask.clone() as u16;
         let masked: u16 = val & code;
         if masked == code {
@@ -134,7 +134,12 @@ mod tests {
     #[test]
     fn identify_opcodes() {
         let lib = create_opcode_lib();
-        assert_eq!(0, identify_opcode(0x00EE, &lib));
-        assert_eq!(0, identify_opcode(0x05EE, &lib));
+        assert_eq!(2, identify_opcode(0x00ee, &lib));
+        assert_eq!(2, identify_opcode(0x05ee, &lib));
+        assert_eq!(1, identify_opcode(0x07e0, &lib));
+        assert_eq!(0, identify_opcode(0x0123, &lib));
+        assert_eq!(11, identify_opcode(0x8441, &lib));
+        assert_eq!(12, identify_opcode(0x8372, &lib));
+        assert_eq!(33, identify_opcode(0xff55, &lib));
     }
 }
