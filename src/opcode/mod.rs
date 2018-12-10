@@ -42,7 +42,7 @@ pub struct OpCode
 {
     raw: u16,
     code_mask: Code_Mask,
-    n_mask: u16
+    n_mask: u16,
     x_mask: u16,
     y_mask: u16,
     // op function
@@ -113,19 +113,22 @@ pub fn create_opcode(a: u8, b: u8, lib: &OpCode_Lib) -> OpCode {
     let opcode_index = identify_opcode(combined, lib);
     let opcode = OpCode{raw: combined,
                         code_mask: lib.code_array[opcode_index].code_mask.clone(),
-                        data_masks: lib.code_array[opcode_index].data_masks.clone()};
+                        n_mask: lib.code_array[opcode_index].n_mask,
+                        x_mask: lib.code_array[opcode_index].x_mask,
+                        y_mask: lib.code_array[opcode_index].y_mask,};
     return opcode;
 }
 
 #[cfg(test)]
+
 mod tests {
     use super::*;
 
     #[test]
     fn creation_combined() {
         let lib = create_opcode_lib();
-        let opcode = create_opcode(1, 1, &lib);
-        assert_eq!(257, opcode.raw);
+        let opcode = create_opcode(1, 2, &lib);
+        assert_eq!(258, opcode.raw);
     }
 
     #[test]
