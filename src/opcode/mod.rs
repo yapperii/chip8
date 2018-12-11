@@ -199,5 +199,138 @@ mod tests {
             assert_eq!(0x0004, extract_value(opcode.raw, opcode.x_mask));
             assert_eq!(0x0056, extract_value(opcode.raw, opcode.n_mask));
         }
+        {
+            let opcode = create_opcode(0x45, 0x67, &lib);
+            assert_eq!(0x0005, extract_value(opcode.raw, opcode.x_mask));
+            assert_eq!(0x0067, extract_value(opcode.raw, opcode.n_mask));
+        }
+        {
+            let opcode = create_opcode(0x56, 0x78, &lib);
+            assert_eq!(0x0006, extract_value(opcode.raw, opcode.x_mask));
+            assert_eq!(0x0007, extract_value(opcode.raw, opcode.y_mask));
+        }
+        {
+            let opcode = create_opcode(0x67, 0x89, &lib);
+            assert_eq!(0x0007, extract_value(opcode.raw, opcode.x_mask));
+            assert_eq!(0x0089, extract_value(opcode.raw, opcode.n_mask));
+        }
+        {
+            let opcode = create_opcode(0x78, 0x9a, &lib);
+            assert_eq!(0x0008, extract_value(opcode.raw, opcode.x_mask));
+            assert_eq!(0x009a, extract_value(opcode.raw, opcode.n_mask));
+        }
+        {
+            let opcode = create_opcode(0x89, 0xa0, &lib);
+            assert_eq!(0x0009, extract_value(opcode.raw, opcode.x_mask));
+            assert_eq!(0x000a, extract_value(opcode.raw, opcode.y_mask));
+        }
+        {
+            let opcode = create_opcode(0x89, 0xa1, &lib);
+            assert_eq!(0x0009, extract_value(opcode.raw, opcode.x_mask));
+            assert_eq!(0x000a, extract_value(opcode.raw, opcode.y_mask));
+        }
+        {
+            let opcode = create_opcode(0x89, 0xa2, &lib);
+            assert_eq!(0x0009, extract_value(opcode.raw, opcode.x_mask));
+            assert_eq!(0x000a, extract_value(opcode.raw, opcode.y_mask));
+        }
+        {
+            let opcode = create_opcode(0x89, 0xa3, &lib);
+            assert_eq!(0x0009, extract_value(opcode.raw, opcode.x_mask));
+            assert_eq!(0x000a, extract_value(opcode.raw, opcode.y_mask));
+        }
+        {
+            let opcode = create_opcode(0x89, 0xa4, &lib);
+            assert_eq!(0x0009, extract_value(opcode.raw, opcode.x_mask));
+            assert_eq!(0x000a, extract_value(opcode.raw, opcode.y_mask));
+        }
+        {
+            let opcode = create_opcode(0x89, 0xa5, &lib);
+            assert_eq!(0x0009, extract_value(opcode.raw, opcode.x_mask));
+            assert_eq!(0x000a, extract_value(opcode.raw, opcode.y_mask));
+        }
+        {
+            let opcode = create_opcode(0x89, 0xa6, &lib);
+            assert_eq!(0x0009, extract_value(opcode.raw, opcode.x_mask));
+            assert_eq!(0x000a, extract_value(opcode.raw, opcode.y_mask));
+        }
+        {
+            let opcode = create_opcode(0x89, 0xa7, &lib);
+            assert_eq!(0x0009, extract_value(opcode.raw, opcode.x_mask));
+            assert_eq!(0x000a, extract_value(opcode.raw, opcode.y_mask));
+        }
+        {
+            let opcode = create_opcode(0x89, 0xae, &lib);
+            assert_eq!(0x0009, extract_value(opcode.raw, opcode.x_mask));
+            assert_eq!(0x000a, extract_value(opcode.raw, opcode.y_mask));
+        }
+        {
+            let opcode = create_opcode(0x9a, 0xb0, &lib);
+            assert_eq!(0x000a, extract_value(opcode.raw, opcode.x_mask));
+            assert_eq!(0x000b, extract_value(opcode.raw, opcode.y_mask));
+        }
+        {
+            let opcode = create_opcode(0xab, 0xcd, &lib);
+            assert_eq!(0x0bcd, extract_value(opcode.raw, opcode.n_mask));
+        }
+        {
+            let opcode = create_opcode(0xbc, 0xde, &lib);
+            assert_eq!(0x0cde, extract_value(opcode.raw, opcode.n_mask));
+        }
+        {
+            let opcode = create_opcode(0xcd, 0xef, &lib);
+            assert_eq!(0x000d, extract_value(opcode.raw, opcode.x_mask));
+            assert_eq!(0x00ef, extract_value(opcode.raw, opcode.n_mask));
+        }
+        {
+            let opcode = create_opcode(0xde, 0xf1, &lib);
+            assert_eq!(0x000e, extract_value(opcode.raw, opcode.x_mask));
+            assert_eq!(0x000f, extract_value(opcode.raw, opcode.y_mask));
+            assert_eq!(0x0001, extract_value(opcode.raw, opcode.n_mask));
+        }
+        {
+            let opcode = create_opcode(0xef, 0x9e, &lib);
+            assert_eq!(0x000f, extract_value(opcode.raw, opcode.x_mask));
+        }
+        {
+            let opcode = create_opcode(0xef,0xa1, &lib);
+            assert_eq!(0x000f, extract_value(opcode.raw, opcode.x_mask));
+        }
+        {
+            let opcode = create_opcode(0xf1, 0x07, &lib);
+            assert_eq!(0x0001, extract_value(opcode.raw, opcode.x_mask));
+        }
+        {
+            let opcode = create_opcode(0xf1, 0x0a, &lib);
+            assert_eq!(0x0001, extract_value(opcode.raw, opcode.x_mask));
+        }
+        {
+            let opcode = create_opcode(0xf1, 0x15, &lib);
+            assert_eq!(0x0001, extract_value(opcode.raw, opcode.x_mask));
+        }
+        {
+            let opcode = create_opcode(0xf1, 0x18, &lib);
+            assert_eq!(0x0001, extract_value(opcode.raw, opcode.x_mask));
+        }
+        {
+            let opcode = create_opcode(0xf1, 0x1e, &lib);
+            assert_eq!(0x0001, extract_value(opcode.raw, opcode.x_mask));
+        }
+        {
+            let opcode = create_opcode(0xf1, 0x29, &lib);
+            assert_eq!(0x0001, extract_value(opcode.raw, opcode.x_mask));
+        }
+        {
+            let opcode = create_opcode(0xf1, 0x33, &lib);
+            assert_eq!(0x0001, extract_value(opcode.raw, opcode.x_mask));
+        }
+        {
+            let opcode = create_opcode(0xf1, 0x55, &lib);
+            assert_eq!(0x0001, extract_value(opcode.raw, opcode.x_mask));
+        }
+        {
+            let opcode = create_opcode(0xf1, 0x65, &lib);
+            assert_eq!(0x0001, extract_value(opcode.raw, opcode.x_mask));
+        }
     }
 }
