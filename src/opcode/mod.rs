@@ -119,6 +119,13 @@ pub fn create_opcode(a: u8, b: u8, lib: &OpCode_Lib) -> OpCode {
     return opcode;
 }
 
+pub fn extract_value(raw: u16, mask: u16) -> u16 {
+    let bits: u16 = raw & mask;
+    let trailing = bits.trailing_zeros();
+    bits.wrapping_shr(trailing)
+}
+
+
 #[cfg(test)]
 
 mod tests {
@@ -170,5 +177,14 @@ mod tests {
         assert_eq!(32, identify_opcode(0xf133, &lib));
         assert_eq!(33, identify_opcode(0xf155, &lib));
         assert_eq!(34, identify_opcode(0xf165, &lib));
+    }
+
+    #[test]
+    fn extract_values() {
+        let lib = create_opcode_lib();
+        {
+            let opcode = create_opcode(0x01, 0x23, &lib);
+            assert_eq!(0x0123, extract_value(opcode.raw, opcode.n_mask));
+        }
     }
 }
