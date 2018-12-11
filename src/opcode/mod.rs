@@ -134,12 +134,41 @@ mod tests {
     #[test]
     fn identify_opcodes() {
         let lib = create_opcode_lib();
-        assert_eq!(2, identify_opcode(0x00ee, &lib));
-        assert_eq!(2, identify_opcode(0x05ee, &lib));
-        assert_eq!(1, identify_opcode(0x07e0, &lib));
         assert_eq!(0, identify_opcode(0x0123, &lib));
-        assert_eq!(11, identify_opcode(0x8441, &lib));
-        assert_eq!(12, identify_opcode(0x8372, &lib));
-        assert_eq!(33, identify_opcode(0xff55, &lib));
+        assert_eq!(1, identify_opcode(0x01e0, &lib));
+        assert_eq!(2, identify_opcode(0x01ee, &lib));   
+        assert_eq!(2, identify_opcode(0x02ee, &lib));
+        assert_eq!(3, identify_opcode(0x1234, &lib));
+        assert_eq!(4, identify_opcode(0x2345, &lib));
+        assert_eq!(5, identify_opcode(0x3456, &lib));
+        assert_eq!(6, identify_opcode(0x4567, &lib));
+        assert_eq!(7, identify_opcode(0x5670, &lib));
+        assert_eq!(8, identify_opcode(0x6789, &lib));
+        assert_eq!(9, identify_opcode(0x789a, &lib));
+        assert_eq!(10, identify_opcode(0x89a0, &lib));
+        assert_eq!(11, identify_opcode(0x89a1, &lib));
+        assert_eq!(12, identify_opcode(0x89a2, &lib));
+        assert_eq!(13, identify_opcode(0x89a3, &lib));
+        assert_eq!(14, identify_opcode(0x89a4, &lib));
+        assert_eq!(15, identify_opcode(0x89a5, &lib));
+        assert_eq!(16, identify_opcode(0x89a6, &lib));
+        assert_eq!(17, identify_opcode(0x89a7, &lib));
+        assert_eq!(18, identify_opcode(0x89ae, &lib));
+        assert_eq!(19, identify_opcode(0x9ab0, &lib));
+        assert_eq!(20, identify_opcode(0xabcd, &lib));
+        assert_eq!(21, identify_opcode(0xbcde, &lib));
+        assert_eq!(22, identify_opcode(0xcdef, &lib));
+        assert_eq!(23, identify_opcode(0xdef0, &lib));
+        assert_eq!(24, identify_opcode(0xef9e, &lib));
+        assert_eq!(25, identify_opcode(0xefa1, &lib));
+        assert_eq!(26, identify_opcode(0xf107, &lib));
+        assert_eq!(27, identify_opcode(0xf10a, &lib));
+        assert_eq!(28, identify_opcode(0xf115, &lib));
+        assert_eq!(29, identify_opcode(0xf118, &lib));
+        assert_eq!(30, identify_opcode(0xf11e, &lib));
+        assert_eq!(31, identify_opcode(0xf129, &lib));
+        assert_eq!(32, identify_opcode(0xf133, &lib));
+        assert_eq!(33, identify_opcode(0xf155, &lib));
+        assert_eq!(34, identify_opcode(0xf165, &lib));
     }
 }
