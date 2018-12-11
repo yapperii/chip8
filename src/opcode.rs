@@ -1,3 +1,5 @@
+//mod machine;
+
 #[derive(Debug, Clone)]
 pub enum Code_Mask {
     ZERO_NNN = 0x0000,
@@ -125,6 +127,23 @@ pub fn extract_value(raw: u16, mask: u16) -> u16 {
     bits.wrapping_shr(trailing)
 }
 
+fn op_0NNN(opcode: OpCode, mach: &mut Machine) {
+    // probably not needed
+}
+
+// clears the screen
+fn op_00E0(opcode: OpCode, mach: &mut machine::Machine) {
+    //not implemented
+}
+
+// returns from a function
+fn op_00EE(opcode: OpCode, mach: &mut machine::Machine) {
+    mach.program_counter = mach.stack.pop();
+}
+
+pub fn execute_opcode(opcode: &Opcode, mach: &mut machine::Machine) {
+
+}
 
 #[cfg(test)]
 
