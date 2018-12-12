@@ -127,21 +127,6 @@ pub fn extract_value(raw: u16, mask: u16) -> u16 {
     bits.wrapping_shr(trailing)
 }
 
-fn op_0NNN(opcode: OpCode, mach: &mut machine::Machine) {
-    // probably not needed
-}
-
-// clears the screen
-fn op_00E0(opcode: OpCode, mach: &mut machine::Machine) {
-    //not implemented
-}
-
-// returns from a function
-fn op_00EE(opcode: OpCode, mach: &mut machine::Machine) {
-    let pc = machine::pop_stack(mach);
-    machine::set_program_counter(mach, pc);
-}
-
 pub fn execute_opcode(opcode: &OpCode, mach: &mut machine::Machine) {
 
 }
