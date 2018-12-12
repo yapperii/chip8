@@ -1,6 +1,6 @@
 
-const MEM_SIZE: usize = 4096;
-const START_USER_SPACE: usize = 0x200;
+pub const MEM_SIZE: usize = 4096;
+pub const START_USER_SPACE: usize = 0x200;
 const NUM_REGISTERS: usize = 16;
 const STACK_SIZE: usize = 24;
 
@@ -42,7 +42,7 @@ pub fn pop_stack(machine: &mut Machine) -> usize {
     }
 }
 
-fn get_program_counter(machine: &Machine) -> usize {
+pub fn get_program_counter(machine: &Machine) -> usize {
     machine.program_counter
 }
 
