@@ -28,3 +28,10 @@ pub fn op_3XNN(mach: &mut machine::Machine, x: usize, n: u16) {
         machine::increment_program_counter(mach);
     }
 }
+
+pub fn op_4XNN(mach: &mut machine::Machine, x: usize, n: u16) {
+    let rx = machine::get_register(mach, x) as u16;
+    if rx != n {
+        machine::increment_program_counter(mach);
+    }
+}
