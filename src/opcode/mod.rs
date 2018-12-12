@@ -1,4 +1,4 @@
-//mod machine;
+use machine;
 
 #[derive(Debug, Clone)]
 pub enum Code_Mask {
@@ -127,7 +127,7 @@ pub fn extract_value(raw: u16, mask: u16) -> u16 {
     bits.wrapping_shr(trailing)
 }
 
-fn op_0NNN(opcode: OpCode, mach: &mut Machine) {
+fn op_0NNN(opcode: OpCode, mach: &mut machine::Machine) {
     // probably not needed
 }
 
@@ -138,10 +138,10 @@ fn op_00E0(opcode: OpCode, mach: &mut machine::Machine) {
 
 // returns from a function
 fn op_00EE(opcode: OpCode, mach: &mut machine::Machine) {
-    mach.program_counter = mach.stack.pop();
+    mach.set_program_counter(mach.pop_stack());
 }
 
-pub fn execute_opcode(opcode: &Opcode, mach: &mut machine::Machine) {
+pub fn execute_opcode(opcode: &OpCode, mach: &mut machine::Machine) {
 
 }
 

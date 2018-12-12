@@ -1,3 +1,4 @@
+
 const MEM_SIZE: usize = 4096;
 const START_USER_SPACE: usize = 0x200;
 const NUM_REGISTERS: usize = 16;
@@ -39,7 +40,13 @@ pub fn pop_stack(machine: &mut Machine) -> u16 {
         Some(x) => x,
         None => panic!("stack underrun!")
     }
-}    
+}
+
+pub fn set_program_counter(machine: &mut Machine, counter: u16) {
+    if counter >= START_USER_SPACE  && counter < MEM_SIZE {
+        machine.programe_counter = counter;
+    }
+}
 
 
 #[cfg(test)]

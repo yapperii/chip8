@@ -1,5 +1,4 @@
-
-//mod chip8;
+mod machine;
 mod opcode;
 fn main()
 {
