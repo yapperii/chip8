@@ -23,7 +23,7 @@ pub struct Machine {
 pub fn create_machine() -> Machine {
     let ram = Ram {memory: [0; MEM_SIZE]};
     let registers = Registers {general_registers: [0; NUM_REGISTERS], address_register: 0};
-    Machine {ram: ram, registers: registers, stack: Vec::with_capacity(STACK_SIZE), program_counter: 0}
+    Machine {ram: ram, registers: registers, stack: Vec::with_capacity(STACK_SIZE), program_counter: START_USER_SPACE}
 }
 
 pub fn push_stack(machine: &mut Machine, val: usize) {
@@ -99,9 +99,9 @@ mod tests {
     }
 
     #[test]
-    fn creation_program_counter_is_zero() {
+    fn creation_program_counter() {
         let machine = create_machine();
-        assert_eq!(0, machine.program_counter);
+        assert_eq!(START_USER_SPACE, machine.program_counter);
     }
 
     #[test]
@@ -163,5 +163,34 @@ mod tests {
         let pc: usize = MEM_SIZE;
         set_program_counter(&mut machine, pc);
         assert_eq!(START_USER_SPACE, get_program_counter(&machine));
+    }
+
+    #[test]
+    fn increment_pc() {
+        let mut machine = create_machine();
+        increment_program_counter(&mut machine);
+        assert_eq!(START_USER_SPACE + 2, get_program_counter(&machine));
+    }
+
+    #[test]
+    fn jump_to_address() {
+        let mut machine = create_machine();
+        let address: usize = 0x300;
+        jump(&mut machine, address);
+        
+        assert_eq!(address, get_program_counter(&machine));
+        assert_eq!(1, machine.stack.len());
+        assert_eq!(START_USER_SPACE, pop_stack(&mut machine));
+    }
+
+    #[test]
+    fn ret_from_address() {
+        let mut machine = create_machine();
+        let address: usize = 0x300;
+        jump(&mut machine, address);
+        ret(&mut machine);
+
+        assert_eq!(START_USER_SPACE, get_program_counter(&machine));
+        assert_eq!(0, machine.stack.len());
     }
 }
