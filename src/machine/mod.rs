@@ -78,6 +78,22 @@ pub fn set_register(machine: &mut Machine, index: usize, val: u8) {
     machine.registers.general_registers[index] = val;
 }
 
+pub fn read_memory(machine: &Machine, address: usize) -> u8 {
+    machine.ram.memory[address]
+}
+
+pub fn write_memory(machine: &mut Machine, address: usize, val: u8) {
+    if address >= START_USER_SPACE && address < MEM_SIZE {
+        machine.ram.memory[address] = val
+    } else {
+        panic!("memory address out of range")
+    }
+}
+
+fn write_protected_space(machine: &mut Machine, address: usize, val: u8) {
+    machine.ram.memory[address] = val
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -221,5 +237,40 @@ mod tests {
     fn test_get_regist_out_of_range() {
         let mut machine = create_machine();
         get_register(&mut machine, 16);
+    }
+
+    #[test]
+    fn test_write_read_memory() {
+        let mut machine = create_machine();
+        write_memory(&mut machine, 0x400, 0x8);
+        assert_eq!(0x8, read_memory(&machine, 0x400));
+    }
+
+    #[test]
+    fn test_write_read_protected_space() {
+        let mut machine = create_machine();
+        write_protected_space(&mut machine, 0x100, 0x8);
+        assert_eq!(0x8, read_memory(&machine, 0x100));
+    }
+
+    #[test]
+    #[should_panic]
+    fn test_write_to_protected_space_panic() {
+        let mut machine = create_machine();
+        write_memory(&mut machine, 0x100, 0x8);
+    }
+
+    #[test]
+    #[should_panic]
+    fn test_write_memory_out_of_range() {
+        let mut machine = create_machine();
+        write_memory(&mut machine, MEM_SIZE, 0x8);
+    }
+
+    #[test]
+    #[should_panic]
+    fn test_read_memory_out_of_range() {
+        let mut machine = create_machine();
+        read_memory(&machine, MEM_SIZE);
     }
 }
