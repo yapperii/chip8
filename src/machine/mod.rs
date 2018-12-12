@@ -16,8 +16,8 @@ pub struct Registers {
 pub struct Machine {
     ram: Ram,
     registers: Registers,
-    stack: Vec<u16>,
-    program_counter: u16,
+    stack: Vec<usize>,
+    program_counter: usize,
 }
 
 pub fn create_machine() -> Machine {
@@ -26,7 +26,7 @@ pub fn create_machine() -> Machine {
     Machine {ram: ram, registers: registers, stack: Vec::with_capacity(STACK_SIZE), program_counter: 0}
 }
 
-pub fn push_stack(val: u16, machine: &mut Machine) {
+pub fn push_stack(val: usize, machine: &mut Machine) {
     if machine.stack.len() >= STACK_SIZE {
         panic!("stack overrun!")
     }
@@ -34,7 +34,7 @@ pub fn push_stack(val: u16, machine: &mut Machine) {
     machine.stack.push(val);
 }
 
-pub fn pop_stack(machine: &mut Machine) -> u16 {
+pub fn pop_stack(machine: &mut Machine) -> usize {
     let popped = machine.stack.pop();
     match popped {
         Some(x) => x,
@@ -42,9 +42,9 @@ pub fn pop_stack(machine: &mut Machine) -> u16 {
     }
 }
 
-pub fn set_program_counter(machine: &mut Machine, counter: u16) {
+pub fn set_program_counter(machine: &mut Machine, counter: usize) {
     if counter >= START_USER_SPACE  && counter < MEM_SIZE {
-        machine.programe_counter = counter;
+        machine.program_counter = counter;
     }
 }
 

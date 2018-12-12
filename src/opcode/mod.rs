@@ -138,7 +138,8 @@ fn op_00E0(opcode: OpCode, mach: &mut machine::Machine) {
 
 // returns from a function
 fn op_00EE(opcode: OpCode, mach: &mut machine::Machine) {
-    mach.set_program_counter(mach.pop_stack());
+    let pc = machine::pop_stack(mach);
+    machine::set_program_counter(mach, pc);
 }
 
 pub fn execute_opcode(opcode: &OpCode, mach: &mut machine::Machine) {
