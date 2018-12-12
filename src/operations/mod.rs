@@ -68,11 +68,38 @@ mod tests {
     }
 
     #[test]
-    fn test_op_3XNN() {
+    fn test_op_3XNN_pass() {
         let mut mach = machine::create_machine();
         machine::set_register(&mut mach, 0, 0x8);
         op_3XNN(&mut mach, 0, 0x8);
 
         assert_eq!(machine::START_USER_SPACE + 2, machine::get_program_counter(&mach));
+    }
+
+    #[test]
+    fn test_op_3XNN_fail() {
+        let mut mach = machine::create_machine();
+        machine::set_register(&mut mach, 0, 0x8);
+        op_3XNN(&mut mach, 0, 0x1);
+
+        assert_eq!(machine::START_USER_SPACE, machine::get_program_counter(&mach));
+    }
+
+     #[test]
+    fn test_op_4XNN_pass() {
+        let mut mach = machine::create_machine();
+        machine::set_register(&mut mach, 0, 0x8);
+        op_4XNN(&mut mach, 0, 0x1);
+
+        assert_eq!(machine::START_USER_SPACE + 2, machine::get_program_counter(&mach));
+    }
+
+    #[test]
+    fn test_op_4XNN_fail() {
+        let mut mach = machine::create_machine();
+        machine::set_register(&mut mach, 0, 0x8);
+        op_4XNN(&mut mach, 0, 0x8);
+
+        assert_eq!(machine::START_USER_SPACE, machine::get_program_counter(&mach));
     }
 }
