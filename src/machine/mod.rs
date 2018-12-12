@@ -70,6 +70,14 @@ pub fn ret(machine: &mut Machine) {
     set_program_counter(machine, pc);
 }
 
+pub fn get_register(machine: &Machine, index: usize) -> u8 {
+    machine.registers.general_registers[index]
+}
+
+pub fn set_register(machine: &mut Machine, index: usize, val: u8) {
+    machine.registers.general_registers[index] = val;
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -192,5 +200,26 @@ mod tests {
 
         assert_eq!(START_USER_SPACE, get_program_counter(&machine));
         assert_eq!(0, machine.stack.len());
+    }
+
+    #[test]
+    fn test_set_register() {
+        let mut machine = create_machine();
+        set_register(&mut machine, 0, 0x8);
+        assert_eq!(0x8, get_register(&machine, 0));
+    }
+
+    #[test]
+    #[should_panic]
+    fn test_set_regist_out_of_range() {
+        let mut machine = create_machine();
+        set_register(&mut machine, 16, 1);
+    }
+
+    #[test]
+    #[should_panic]
+    fn test_get_regist_out_of_range() {
+        let mut machine = create_machine();
+        get_register(&mut machine, 16);
     }
 }
