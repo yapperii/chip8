@@ -48,6 +48,10 @@ pub fn op_6XNN(mach: &mut machine::Machine, x: usize, n: u8) {
     machine::set_register(mach, x, n);
 }
 
+pub fn op_7XNN(mach: &mut machine::Machine, x: usize, n: u8) {
+    let vx = machine::get_register(mach, x);
+    machine::set_register(mach, x, vx + n);
+}
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -141,5 +145,14 @@ mod tests {
         op_6XNN(&mut machine, 0, 0x8);
 
         assert_eq!(0x8, machine::get_register(&machine, 0));
+    }
+
+    #[test]
+    fn test_op_7XNN() {
+        let mut machine = machine::create_machine();
+        machine::set_register(&mut machine, 0, 0x8);
+        op_7XNN(&mut machine, 0, 0x1);
+
+        assert_eq!(0x9, machine::get_register(&machine, 0));
     }
 }
