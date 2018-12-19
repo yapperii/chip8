@@ -81,17 +81,16 @@ pub fn op_8XY4(mach: &mut machine::Machine, x: usize, y: usize) {
     let vy = machine::get_register(mach, y);
     let sum: u16 = vx as u16 + vy as u16;
     machine::set_register(mach, x, sum as u8);
-    if sum > 0xf {
-        machine::set_register(mach, 0xf, 0x1);
-    } else {
-        machine::set_register(mach, 0xf, 0x0)
-    }
+    machine::set_register(mach, 0xf, if sum > 0xff { 1 } else { 0 });
 }
 
 pub fn op_8XY5(mach: &mut machine::Machine, x: usize, y: usize) {
     let vx = machine::get_register(mach, x);
     let vy = machine::get_register(mach, y);
     machine::set_register(mach, x, vx - vy);
+    let difference: i16 = vx as i16 - vy as i16;
+    machine::set_register(mach, x, if difference < 0 { 0 } else { difference as u8 });
+    machine::set_register(mach, 0xf, if difference < 0 { 0 } else { 1 });
 }
 
 #[cfg(test)]
@@ -256,11 +255,11 @@ mod tests {
     #[test]
     fn test_op_8XY4() {
         let mut machine = machine::create_machine();
-        machine::set_register(&mut machine, 0, 0x4);
+        machine::set_register(&mut machine, 0, 0x8);
         machine::set_register(&mut machine, 1, 0x9);
         op_8XY4(&mut machine, 0, 1);
 
-        assert_eq!(0xd, machine::get_register(&machine, 0));
+        assert_eq!(0x11, machine::get_register(&machine, 0));
         assert_eq!(0x0, machine::get_register(&machine, 0xf));
 
         machine::set_register(&mut machine, 0, 0xf8);
