@@ -44,6 +44,10 @@ pub fn op_5XY0(mach: &mut machine::Machine, x: usize, y: usize) {
     }
 }
 
+pub fn op_6XNN(mach: &mut machine::Machine, x: usize, n: u8) {
+    machine::set_register(mach, x, n);
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -129,5 +133,13 @@ mod tests {
         op_5XY0(&mut mach, 0, 1);
 
         assert_eq!(machine::START_USER_SPACE, machine::get_program_counter(&mach));
+    }
+
+    #[test]
+    fn test_op_6XNN() {
+        let mut machine = machine::create_machine();
+        op_6XNN(&mut machine, 0, 0x8);
+
+        assert_eq!(0x8, machine::get_register(&machine, 0));
     }
 }
