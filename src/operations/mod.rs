@@ -30,8 +30,16 @@ pub fn op_3XNN(mach: &mut machine::Machine, x: usize, n: u16) {
 }
 
 pub fn op_4XNN(mach: &mut machine::Machine, x: usize, n: u16) {
-    let rx = machine::get_register(mach, x) as u16;
-    if rx != n {
+    let vx = machine::get_register(mach, x) as u16;
+    if vx != n {
+        machine::increment_program_counter(mach);
+    }
+}
+
+pub fn op_5XY0(mach: &mut machine::Machine, x: usize, y: usize) {
+    let vx = machine::get_register(mach, x);
+    let vy = machine::get_register(mach, y);
+    if vx == vy {
         machine::increment_program_counter(mach);
     }
 }
@@ -99,6 +107,26 @@ mod tests {
         let mut mach = machine::create_machine();
         machine::set_register(&mut mach, 0, 0x8);
         op_4XNN(&mut mach, 0, 0x8);
+
+        assert_eq!(machine::START_USER_SPACE, machine::get_program_counter(&mach));
+    }
+
+    #[test]
+    fn test_op_5XY0_pass() {
+        let mut mach = machine::create_machine();
+        machine::set_register(&mut mach, 0, 0x8);
+        machine::set_register(&mut mach, 1, 0x8);
+        op_5XY0(&mut mach, 0, 1);
+
+        assert_eq!(machine::START_USER_SPACE + 2, machine::get_program_counter(&mach));
+    }
+
+    #[test]
+    fn test_op_5XY0_fail() {
+        let mut mach = machine::create_machine();
+        machine::set_register(&mut mach, 0, 0x8);
+        machine::set_register(&mut mach, 1, 0x7);
+        op_5XY0(&mut mach, 0, 1);
 
         assert_eq!(machine::START_USER_SPACE, machine::get_program_counter(&mach));
     }
