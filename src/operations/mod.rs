@@ -87,7 +87,6 @@ pub fn op_8XY4(mach: &mut machine::Machine, x: usize, y: usize) {
 pub fn op_8XY5(mach: &mut machine::Machine, x: usize, y: usize) {
     let vx = machine::get_register(mach, x);
     let vy = machine::get_register(mach, y);
-    machine::set_register(mach, x, vx - vy);
     let difference: i16 = vx as i16 - vy as i16;
     machine::set_register(mach, x, if difference < 0 { 0 } else { difference as u8 });
     machine::set_register(mach, 0xf, if difference < 0 { 0 } else { 1 });
@@ -267,5 +266,22 @@ mod tests {
 
         assert_eq!(0x1, machine::get_register(&machine, 0));
         assert_eq!(0x1, machine::get_register(&machine, 0xf));
+    }
+
+    #[test]
+    fn test_op_8XY5() {
+        let mut machine = machine::create_machine();
+        machine::set_register(&mut machine, 0, 0x9);
+        machine::set_register(&mut machine, 1, 0x8);
+        op_8XY5(&mut machine, 0, 1);
+
+        assert_eq!(0x1, machine::get_register(&machine, 0));
+        assert_eq!(0x1, machine::get_register(&machine, 0xf));
+
+        machine::set_register(&mut machine, 0, 0x1);
+        op_8XY5(&mut machine, 0, 1);
+
+        assert_eq!(0x0, machine::get_register(&machine, 0));
+        assert_eq!(0x0, machine::get_register(&machine, 0xf));
     }
 }
