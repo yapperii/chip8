@@ -342,7 +342,7 @@ mod tests {
     fn test_op_8XYE() {
         let mut machine = machine::create_machine();
         machine::set_register(&mut machine, 0x0, 0xff);
-        op_8XY8(&mut machine, 0x0);
+        op_8XYE(&mut machine, 0x0);
 
         assert_eq!(0x80, machine::get_register(&machine, 0xf));
         assert_eq!(0xfe, machine::get_register(&machine, 0x0));
