@@ -121,6 +121,10 @@ pub fn op_9XY0(mach: &mut machine::Machine, x: usize, y: usize) {
     }
 }
 
+pub fn op_ANNN(mach: &mut machine::Machine, n: usize) {
+    machine::set_address_register(mach, n);
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -374,5 +378,13 @@ mod tests {
         op_9XY0(&mut mach, 0x0, 0x1);
 
         assert_eq!(machine::START_USER_SPACE, machine::get_program_counter(&mach));
+    }
+
+    #[test]
+    fn test_op_ANNN() {
+        let mut mach = machine::create_machine();
+        op_ANNN(&mut mach, 0x300);
+
+        assert_eq!(0x300, machine::get_address_register(&mach));
     }
 }

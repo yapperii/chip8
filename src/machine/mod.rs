@@ -77,6 +77,14 @@ pub fn ret(machine: &mut Machine) {
     set_program_counter(machine, pc);
 }
 
+pub fn get_address_register(machine: &Machine) -> usize {
+    machine.registers.address_register
+}
+
+pub fn set_address_register(machine: &mut Machine, address: usize) {
+    machine.registers.address_register = address;
+}
+
 pub fn get_register(machine: &Machine, index: usize) -> u8 {
     machine.registers.general_registers[index]
 }
