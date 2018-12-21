@@ -140,7 +140,7 @@ mod tests {
         op_1NNN(&mut mach, 0x300);
 
         assert_eq!(0x300, machine::get_program_counter(&mach));
-        assert_eq!(machine::START_USER_SPACE, machine::pop_stack(&mut mach));
+        assert_eq!(Some(machine::START_USER_SPACE), machine::peek_stack(&mut mach));
     }
 
     #[test]
@@ -149,7 +149,7 @@ mod tests {
         op_2NNN(&mut mach, 0x300);
 
         assert_eq!(0x300, machine::get_program_counter(&mach));
-        assert_eq!(machine::START_USER_SPACE, machine::pop_stack(&mut mach));
+        assert_eq!(Some(machine::START_USER_SPACE), machine::peek_stack(&mut mach));
     }
 
     #[test]
