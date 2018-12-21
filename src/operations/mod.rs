@@ -113,6 +113,14 @@ pub fn op_8XYE(mach: &mut machine::Machine, x: usize) {
     machine::set_register(mach, x, vx << 1);
 }
 
+pub fn op_9XY0(mach: &mut machine::Machine, x: usize, y: usize) {
+    let vx = machine::get_register(mach, x) as u16;
+    let vy = machine::get_register(mach, y) as u16;
+    if vx != vy {
+        machine::increment_program_counter(mach);
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -346,5 +354,25 @@ mod tests {
 
         assert_eq!(0x80, machine::get_register(&machine, 0xf));
         assert_eq!(0xfe, machine::get_register(&machine, 0x0));
+    }
+
+    #[test]
+    fn test_op_9XY0_pass() {
+        let mut mach = machine::create_machine();
+        machine::set_register(&mut mach, 0x0, 0x8);
+        machine::set_register(&mut mach, 0x1, 0x7);
+        op_9XY0(&mut mach, 0x0, 0x1);
+
+        assert_eq!(machine::START_USER_SPACE + 2, machine::get_program_counter(&mach));
+    }
+
+    #[test]
+    fn test_op_9XY0_fail() {
+        let mut mach = machine::create_machine();
+        machine::set_register(&mut mach, 0x0, 0x8);
+        machine::set_register(&mut mach, 0x1, 0x8);
+        op_9XY0(&mut mach, 0x0, 0x1);
+
+        assert_eq!(machine::START_USER_SPACE, machine::get_program_counter(&mach));
     }
 }
