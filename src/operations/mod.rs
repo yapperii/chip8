@@ -392,4 +392,13 @@ mod tests {
 
         assert_eq!(0x300, machine::get_address_register(&mach));
     }
+
+    #[test]
+    fn test_op_BNNN() {
+        let mut mach = machine::create_machine();
+        machine::set_register(&mut mach, 0, 0x50);
+        op_BNNN(&mut mach, 0x300);
+
+        assert_eq!(0x350, machine::get_program_counter(&mach));
+    }
 }
