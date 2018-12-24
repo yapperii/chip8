@@ -19,7 +19,7 @@ pub fn op_1NNN(mach: &mut machine::Machine, address: usize) {
 }
 
 pub fn op_2NNN(mach: &mut machine::Machine, address: usize) {
-    machine::jump(mach, address);
+    machine::call(mach, address);
 }
 
 pub fn op_3XNN(mach: &mut machine::Machine, x: usize, n: u16) {
@@ -125,6 +125,12 @@ pub fn op_ANNN(mach: &mut machine::Machine, n: usize) {
     machine::set_address_register(mach, n);
 }
 
+pub fn op_BNNN(mach: &mut machine::Machine, n: usize) {
+    let v0 = machine::get_register(mach, 0x0);
+    let address = n + v0 as usize;
+    machine::jump(mach, address);
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -132,7 +138,7 @@ mod tests {
     #[test]
     fn test_op_00EE() {
         let mut mach = machine::create_machine();
-        machine::jump(&mut mach, 0x300);
+        machine::call(&mut mach, 0x300);
         op_00EE(&mut mach);
 
         assert_eq!(machine::START_USER_SPACE, machine::get_program_counter(&mach));
@@ -144,7 +150,6 @@ mod tests {
         op_1NNN(&mut mach, 0x300);
 
         assert_eq!(0x300, machine::get_program_counter(&mach));
-        assert_eq!(Some(machine::START_USER_SPACE), machine::peek_stack(&mut mach));
     }
 
     #[test]

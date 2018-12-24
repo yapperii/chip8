@@ -67,6 +67,10 @@ pub fn increment_program_counter(machine: &mut Machine) {
 }
 
 pub fn jump(machine: &mut Machine, address: usize) {
+    set_program_counter(machine, address);
+}
+
+pub fn call(machine: &mut Machine, address: usize) {
     let pc = get_program_counter(machine);
     push_stack(machine, pc);
     set_program_counter(machine, address);
@@ -216,6 +220,15 @@ mod tests {
         let mut machine = create_machine();
         let address: usize = 0x300;
         jump(&mut machine, address);
+
+        assert_eq!(address, get_program_counter(&machine));
+        assert_eq!(0, machine.stack.len());
+    }
+    #[test]
+    fn call_address() {
+        let mut machine = create_machine();
+        let address: usize = 0x300;
+        call(&mut machine, address);
         
         assert_eq!(address, get_program_counter(&machine));
         assert_eq!(1, machine.stack.len());
@@ -226,7 +239,7 @@ mod tests {
     fn ret_from_address() {
         let mut machine = create_machine();
         let address: usize = 0x300;
-        jump(&mut machine, address);
+        call(&mut machine, address);
         ret(&mut machine);
 
         assert_eq!(START_USER_SPACE, get_program_counter(&machine));
