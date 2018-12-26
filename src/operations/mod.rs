@@ -150,6 +150,13 @@ pub fn op_EX9E(mach: &mut machine::Machine, x: usize) {
     }
 }
 
+pub fn op_EXA1(mach: &mut machine::Machine, x: usize) {
+    let vx = machine::get_register(mach, x);
+    if !machine::get_key(mach, vx as usize) {
+        machine::increment_program_counter(mach);
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -429,11 +436,28 @@ mod tests {
 
         assert_eq!(machine::START_USER_SPACE + 2, machine::get_program_counter(&mach));
     }
-    
+
     #[test]
     fn test_op_EX9E_fail() {
         let mut mach = machine::create_machine();
         op_EX9E(&mut mach, 0);
+
+        assert_eq!(machine::START_USER_SPACE, machine::get_program_counter(&mach));
+    }
+
+    #[test]
+    fn test_op_EXA1_pass() {
+        let mut mach = machine::create_machine();
+        op_EXA1(&mut mach, 0);
+
+        assert_eq!(machine::START_USER_SPACE + 2, machine::get_program_counter(&mach));
+    }
+
+    #[test]
+    fn test_op_EXA1_fail() {
+        let mut mach = machine::create_machine();
+        machine::set_key(&mut mach, 0, true);
+        op_EXA1(&mut mach, 0);
 
         assert_eq!(machine::START_USER_SPACE, machine::get_program_counter(&mach));
     }
