@@ -3,6 +3,7 @@ pub const MEM_SIZE: usize = 4096;
 pub const START_USER_SPACE: usize = 0x200;
 const NUM_REGISTERS: usize = 16;
 const STACK_SIZE: usize = 24;
+const NUM_KEYS: usize = 16;
 
 pub struct Ram {
     memory: [u8; MEM_SIZE],
@@ -18,12 +19,13 @@ pub struct Machine {
     registers: Registers,
     stack: Vec<usize>,
     program_counter: usize,
+    keys: [bool; NUM_KEYS],
 }
 
 pub fn create_machine() -> Machine {
     let ram = Ram {memory: [0; MEM_SIZE]};
     let registers = Registers {general_registers: [0; NUM_REGISTERS], address_register: 0};
-    Machine {ram: ram, registers: registers, stack: Vec::with_capacity(STACK_SIZE), program_counter: START_USER_SPACE}
+    Machine {ram: ram, registers: registers, stack: Vec::with_capacity(STACK_SIZE), program_counter: START_USER_SPACE, keys: [false; NUM_KEYS]}
 }
 
 fn push_stack(machine: &mut Machine, val: usize) {
@@ -111,6 +113,14 @@ pub fn write_memory(machine: &mut Machine, address: usize, val: u8) {
 
 fn write_protected_space(machine: &mut Machine, address: usize, val: u8) {
     machine.ram.memory[address] = val
+}
+
+pub fn get_key(machine: &Machine, key: usize) -> bool {
+    machine.keys[key]
+}
+
+pub fn set_key(machine: &mut Machine, key: usize, state: bool) {
+    machine.keys[key] = state;
 }
 
 #[cfg(test)]

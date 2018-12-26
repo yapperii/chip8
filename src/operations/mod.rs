@@ -1,3 +1,6 @@
+//extern crate rand;
+use rand::prelude::*;
+//use rand::Rng;
 use machine;
 
 pub fn op_0NNN(mach: &mut machine::Machine) {
@@ -129,6 +132,22 @@ pub fn op_BNNN(mach: &mut machine::Machine, n: usize) {
     let v0 = machine::get_register(mach, 0x0);
     let address = n + v0 as usize;
     machine::jump(mach, address);
+}
+
+pub fn op_CXNN(mach: &mut machine::Machine, x: usize, n: u8) {
+    let r = rand::random::<u8>();
+    machine::set_register(mach, x, n & r);
+}
+
+pub fn op_DXYN(mach: &mut machine::Machine, x: usize, y: usize, n: u8) {
+    // graphics not implemented yet
+}
+
+pub fn op_EX9E(mach: &mut machine::Machine, x: usize) {
+    let vx = machine::get_register(mach, x);
+    if machine::get_key(mach, vx as usize) {
+        machine::increment_program_counter(mach);
+    }
 }
 
 #[cfg(test)]
@@ -400,5 +419,22 @@ mod tests {
         op_BNNN(&mut mach, 0x300);
 
         assert_eq!(0x350, machine::get_program_counter(&mach));
+    }
+
+    #[test]
+    fn test_op_EX9E_pass() {
+        let mut mach = machine::create_machine();
+        machine::set_key(&mut mach, 0, true);
+        op_EX9E(&mut mach, 0);
+
+        assert_eq!(machine::START_USER_SPACE + 2, machine::get_program_counter(&mach));
+    }
+    
+    #[test]
+    fn test_op_EX9E_fail() {
+        let mut mach = machine::create_machine();
+        op_EX9E(&mut mach, 0);
+
+        assert_eq!(machine::START_USER_SPACE, machine::get_program_counter(&mach));
     }
 }
