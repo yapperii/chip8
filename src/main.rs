@@ -1,8 +1,11 @@
+extern crate rand;
+extern crate sdl2;
+
 mod machine;
 mod opcode;
 mod operations;
 
-extern crate rand;
+
 //use rand::prelude::*;
 
 fn main()

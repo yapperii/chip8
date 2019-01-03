@@ -5,3 +5,4 @@ authors = ["yappe"]
 
 [dependencies]
 rand = ""
+sdl2 = "0.32"
