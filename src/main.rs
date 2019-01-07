@@ -4,6 +4,7 @@ extern crate sdl2;
 mod machine;
 mod opcode;
 mod operations;
+mod render;
 
 
 use sdl2::pixels::Color;
@@ -11,7 +12,6 @@ use sdl2::event::Event;
 use sdl2::keyboard::Keycode;
 use std::time::Duration;
 use sdl2::rect::Rect;
-
 
 pub fn main() {
 
@@ -26,17 +26,12 @@ pub fn main() {
         .unwrap();
 
     let mut canvas = window.into_canvas().build().unwrap();
-    canvas.set_draw_color(Color::RGB(0, 0, 0));
-    canvas.clear();
-
-    let SQUARE_SIZE = 10;
-    canvas.set_draw_color(Color::RGB(0, 255, 0));
-    canvas.fill_rect(Rect::new(SQUARE_SIZE, SQUARE_SIZE, 10, 10));
-
-    canvas.present();
 
     let mut event_pump = sdl_context.event_pump().unwrap();
 
+    let mut screenBuffer = render::create_screen_buffer();
+
+    render::render(&mut canvas, &screenBuffer);
 
 
     'running: loop {

@@ -1,3 +1,4 @@
+use render;
 
 pub const MEM_SIZE: usize = 4096;
 pub const START_USER_SPACE: usize = 0x200;
@@ -20,12 +21,18 @@ pub struct Machine {
     stack: Vec<usize>,
     program_counter: usize,
     keys: [bool; NUM_KEYS],
+    screenBuffer: render::ScreenBuffer,
 }
 
 pub fn create_machine() -> Machine {
     let ram = Ram {memory: [0; MEM_SIZE]};
     let registers = Registers {general_registers: [0; NUM_REGISTERS], address_register: 0};
-    Machine {ram: ram, registers: registers, stack: Vec::with_capacity(STACK_SIZE), program_counter: START_USER_SPACE, keys: [false; NUM_KEYS]}
+    Machine{ram: ram,
+            registers: registers,
+            stack: Vec::with_capacity(STACK_SIZE),
+            program_counter: START_USER_SPACE,
+            keys: [false; NUM_KEYS],
+            screenBuffer: render::create_screen_buffer()}
 }
 
 fn push_stack(machine: &mut Machine, val: usize) {
