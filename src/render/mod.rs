@@ -7,9 +7,33 @@ pub struct ScreenBuffer
     pixels: [[bool; 64]; 32],
 }
 
+pub struct Texture
+{
+    rows: Vec<[bool; 8]>,
+}
+
+pub struct Sprite {
+    x: u8,
+    y: u8,
+    texture: Texture,
+}
+
 pub fn create_screen_buffer() -> ScreenBuffer {
     let screenBuffer = ScreenBuffer{pixels: [[false; 64]; 32]};
     return screenBuffer;
+}
+
+pub fn blit_texture(screenBuffer: &mut ScreenBuffer, sprite: &Sprite) -> bool {
+    let mut flipped = false;
+    for row in &sprite.texture.rows {
+        for x in 0..8 {
+            flipped |= row[x] & screenBuffer.pixels[sprite.y as usize][sprite.x as usize + x];
+            screenBuffer.pixels[sprite.y as usize][sprite.x as usize + x] =
+                row[x] ^ screenBuffer.pixels[sprite.y as usize][sprite.x as usize + x];
+        }
+    }
+
+    return flipped;
 }
 
 pub fn render(canvas: &mut Canvas<sdl2::video::Window>, screenBuffer: &ScreenBuffer) {
