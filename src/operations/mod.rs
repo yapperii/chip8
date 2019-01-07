@@ -2,6 +2,7 @@
 use rand::prelude::*;
 //use rand::Rng;
 use machine;
+use render;
 
 pub fn op_0NNN(mach: &mut machine::Machine) {
     // probably not needed
@@ -9,7 +10,7 @@ pub fn op_0NNN(mach: &mut machine::Machine) {
 
 // clears the screen
 pub fn op_00E0(mach: &mut machine::Machine) {
-    //not implemented yet
+    render::clear_screen(machine::get_screenbuffer(mach));
 }
 
 // returns from a function

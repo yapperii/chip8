@@ -24,6 +24,10 @@ pub struct Machine {
     screenBuffer: render::ScreenBuffer,
 }
 
+pub fn get_screenbuffer(machine: &mut Machine) -> &mut render::ScreenBuffer {
+    &mut machine.screenBuffer
+}
+
 pub fn create_machine() -> Machine {
     let ram = Ram {memory: [0; MEM_SIZE]};
     let registers = Registers {general_registers: [0; NUM_REGISTERS], address_register: 0};

@@ -36,6 +36,10 @@ pub fn blit_texture(screenBuffer: &mut ScreenBuffer, sprite: &Sprite) -> bool {
     return flipped;
 }
 
+pub fn clear_screen(screenBuffer: &mut ScreenBuffer) {
+    screenBuffer.pixels = [[false; 64]; 32];
+}
+
 pub fn render(canvas: &mut Canvas<sdl2::video::Window>, screenBuffer: &ScreenBuffer) {
     canvas.set_draw_color(Color::RGB(0, 0, 0));
     canvas.clear();
