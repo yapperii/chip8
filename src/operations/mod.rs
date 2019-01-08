@@ -138,8 +138,20 @@ pub fn op_CXNN(mach: &mut machine::Machine, x: usize, n: u8) {
     machine::set_register(mach, x, n & r);
 }
 
-pub fn op_DXYN(mach: &mut machine::Machine, x: usize, y: usize, n: u8) {
-    // graphics not implemented yet
+pub fn op_DXYN(mach: &mut machine::Machine, x: u8, y: u8, n: u8) {
+    let base_address = machine::get_address_register(mach);
+    let n_size = n as usize;
+    let mut rows: Vec<[bool; 8]> = Vec::with_capacity(n_size);
+    for i in 0..n {
+        let mem_val = machine::read_memory(mach, base_address + n_size);
+        let mut row: [bool; 8] = [false; 8];
+        for j in 0..8 {
+            row[j] = (mem_val & (1 << j)) != 0;
+        }
+    }
+
+    let sprite = render::create_sprite(x, y, &rows);
+    render::blit_texture(machine::get_screenbuffer(mach), &sprite);
 }
 
 pub fn op_EX9E(mach: &mut machine::Machine, x: usize) {
