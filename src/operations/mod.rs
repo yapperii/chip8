@@ -200,6 +200,17 @@ pub fn op_FX29(mach: &mut machine::Machine, x: usize) {
     machine::set_address_register(mach, address);
 }
 
+pub fn op_fx33(mach: &mut machine::Machine, x: usize) {
+    let vx = machine::get_register(&mach, x);
+    let base_address = machine::get_address_register(&mach);
+    let ones = vx % 10;
+    let tens = (vx / 10) % 10;
+    let hundreds = (vx / 100) % 10;
+    machine::write_memory(mach, base_address, hundreds);
+    machine::write_memory(mach, base_address + 1, tens);
+    machine::write_memory(mach, base_address + 2, ones);
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -558,5 +569,17 @@ mod tests {
         op_FX29(&mut mach, 0x0);
 
         assert_eq!(render::FONT_BYTES_PER_CHAR, machine::get_address_register(&mach));
+    }
+
+    #[test]
+    fn test_op_fx33() {
+        let mut mach = machine::create_machine();
+        machine::set_address_register(&mut mach, machine::START_USER_SPACE);
+        machine::set_register(&mut mach, 0x0, 0xfe);
+        op_fx33(&mut mach, 0x0);
+
+        assert_eq!(2, machine::read_memory(&mach, machine::START_USER_SPACE));
+        assert_eq!(5, machine::read_memory(&mach, machine::START_USER_SPACE + 1));
+        assert_eq!(4, machine::read_memory(&mach, machine::START_USER_SPACE + 2));
     }
 }
