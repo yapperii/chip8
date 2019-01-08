@@ -211,6 +211,22 @@ pub fn op_fx33(mach: &mut machine::Machine, x: usize) {
     machine::write_memory(mach, base_address + 2, ones);
 }
 
+pub fn op_fx55(mach: &mut machine::Machine) {
+    let base_address = machine::get_address_register(mach);
+    for x in 0..machine::NUM_REGISTERS {
+        let vx = machine::get_register(mach, x);
+        machine::write_memory(mach, base_address + x, vx);
+    }
+}
+
+pub fn op_fx65(mach: &mut machine::Machine) {
+    let base_address = machine::get_address_register(mach);
+    for x in 0..machine::NUM_REGISTERS {
+        let mem = machine::read_memory(mach, base_address + x);
+        machine::set_register(mach, x, mem);
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -581,5 +597,35 @@ mod tests {
         assert_eq!(2, machine::read_memory(&mach, machine::START_USER_SPACE));
         assert_eq!(5, machine::read_memory(&mach, machine::START_USER_SPACE + 1));
         assert_eq!(4, machine::read_memory(&mach, machine::START_USER_SPACE + 2));
+    }
+
+    #[test]
+    fn test_op_fx55() {
+        let mut mach = machine::create_machine();
+        machine::set_address_register(&mut mach, machine::START_USER_SPACE);
+        for x in 0..machine::NUM_REGISTERS {
+            machine::set_register(&mut mach, x, x as u8);
+        }
+
+        op_fx55(&mut mach);
+
+        for x in 0..machine::NUM_REGISTERS {
+            assert_eq!(x as u8, machine::read_memory(&mach, machine::START_USER_SPACE + x));
+        }
+    }
+
+    #[test]
+    fn test_op_fx65() {
+        let mut mach = machine::create_machine();
+        machine::set_address_register(&mut mach, machine::START_USER_SPACE);
+        for x in 0..machine::NUM_REGISTERS {
+            machine::write_memory(&mut mach, machine::START_USER_SPACE + x, x as u8);
+        }
+
+        op_fx65(&mut mach);
+
+        for x in 0..machine::NUM_REGISTERS {
+            assert_eq!(x as u8, machine::get_register(&mach, x));
+        }
     }
 }

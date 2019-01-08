@@ -2,7 +2,7 @@ use render;
 
 pub const MEM_SIZE: usize = 4096;
 pub const START_USER_SPACE: usize = 0x200;
-const NUM_REGISTERS: usize = 16;
+pub const NUM_REGISTERS: usize = 16;
 const STACK_SIZE: usize = 24;
 const NUM_KEYS: usize = 16;
 
