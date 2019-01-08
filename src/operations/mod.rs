@@ -166,6 +166,11 @@ pub fn op_FX0A(mach: &mut machine::Machine, x: usize) {
     machine::set_target_register(mach, x);
 }
 
+pub fn op_FX15(mach: &mut machine::Machine, x: usize) {
+    let vx = machine::get_register(mach, x);
+    machine::set_delay_timer(mach, vx);
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -487,5 +492,13 @@ mod tests {
 
         assert_eq!(machine::Flags::WAITING_FOR_KEYPRESS, machine::get_flag(&mach));
         assert_eq!(1, machine::get_target_register(&mach));
+    }
+
+    fn test_op_FX15() {
+        let mut mach = machine::create_machine();
+        machine::set_register(&mut mach, 0, 10);
+        op_FX15(&mut mach, 0);
+
+        assert_eq!(10, machine::get_delay_timer(&mach));
     }
 }
