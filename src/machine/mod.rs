@@ -20,6 +20,12 @@ pub struct Timers {
     sound_timer: u8,
 }
 
+#[derive(Clone, Debug, PartialEq)]
+pub enum Flags {
+    RUNNING,
+    WAITING_FOR_KEYPRESS,
+}
+
 pub struct Machine {
     ram: Ram,
     registers: Registers,
@@ -27,6 +33,8 @@ pub struct Machine {
     program_counter: usize,
     keys: [bool; NUM_KEYS],
     timers: Timers,
+    flag: Flags,
+    target_register: usize,
     screen_buffer: render::ScreenBuffer,
 }
 
@@ -39,6 +47,8 @@ pub fn create_machine() -> Machine {
             program_counter: START_USER_SPACE,
             keys: [false; NUM_KEYS],
             timers: Timers{delay_timer: 0, sound_timer: 0},
+            flag: Flags::RUNNING,
+            target_register: NUM_REGISTERS,
             screen_buffer: render::create_screen_buffer()}
 }
 
@@ -151,6 +161,23 @@ pub fn get_sound_timer(machine: &Machine) -> u8 {
 
 pub fn set_sound_timer(machine: &mut Machine, delay: u8) {
     machine.timers.sound_timer = delay;
+}
+
+pub fn get_flag(machine: &Machine) -> Flags {
+    let flag = machine.flag.clone();
+    return flag;
+}
+
+pub fn set_flag(machine: &mut Machine, flag: Flags) {
+    machine.flag = flag;
+}
+
+pub fn get_target_register(machine: &Machine) -> usize {
+    machine.target_register
+}
+
+pub fn set_target_register(machine: &mut Machine, register: usize) {
+    machine.target_register = register;
 }
 
 pub fn get_screenbuffer(machine: &mut Machine) -> &mut render::ScreenBuffer {
