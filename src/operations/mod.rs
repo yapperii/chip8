@@ -176,6 +176,12 @@ pub fn op_FX18(mach: &mut machine::Machine, x: usize) {
     machine::set_sound_timer(mach, vx);
 }
 
+pub fn op_FX1E(mach: &mut machine::Machine, x: usize) {
+    let address_register = machine::get_address_register(mach);
+    let vx = machine::get_register(mach, x);
+    machine::set_address_register(mach, address_register + vx as usize);
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -499,6 +505,7 @@ mod tests {
         assert_eq!(1, machine::get_target_register(&mach));
     }
 
+    #[test]
     fn test_op_FX15() {
         let mut mach = machine::create_machine();
         machine::set_register(&mut mach, 0, 10);
@@ -507,11 +514,22 @@ mod tests {
         assert_eq!(10, machine::get_delay_timer(&mach));
     }
 
+    #[test]
     fn test_op_FX18() {
         let mut mach = machine::create_machine();
         machine::set_register(&mut mach, 0, 10);
         op_FX18(&mut mach, 0);
 
         assert_eq!(10, machine::get_sound_timer(&mach));
+    }
+
+    #[test]
+    fn test_op_FX1E() {
+        let mut mach = machine::create_machine();
+        machine::set_address_register(&mut mach, 0x9);
+        machine::set_register(&mut mach, 0x0, 0x2);
+        op_FX1E(&mut mach, 0x0);
+
+        assert_eq!(0xb, machine::get_address_register(&mach));
     }
 }
