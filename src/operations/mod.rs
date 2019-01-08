@@ -171,6 +171,11 @@ pub fn op_FX15(mach: &mut machine::Machine, x: usize) {
     machine::set_delay_timer(mach, vx);
 }
 
+pub fn op_FX18(mach: &mut machine::Machine, x: usize) {
+    let vx = machine::get_register(mach, x);
+    machine::set_sound_timer(mach, vx);
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -500,5 +505,13 @@ mod tests {
         op_FX15(&mut mach, 0);
 
         assert_eq!(10, machine::get_delay_timer(&mach));
+    }
+
+    fn test_op_FX18() {
+        let mut mach = machine::create_machine();
+        machine::set_register(&mut mach, 0, 10);
+        op_FX18(&mut mach, 0);
+
+        assert_eq!(10, machine::get_sound_timer(&mach));
     }
 }
