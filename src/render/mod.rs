@@ -2,6 +2,8 @@ use sdl2::pixels::Color;
 use sdl2::render::Canvas;
 use sdl2::rect::Rect;
 
+pub const FONT_BYTES_PER_CHAR: usize = 5;
+
 pub struct ScreenBuffer
 {
     pixels: [[bool; 64]; 32],

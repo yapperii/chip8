@@ -194,6 +194,12 @@ pub fn op_FX1E(mach: &mut machine::Machine, x: usize) {
     machine::set_address_register(mach, address_register + vx as usize);
 }
 
+pub fn op_FX29(mach: &mut machine::Machine, x: usize) {
+    let vx = machine::get_register(mach, x);
+    let address = vx as usize * render::FONT_BYTES_PER_CHAR;
+    machine::set_address_register(mach, address);
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -543,5 +549,14 @@ mod tests {
         op_FX1E(&mut mach, 0x0);
 
         assert_eq!(0xb, machine::get_address_register(&mach));
+    }
+
+    #[test]
+    fn test_op_FX29() {
+        let mut mach = machine::create_machine();
+        machine::set_register(&mut mach, 0x0, 0x1);
+        op_FX29(&mut mach, 0x0);
+
+        assert_eq!(render::FONT_BYTES_PER_CHAR, machine::get_address_register(&mach));
     }
 }
