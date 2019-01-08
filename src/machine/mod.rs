@@ -15,17 +15,19 @@ pub struct Registers {
     address_register: usize,
 }
 
+pub struct Timers {
+    delay_timer: u8,
+    sound_timer: u8,
+}
+
 pub struct Machine {
     ram: Ram,
     registers: Registers,
     stack: Vec<usize>,
     program_counter: usize,
     keys: [bool; NUM_KEYS],
-    screenBuffer: render::ScreenBuffer,
-}
-
-pub fn get_screenbuffer(machine: &mut Machine) -> &mut render::ScreenBuffer {
-    &mut machine.screenBuffer
+    timers: Timers,
+    screen_buffer: render::ScreenBuffer,
 }
 
 pub fn create_machine() -> Machine {
@@ -36,7 +38,8 @@ pub fn create_machine() -> Machine {
             stack: Vec::with_capacity(STACK_SIZE),
             program_counter: START_USER_SPACE,
             keys: [false; NUM_KEYS],
-            screenBuffer: render::create_screen_buffer()}
+            timers: Timers{delay_timer: 0, sound_timer: 0},
+            screen_buffer: render::create_screen_buffer()}
 }
 
 fn push_stack(machine: &mut Machine, val: usize) {
@@ -132,6 +135,26 @@ pub fn get_key(machine: &Machine, key: usize) -> bool {
 
 pub fn set_key(machine: &mut Machine, key: usize, state: bool) {
     machine.keys[key] = state;
+}
+
+pub fn get_delay_timer(machine: &Machine) -> u8 {
+    machine.timers.delay_timer
+}
+
+pub fn set_delay_timer(machine: &mut Machine, delay: u8) {
+    machine.timers.delay_timer = delay;
+}
+
+pub fn get_sound_timer(machine: &Machine) -> u8 {
+    machine.timers.sound_timer
+}
+
+pub fn set_sound_timer(machine: &mut Machine, delay: u8) {
+    machine.timers.sound_timer = delay;
+}
+
+pub fn get_screenbuffer(machine: &mut Machine) -> &mut render::ScreenBuffer {
+    &mut machine.screen_buffer
 }
 
 #[cfg(test)]

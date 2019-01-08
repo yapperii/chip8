@@ -8,12 +8,10 @@ pub fn op_0NNN(mach: &mut machine::Machine) {
     // probably not needed
 }
 
-// clears the screen
 pub fn op_00E0(mach: &mut machine::Machine) {
     render::clear_screen(machine::get_screenbuffer(mach));
 }
 
-// returns from a function
 pub fn op_00EE(mach: &mut machine::Machine) {
     machine::ret(mach);
 }
@@ -156,6 +154,11 @@ pub fn op_EXA1(mach: &mut machine::Machine, x: usize) {
     if !machine::get_key(mach, vx as usize) {
         machine::increment_program_counter(mach);
     }
+}
+
+pub fn op_FX07(mach: &mut machine::Machine, x: usize) {
+    let delay = machine::get_delay_timer(mach);
+    machine::set_register(mach, x, delay);
 }
 
 #[cfg(test)]
@@ -461,5 +464,13 @@ mod tests {
         op_EXA1(&mut mach, 0);
 
         assert_eq!(machine::START_USER_SPACE, machine::get_program_counter(&mach));
+    }
+
+    #[test]
+    fn test_op_FX07(){
+        let mut mach = machine::create_machine();
+        machine::set_delay_timer(&mut mach, 10);
+
+        assert_eq!(10, machine::get_delay_timer(&mach));
     }
 }
