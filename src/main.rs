@@ -29,9 +29,9 @@ pub fn main() {
 
     let mut event_pump = sdl_context.event_pump().unwrap();
 
-    let mut screenBuffer = render::create_screen_buffer();
+    let mut screen_buffer = render::create_screen_buffer();
 
-    render::render(&mut canvas, &screenBuffer);
+    render::render(&mut canvas, &screen_buffer);
 
 
     'running: loop {
