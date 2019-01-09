@@ -109,7 +109,7 @@ pub fn op_8xy7(mach: &mut machine::Machine, x: usize, y: usize) {
     machine::set_register(mach, 0xf, if difference < 0 { 0 } else { 1 });
 }
 
-pub fn op_8xyE(mach: &mut machine::Machine, x: usize) {
+pub fn op_8xye(mach: &mut machine::Machine, x: usize) {
     let vx = machine::get_register(mach, x);
     machine::set_register(mach, 0xf, vx & 0x80);
     machine::set_register(mach, x, vx << 1);
@@ -173,8 +173,8 @@ pub fn op_fx07(mach: &mut machine::Machine, x: usize) {
     machine::set_register(mach, x, delay);
 }
 
-pub fn op_fx0A(mach: &mut machine::Machine, x: usize) {
-    machine::set_flag(mach, machine::Flags::WAITING_FOR_KEYPRESS);
+pub fn op_fx0a(mach: &mut machine::Machine, x: usize) {
+    machine::set_flag(mach, machine::Flags::WaitingForKeypress);
     machine::set_target_register(mach, x);
 }
 
@@ -188,7 +188,7 @@ pub fn op_fx18(mach: &mut machine::Machine, x: usize) {
     machine::set_sound_timer(mach, vx);
 }
 
-pub fn op_fx1E(mach: &mut machine::Machine, x: usize) {
+pub fn op_fx1e(mach: &mut machine::Machine, x: usize) {
     let address_register = machine::get_address_register(mach);
     let vx = machine::get_register(mach, x);
     machine::set_address_register(mach, address_register + vx as usize);
@@ -452,10 +452,10 @@ mod tests {
     }
 
     #[test]
-    fn test_op_8xyE() {
+    fn test_op_8xye() {
         let mut machine = machine::create_machine();
         machine::set_register(&mut machine, 0x0, 0xff);
-        op_8xyE(&mut machine, 0x0);
+        op_8xye(&mut machine, 0x0);
 
         assert_eq!(0x80, machine::get_register(&machine, 0xf));
         assert_eq!(0xfe, machine::get_register(&machine, 0x0));
@@ -542,11 +542,11 @@ mod tests {
     }
 
     #[test]
-    fn test_op_fx0A() {
+    fn test_op_fx0a() {
         let mut mach = machine::create_machine();
-        op_fx0A(&mut mach, 1);
+        op_fx0a(&mut mach, 1);
 
-        assert_eq!(machine::Flags::WAITING_FOR_KEYPRESS, machine::get_flag(&mach));
+        assert_eq!(machine::Flags::WaitingForKeypress, machine::get_flag(&mach));
         assert_eq!(1, machine::get_target_register(&mach));
     }
 
@@ -569,11 +569,11 @@ mod tests {
     }
 
     #[test]
-    fn test_op_fx1E() {
+    fn test_op_fx1e() {
         let mut mach = machine::create_machine();
         machine::set_address_register(&mut mach, 0x9);
         machine::set_register(&mut mach, 0x0, 0x2);
-        op_fx1E(&mut mach, 0x0);
+        op_fx1e(&mut mach, 0x0);
 
         assert_eq!(0xb, machine::get_address_register(&mach));
     }

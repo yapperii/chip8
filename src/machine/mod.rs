@@ -22,8 +22,8 @@ pub struct Timers {
 
 #[derive(Clone, Debug, PartialEq)]
 pub enum Flags {
-    RUNNING,
-    WAITING_FOR_KEYPRESS,
+    Running,
+    WaitingForKeypress,
 }
 
 pub struct Machine {
@@ -47,7 +47,7 @@ pub fn create_machine() -> Machine {
             program_counter: START_USER_SPACE,
             keys: [false; NUM_KEYS],
             timers: Timers{delay_timer: 0, sound_timer: 0},
-            flag: Flags::RUNNING,
+            flag: Flags::Running,
             target_register: NUM_REGISTERS,
             screen_buffer: render::create_screen_buffer()}
 }

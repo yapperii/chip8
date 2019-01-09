@@ -56,7 +56,8 @@ pub fn render(canvas: &mut Canvas<sdl2::video::Window>, screen_buffer: &ScreenBu
     for y in 0..32  {
         for x in 0..64 {
             if screen_buffer.pixels[y][x] {
-                canvas.fill_rect(Rect::new(pixel_size as i32, pixel_size as i32, (x * pixel_size) as u32, (y * pixel_size) as u32));
+                let result = canvas.fill_rect(Rect::new(pixel_size as i32, pixel_size as i32, (x * pixel_size) as u32, (y * pixel_size) as u32));
+                // TODO: check for errors
             }
         }
     }
