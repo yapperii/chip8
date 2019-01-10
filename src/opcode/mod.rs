@@ -1,4 +1,5 @@
 use machine;
+use operations;
 
 #[derive(Debug, Clone)]
 pub enum CodeMask {
@@ -40,13 +41,14 @@ pub enum CodeMask {
 }
 
 #[derive(Debug, Clone)]
-pub struct OpCode
+pub struct OpCode<T> where T: Fn(&mut machine::Machine, u16, u16, u16)
 {
     raw: u16,
     code_mask: CodeMask,
     n_mask: u16,
     x_mask: u16,
     y_mask: u16,
+    operation: T,
     // op function
 }
 
