@@ -4,6 +4,10 @@ use rand::prelude::*;
 use machine;
 use render;
 
+pub fn op_noop(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
+    // does nothing
+}
+
 pub fn op_0nnn(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
     // probably not needed
 }
