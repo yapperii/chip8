@@ -4,10 +4,6 @@ use rand::prelude::*;
 use machine;
 use render;
 
-pub fn op_noop(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
-    // does nothing
-}
-
 pub fn op_0nnn(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
     // probably not needed
 }
@@ -229,6 +225,47 @@ pub fn op_fx65(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
     for i in 0..machine::NUM_REGISTERS {
         let mem = machine::read_memory(mach, base_address + i);
         machine::set_register(mach, i, mem);
+    }
+}
+
+pub fn execute_by_index(index: usize, mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
+    match index {
+        0 => op_0nnn(mach, x, y, n),
+        1 => op_00e0(mach, x, y, n),
+        2 => op_00ee(mach, x, y, n),
+        3 => op_1nnn(mach, x, y, n),
+        4 => op_2nnn(mach, x, y, n),
+        5 => op_3xnn(mach, x, y, n),
+        6 => op_4xnn(mach, x, y, n),
+        7 => op_5xy0(mach, x, y, n),
+        8 => op_6xnn(mach, x, y, n),
+        9 => op_7xnn(mach, x, y, n),
+        10 => op_8xy0(mach, x, y, n),
+        11 => op_8xy1(mach, x, y, n),
+        12 => op_8xy2(mach, x, y, n),
+        13 => op_8xy3(mach, x, y, n),
+        14 => op_8xy4(mach, x, y, n),
+        15 => op_8xy5(mach, x, y, n),
+        16 => op_8xy6(mach, x, y, n),
+        17 => op_8xy7(mach, x, y, n),
+        18 => op_8xye(mach, x, y, n),
+        19 => op_9xy0(mach, x, y, n),
+        20 => op_annn(mach, x, y, n),
+        21 => op_bnnn(mach, x, y, n),
+        22 => op_cxnn(mach, x, y, n),
+        23 => op_dxyn(mach, x, y, n),
+        24 => op_ex9e(mach, x, y, n),
+        25 => op_exa1(mach, x, y, n),
+        26 => op_fx07(mach, x, y, n),
+        27 => op_fx0a(mach, x, y, n),
+        28 => op_fx15(mach, x, y, n),
+        29 => op_fx18(mach, x, y, n),
+        30 => op_fx1e(mach, x, y, n),
+        31 => op_fx29(mach, x, y, n),
+        32 => op_fx33(mach, x, y, n),
+        33 => op_fx55(mach, x, y, n),
+        34 => op_fx65(mach, x, y, n),
+        _ => panic!("invalid operation index")
     }
 }
 
