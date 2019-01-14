@@ -58,6 +58,7 @@ pub struct OpCode
 {
     raw: u16,
     code_mask: CodeMask,
+    operation_index: usize,
     n_mask: u16,
     x_mask: u16,
     y_mask: u16,
@@ -130,10 +131,11 @@ pub fn create_opcode(a: u8, b: u8, lib: &OpCodeLib) -> OpCode {
     let opcode_index = identify_opcode(combined, lib);
     let opcode = OpCode{raw: combined,
                         code_mask: lib.code_array[opcode_index].code_mask.clone(),
+                        operation_index: opcode_index,
                         n_mask: lib.code_array[opcode_index].n_mask,
                         x_mask: lib.code_array[opcode_index].x_mask,
                         y_mask: lib.code_array[opcode_index].y_mask,};
-                        //operation: lib.code_array[opcode_index].operation.Copy()};
+
     return opcode;
 }
 
@@ -144,7 +146,10 @@ pub fn extract_value(raw: u16, mask: u16) -> u16 {
 }
 
 pub fn execute_opcode(opcode: &OpCode, mach: &mut machine::Machine) {
-
+    let x: u16 = extract_value(opcode.raw, opcode.x_mask);
+    let y: u16 = extract_value(opcode.raw, opcode.y_mask);
+    let n: u16 = extract_value(opcode.raw, opcode.n_mask);
+    operations::execute_by_index(opcode.operation_index, mach, x, y, n);
 }
 
 #[cfg(test)]
