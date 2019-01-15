@@ -31,33 +31,27 @@ pub fn main() {
 
     let mut event_pump = sdl_context.event_pump().unwrap();
 
-    let mut screen_buffer = render::create_screen_buffer();
+   
 
-    render::render(&mut canvas, &screen_buffer);
+    let mut machine = machine::create_machine();
+    let op_code_lib = opcode::create_op_code_lib();
 
 
-    'running: loop {
+    loop {
+        let pc = machine::get_program_counter(&machine);
 
-        for event in event_pump.poll_iter() {
+        // update key state
 
-            match event {
+        // run timers
 
-                Event::Quit {..} | Event::KeyDown { keycode: Some(Keycode::Escape), .. } => {
+        let opcode_part_a = machine::read_memory(&machine, pc);
+        let opcode_part_b = machine::read_memory(&machine, pc + 1);
+        let opcode = opcode::create_opcode(opcode_part_a, opcode_part_b, &op_code_lib);
+        opcode::execute_opcode(&opcode, &mut machine);
+        
+        render::render(&mut canvas, machine::get_screenbuffer(&mut machine));
 
-                    break 'running
-
-                },
-
-                _ => {}
-
-            }
-
-        }
-
-        ::std::thread::sleep(Duration::new(0, 1_000_000_000u32 / 60));
-
-        // The rest of the game loop goes here...
-
+        machine::increment_program_counter(&mut machine);
     }
 
 }
