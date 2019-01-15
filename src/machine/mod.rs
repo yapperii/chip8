@@ -61,27 +61,46 @@ fn init_font(mach: &mut Machine) {
     write_protected_space(mach, 0xe, 0xf0);
 
     // three
-    write_protected_space(mach, 0x10, 0xf0);
-    write_protected_space(mach, 0x11, 0x10);
-    write_protected_space(mach, 0x12, 0xf0);
-    write_protected_space(mach, 0x13, 0x10);
-    write_protected_space(mach, 0x14, 0xf0);
+    write_protected_space(mach, 0xf, 0xf0);
+    write_protected_space(mach, 0x10, 0x10);
+    write_protected_space(mach, 0x11, 0xf0);
+    write_protected_space(mach, 0x12, 0x10);
+    write_protected_space(mach, 0x13, 0xf0);
 
     // four
+    write_protected_space(mach, 0x14, 0x90);
     write_protected_space(mach, 0x15, 0x90);
-    write_protected_space(mach, 0x16, 0x90);
-    write_protected_space(mach, 0x17, 0xf0);
+    write_protected_space(mach, 0x16, 0xf0);
+    write_protected_space(mach, 0x17, 0x10);
     write_protected_space(mach, 0x18, 0x10);
-    write_protected_space(mach, 0x19, 0x10);
 
     // five
-    write_protected_space(mach, 0x1a, 0xf0);
-    write_protected_space(mach, 0x1b, 0x80);
-    write_protected_space(mach, 0x1c, 0xf0);
-    write_protected_space(mach, 0x1d, 0x10);
+    write_protected_space(mach, 0x19, 0xf0);
+    write_protected_space(mach, 0x1a, 0x80);
+    write_protected_space(mach, 0x1b, 0xf0);
+    write_protected_space(mach, 0x1c, 0x10);
     write_protected_space(mach, 0x1e, 0xf0);
 
     // six
+    write_protected_space(mach, 0x1f, 0xf0);
+    write_protected_space(mach, 0x20, 0x80);
+    write_protected_space(mach, 0x21, 0xf0);
+    write_protected_space(mach, 0x22, 0x90);
+    write_protected_space(mach, 0x23, 0xf0);
+
+    // seven
+    write_protected_space(mach, 0x24, 0xf0);
+    write_protected_space(mach, 0x25, 0x10);
+    write_protected_space(mach, 0x26, 0x20);
+    write_protected_space(mach, 0x27, 0x40);
+    write_protected_space(mach, 0x28, 0x40);
+
+    // eight
+    write_protected_space(mach, 0x29, 0xf0);
+    write_protected_space(mach, 0x2a, 0x90);
+    write_protected_space(mach, 0x2b, 0xf0);
+    write_protected_space(mach, 0x2c, 0x90);
+    write_protected_space(mach, 0x2d, 0xf0);
 }
 
 pub fn create_machine() -> Machine {
