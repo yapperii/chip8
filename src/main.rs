@@ -21,7 +21,7 @@ pub fn main() {
     let video_subsystem = sdl_context.video().unwrap();
 
 
-    let window = video_subsystem.window("rust-sdl2 demo: Video", 640, 320)
+    let window = video_subsystem.window("chip8 emulator", 640, 320)
         .position_centered()
         .opengl()
         .build()
