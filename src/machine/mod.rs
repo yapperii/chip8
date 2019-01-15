@@ -38,10 +38,56 @@ pub struct Machine {
     screen_buffer: render::ScreenBuffer,
 }
 
+fn init_font(mach: &mut Machine) {
+    // zero
+    write_protected_space(mach, 0x0, 0xf0);
+    write_protected_space(mach, 0x1, 0x90);
+    write_protected_space(mach, 0x2, 0x90);
+    write_protected_space(mach, 0x3, 0x90);
+    write_protected_space(mach, 0x4, 0xf0);
+
+    // one
+    write_protected_space(mach, 0x5, 0x20);
+    write_protected_space(mach, 0x6, 0x60);
+    write_protected_space(mach, 0x7, 0x20);
+    write_protected_space(mach, 0x8, 0x20);
+    write_protected_space(mach, 0x9, 0x70);
+
+    // two
+    write_protected_space(mach, 0xa, 0xf0);
+    write_protected_space(mach, 0xb, 0x10);
+    write_protected_space(mach, 0xc, 0xf0);
+    write_protected_space(mach, 0xd, 0x80);
+    write_protected_space(mach, 0xe, 0xf0);
+
+    // three
+    write_protected_space(mach, 0x10, 0xf0);
+    write_protected_space(mach, 0x11, 0x10);
+    write_protected_space(mach, 0x12, 0xf0);
+    write_protected_space(mach, 0x13, 0x10);
+    write_protected_space(mach, 0x14, 0xf0);
+
+    // four
+    write_protected_space(mach, 0x15, 0x90);
+    write_protected_space(mach, 0x16, 0x90);
+    write_protected_space(mach, 0x17, 0xf0);
+    write_protected_space(mach, 0x18, 0x10);
+    write_protected_space(mach, 0x19, 0x10);
+
+    // five
+    write_protected_space(mach, 0x1a, 0xf0);
+    write_protected_space(mach, 0x1b, 0x80);
+    write_protected_space(mach, 0x1c, 0xf0);
+    write_protected_space(mach, 0x1d, 0x10);
+    write_protected_space(mach, 0x1e, 0xf0);
+
+    // six
+}
+
 pub fn create_machine() -> Machine {
     let ram = Ram {memory: [0; MEM_SIZE]};
     let registers = Registers {general_registers: [0; NUM_REGISTERS], address_register: 0};
-    Machine{ram: ram,
+    let mut mach = Machine{ram: ram,
             registers: registers,
             stack: Vec::with_capacity(STACK_SIZE),
             program_counter: START_USER_SPACE,
@@ -49,7 +95,10 @@ pub fn create_machine() -> Machine {
             timers: Timers{delay_timer: 0, sound_timer: 0},
             flag: Flags::Running,
             target_register: NUM_REGISTERS,
-            screen_buffer: render::create_screen_buffer()}
+            screen_buffer: render::create_screen_buffer()};
+
+    init_font(&mut mach);
+    return mach;
 }
 
 fn push_stack(machine: &mut Machine, val: usize) {
