@@ -152,7 +152,7 @@ pub fn op_dxyn(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
 
     let sprite = render::create_sprite(x as u8, y as u8, &rows);
     let flipped: bool = render::blit_texture(machine::get_screenbuffer(mach), &sprite);
-    //set register if flipped
+    machine::set_register(mach, 0xf, if flipped { 1 } else { 0 });
 }
 
 pub fn op_ex9e(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
