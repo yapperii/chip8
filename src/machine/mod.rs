@@ -101,6 +101,55 @@ fn init_font(mach: &mut Machine) {
     write_protected_space(mach, 0x2b, 0xf0);
     write_protected_space(mach, 0x2c, 0x90);
     write_protected_space(mach, 0x2d, 0xf0);
+
+    // 9
+    write_protected_space(mach, 0x2e, 0xf0);
+    write_protected_space(mach, 0x2f, 0x90);
+    write_protected_space(mach, 0x30, 0xf0);
+    write_protected_space(mach, 0x31, 0x10);
+    write_protected_space(mach, 0x32, 0xf0);
+
+    // a
+    write_protected_space(mach, 0x33, 0xf0);
+    write_protected_space(mach, 0x34, 0x90);
+    write_protected_space(mach, 0x35, 0xf0);
+    write_protected_space(mach, 0x36, 0x90);
+    write_protected_space(mach, 0x37, 0x90);
+
+    // b
+    write_protected_space(mach, 0x38, 0xe0);
+    write_protected_space(mach, 0x39, 0x90);
+    write_protected_space(mach, 0x3a, 0xe0);
+    write_protected_space(mach, 0x3b, 0x90);
+    write_protected_space(mach, 0x3c, 0xe0);
+
+    // c
+    write_protected_space(mach, 0x3d, 0xf0);
+    write_protected_space(mach, 0x3e, 0x80);
+    write_protected_space(mach, 0x3f, 0x80);
+    write_protected_space(mach, 0x40, 0x80);
+    write_protected_space(mach, 0x41, 0xf0);
+
+    // d
+    write_protected_space(mach, 0x42, 0xe0);
+    write_protected_space(mach, 0x43, 0x90);
+    write_protected_space(mach, 0x44, 0x90);
+    write_protected_space(mach, 0x45, 0x90);
+    write_protected_space(mach, 0x46, 0xe0);
+
+    // e
+    write_protected_space(mach, 0x47, 0xf0);
+    write_protected_space(mach, 0x48, 0x80);
+    write_protected_space(mach, 0x49, 0xf0);
+    write_protected_space(mach, 0x4a, 0x80);
+    write_protected_space(mach, 0x4b, 0xf0);
+
+    // f
+    write_protected_space(mach, 0x4c, 0xf0);
+    write_protected_space(mach, 0x4d, 0x80);
+    write_protected_space(mach, 0x4e, 0xf0);
+    write_protected_space(mach, 0x4f, 0x80);
+    write_protected_space(mach, 0x50, 0x80);
 }
 
 pub fn create_machine() -> Machine {
@@ -259,7 +308,7 @@ mod tests {
     #[test]
     fn creation_ram_is_zeroes() {
         let machine = create_machine();
-        for i in 0 .. MEM_SIZE {
+        for i in START_USER_SPACE .. MEM_SIZE {
             assert_eq!(0, machine.ram.memory[i])
         }
     }

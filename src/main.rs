@@ -80,13 +80,37 @@ pub fn main() {
 
         let opcode_part_a = machine::read_memory(&machine, pc);
         let opcode_part_b = machine::read_memory(&machine, pc + 1);
+        
         let opcode = opcode::create_opcode(opcode_part_a, opcode_part_b, &op_code_lib);
+        println!("program counter: {:X}", machine::get_program_counter(&machine));
+        println!("opcode: {:X}{:X}, combined: {:X}, index: {}", opcode_part_a, opcode_part_b, opcode.raw, opcode.operation_index);
         opcode::execute_opcode(&opcode, &mut machine);
+        
+        for j in 0..machine::NUM_REGISTERS {
+            println!("V{:X}: {:X}", j, machine::get_register(&machine, j));
+        }
         
         render::render(&mut canvas, machine::get_screenbuffer(&mut machine));
 
         machine::increment_program_counter(&mut machine);
         dt = start_time.elapsed();
+
+        let mut done = false;
+        while !done {
+            for event in event_pump.poll_iter() {
+                match event {
+
+                    Event::KeyDown { keycode: Some(Keycode::Space), repeat: false, .. } => {
+                        done = true;
+                        break;
+
+                    },
+
+                    _ => {}
+
+                }
+            }
+        }
     }
 
 }

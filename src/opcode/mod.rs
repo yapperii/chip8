@@ -56,9 +56,9 @@ pub struct OpCodePrototype
 
 pub struct OpCode
 {
-    raw: u16,
+    pub raw: u16,
     code_mask: CodeMask,
-    operation_index: usize,
+    pub operation_index: usize,
     n_mask: u16,
     x_mask: u16,
     y_mask: u16,
