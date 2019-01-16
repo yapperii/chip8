@@ -6,10 +6,12 @@ use render;
 
 pub fn op_0nnn(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
     // probably not needed
+    machine::increment_program_counter(mach);
 }
 
 pub fn op_00e0(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
     render::clear_screen(machine::get_screenbuffer(mach));
+    machine::increment_program_counter(mach);
 }
 
 pub fn op_00ee(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
@@ -29,6 +31,7 @@ pub fn op_3xnn(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
     if rx == n {
         machine::increment_program_counter(mach);
     }
+    machine::increment_program_counter(mach);
 }
 
 pub fn op_4xnn(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
@@ -36,6 +39,7 @@ pub fn op_4xnn(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
     if vx != n {
         machine::increment_program_counter(mach);
     }
+    machine::increment_program_counter(mach);
 }
 
 pub fn op_5xy0(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
@@ -44,39 +48,46 @@ pub fn op_5xy0(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
     if vx == vy {
         machine::increment_program_counter(mach);
     }
+    machine::increment_program_counter(mach);
 }
 
 pub fn op_6xnn(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
     machine::set_register(mach, x as usize, n as u8);
+    machine::increment_program_counter(mach);
 }
 
 pub fn op_7xnn(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
     let vx = machine::get_register(mach, x as usize);
     let sum: u16 = vx as u16 + n as u16;
     machine::set_register(mach, x as usize, sum as u8);
+    machine::increment_program_counter(mach);
 }
 
 pub fn op_8xy0(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
     let vy = machine::get_register(mach, y as usize);
     machine::set_register(mach, x as usize, vy);
+    machine::increment_program_counter(mach);
 }
 
 pub fn op_8xy1(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
     let vx = machine::get_register(mach, x as usize);
     let vy = machine::get_register(mach, y as usize);
     machine::set_register(mach, x as usize, vx | vy);
+    machine::increment_program_counter(mach);
 }
 
 pub fn op_8xy2(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
     let vx = machine::get_register(mach, x as usize);
     let vy = machine::get_register(mach, y as usize);
     machine::set_register(mach, x as usize, vx & vy);
+    machine::increment_program_counter(mach);
 }
 
 pub fn op_8xy3(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
     let vx = machine::get_register(mach, x as usize);
     let vy = machine::get_register(mach, y as usize);
     machine::set_register(mach, x as usize, vx ^ vy);
+    machine::increment_program_counter(mach);
 }
 
 pub fn op_8xy4(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
@@ -85,6 +96,7 @@ pub fn op_8xy4(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
     let sum: u16 = vx as u16 + vy as u16;
     machine::set_register(mach, x as usize, sum as u8);
     machine::set_register(mach, 0xf, if sum > 0xff { 1 } else { 0 });
+    machine::increment_program_counter(mach);
 }
 
 pub fn op_8xy5(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
@@ -93,12 +105,14 @@ pub fn op_8xy5(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
     let difference: i16 = vx as i16 - vy as i16;
     machine::set_register(mach, x as usize, (0x100 + difference) as u8);
     machine::set_register(mach, 0xf, if difference < 0 { 0 } else { 1 });
+    machine::increment_program_counter(mach);
 }
 
 pub fn op_8xy6(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
     let vx = machine::get_register(mach, x as usize);
     machine::set_register(mach, 0xf, vx & 0x1);
     machine::set_register(mach, x as usize, vx >> 1);
+    machine::increment_program_counter(mach);
 }
 
 pub fn op_8xy7(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
@@ -107,12 +121,14 @@ pub fn op_8xy7(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
     let difference: i16 = vy as i16 - vx as i16;
     machine::set_register(mach, x as usize, (0x100 + difference) as u8);
     machine::set_register(mach, 0xf, if difference < 0 { 0 } else { 1 });
+    machine::increment_program_counter(mach);
 }
 
 pub fn op_8xye(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
     let vx = machine::get_register(mach, x as usize);
     machine::set_register(mach, 0xf, if (vx & 0x80) > 0 { 1 } else { 0 });
     machine::set_register(mach, x as usize, vx << 1);
+    machine::increment_program_counter(mach);
 }
 
 pub fn op_9xy0(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
@@ -121,10 +137,12 @@ pub fn op_9xy0(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
     if vx != vy {
         machine::increment_program_counter(mach);
     }
+    machine::increment_program_counter(mach);
 }
 
 pub fn op_annn(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
     machine::set_address_register(mach, n as usize);
+    machine::increment_program_counter(mach);
 }
 
 pub fn op_bnnn(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
@@ -136,23 +154,35 @@ pub fn op_bnnn(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
 pub fn op_cxnn(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
     let r = rand::random::<u8>();
     machine::set_register(mach, x as usize, n as u8 & r);
+    machine::increment_program_counter(mach);
 }
 
 pub fn op_dxyn(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
     let base_address = machine::get_address_register(mach);
     let n_size = n as usize;
+    println!("op_dxyn. x: {}, y: {}, n: {}", x, y, n);
+    println!("base address: {:X}", base_address);
     let mut rows: Vec<[bool; 8]> = Vec::with_capacity(n_size);
+    let mut flipped = false;
     for i in 0..n {
         let mem_val = machine::read_memory(mach, base_address + n_size);
+        println!("memory address: {:X}, value: {:X}", base_address + i as usize, mem_val);
         let mut row: [bool; 8] = [false; 8];
         for j in 0..8 {
             row[j] = (mem_val & (1 << j)) != 0;
         }
+
+        flipped |= render::blit_texture_row(machine::get_screenbuffer(mach), x as u8, y as u8 + i as u8, &row);
     }
 
-    let sprite = render::create_sprite(x as u8, y as u8, &rows);
-    let flipped: bool = render::blit_texture(machine::get_screenbuffer(mach), &sprite);
+    //let sprite = render::create_sprite(x as u8, y as u8, &rows);
+    //println!("created sprite");
+    //for r in &sprite.texture.rows { 
+    //    println!("sprite row: {}, {}, {}, {}, {}, {}, {}, {}", r[0], r[1], r[2], r[3], r[4], r[5], r[6], r[7]);
+    //}
+    //let flipped: bool = render::blit_texture(machine::get_screenbuffer(mach), &sprite);
     machine::set_register(mach, 0xf, if flipped { 1 } else { 0 });
+    machine::increment_program_counter(mach);
 }
 
 pub fn op_ex9e(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
@@ -160,6 +190,7 @@ pub fn op_ex9e(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
     if machine::get_key(mach, vx as usize) {
         machine::increment_program_counter(mach);
     }
+    machine::increment_program_counter(mach);
 }
 
 pub fn op_exa1(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
@@ -167,38 +198,45 @@ pub fn op_exa1(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
     if !machine::get_key(mach, vx as usize) {
         machine::increment_program_counter(mach);
     }
+    machine::increment_program_counter(mach);
 }
 
 pub fn op_fx07(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
     let delay = machine::get_delay_timer(mach);
     machine::set_register(mach, x as usize, delay);
+    machine::increment_program_counter(mach);
 }
 
 pub fn op_fx0a(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
     machine::set_flag(mach, machine::Flags::WaitingForKeypress);
     machine::set_target_register(mach, x as usize);
+    machine::increment_program_counter(mach);
 }
 
 pub fn op_fx15(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
     let vx = machine::get_register(mach, x as usize);
     machine::set_delay_timer(mach, vx);
+    machine::increment_program_counter(mach);
 }
 
 pub fn op_fx18(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
     let vx = machine::get_register(mach, x as usize);
     machine::set_sound_timer(mach, vx);
+    machine::increment_program_counter(mach);
 }
 
 pub fn op_fx1e(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
     let address_register = machine::get_address_register(mach);
     let vx = machine::get_register(mach, x as usize);
     machine::set_address_register(mach, address_register + vx as usize);
+    machine::increment_program_counter(mach);
 }
 
 pub fn op_fx29(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
     let vx = machine::get_register(mach, x as usize);
     let address = vx as usize * render::FONT_BYTES_PER_CHAR;
     machine::set_address_register(mach, address);
+    machine::increment_program_counter(mach);
 }
 
 pub fn op_fx33(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
@@ -210,6 +248,7 @@ pub fn op_fx33(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
     machine::write_memory(mach, base_address, hundreds);
     machine::write_memory(mach, base_address + 1, tens);
     machine::write_memory(mach, base_address + 2, ones);
+    machine::increment_program_counter(mach);
 }
 
 pub fn op_fx55(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
@@ -218,6 +257,7 @@ pub fn op_fx55(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
         let vi = machine::get_register(mach, i);
         machine::write_memory(mach, base_address + i, vi);
     }
+    machine::increment_program_counter(mach);
 }
 
 pub fn op_fx65(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
@@ -226,6 +266,7 @@ pub fn op_fx65(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
         let mem = machine::read_memory(mach, base_address + i);
         machine::set_register(mach, i, mem);
     }
+    machine::increment_program_counter(mach);
 }
 
 pub fn execute_by_index(index: usize, mach: &mut machine::Machine, x: u16, y: u16, n: u16) {

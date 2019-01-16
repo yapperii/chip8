@@ -11,13 +11,13 @@ pub struct ScreenBuffer
 
 pub struct Texture
 {
-    rows: Vec<[bool; 8]>,
+    pub rows: Vec<[bool; 8]>,
 }
 
 pub struct Sprite {
     x: u8,
     y: u8,
-    texture: Texture,
+    pub texture: Texture,
 }
 
 pub fn create_sprite(x: u8, y: u8, rows: &Vec<[bool; 8]>) -> Sprite {
@@ -43,11 +43,24 @@ pub fn blit_texture(screen_buffer: &mut ScreenBuffer, sprite: &Sprite) -> bool {
     return flipped;
 }
 
+pub fn blit_texture_row(screen_buffer: &mut ScreenBuffer, x: u8, y: u8, row: &[bool; 8]) -> bool {
+    let mut flipped = false;
+    for i in 0..8 {
+        flipped |= row[i] & screen_buffer.pixels[y as usize][x as usize + i];
+        screen_buffer.pixels[y as usize][x as usize + i] =
+            row[i] ^ screen_buffer.pixels[y as usize][x as usize + i];
+        println!("screen buffer[{}][{}] = {}", y, x + i as u8, screen_buffer.pixels[y as usize][x as usize + i]);
+    }
+    flipped
+}
+
 pub fn clear_screen(screen_buffer: &mut ScreenBuffer) {
+    println!("clearing screen");
     screen_buffer.pixels = [[false; 64]; 32];
 }
 
 pub fn render(canvas: &mut Canvas<sdl2::video::Window>, screen_buffer: &ScreenBuffer) {
+    println!("rendering");
     canvas.set_draw_color(Color::RGB(0, 0, 0));
     canvas.clear();
 
@@ -56,7 +69,8 @@ pub fn render(canvas: &mut Canvas<sdl2::video::Window>, screen_buffer: &ScreenBu
     for y in 0..32  {
         for x in 0..64 {
             if screen_buffer.pixels[y][x] {
-                let result = canvas.fill_rect(Rect::new(pixel_size as i32, pixel_size as i32, (x * pixel_size) as u32, (y * pixel_size) as u32));
+                //println!("drawing pixel");
+                let result = canvas.fill_rect(Rect::new((x * pixel_size) as i32, (y * pixel_size) as i32, pixel_size as u32 - 2, pixel_size as u32 -2));
                 // TODO: check for errors
             }
         }

@@ -67,23 +67,25 @@ pub fn main() {
         // update key state
 
         // run timers
-        let mut dt_t = dt;
-        while dt_t > sixty_hz_time {
-            let delay_timer = machine::get_delay_timer(&machine) - 1;
-            machine::set_delay_timer(&mut machine, if delay_timer > 0 { delay_timer } else { 0 });
+        //let mut dt_t = dt;
+        //while dt_t > sixty_hz_time {
+        //    let delay_timer = machine::get_delay_timer(&machine) - 1;
+        //    machine::set_delay_timer(&mut machine, if delay_timer > 0 { delay_timer } else { 0 });
 
-            let sound_timer = machine::get_sound_timer(&machine) - 1;
-            machine::set_sound_timer(&mut machine, if sound_timer > 0 { sound_timer } else { 0 });
+        //    let sound_timer = machine::get_sound_timer(&machine) - 1;
+        //    machine::set_sound_timer(&mut machine, if sound_timer > 0 { sound_timer } else { 0 });
 
-            dt_t -= sixty_hz_time;
-        }
+        //    dt_t -= sixty_hz_time;
+        //}
 
         let opcode_part_a = machine::read_memory(&machine, pc);
         let opcode_part_b = machine::read_memory(&machine, pc + 1);
         
         let opcode = opcode::create_opcode(opcode_part_a, opcode_part_b, &op_code_lib);
         println!("program counter: {:X}", machine::get_program_counter(&machine));
-        println!("opcode: {:X}{:X}, combined: {:X}, index: {}", opcode_part_a, opcode_part_b, opcode.raw, opcode.operation_index);
+        println!("opcode: {:X}, index: {}", opcode.raw, opcode.operation_index);
+        println!("address register: {:X}", machine::get_address_register(&machine));
+        println!("target register: {:X}", machine::get_target_register(&machine));
         opcode::execute_opcode(&opcode, &mut machine);
         
         for j in 0..machine::NUM_REGISTERS {
@@ -92,22 +94,24 @@ pub fn main() {
         
         render::render(&mut canvas, machine::get_screenbuffer(&mut machine));
 
-        machine::increment_program_counter(&mut machine);
+        //machine::increment_program_counter(&mut machine);
         dt = start_time.elapsed();
 
-        let mut done = false;
-        while !done {
-            for event in event_pump.poll_iter() {
-                match event {
+        if opcode.operation_index == 23 {
+            let mut done = false;
+            while !done {
+                for event in event_pump.poll_iter() {
+                    match event {
 
-                    Event::KeyDown { keycode: Some(Keycode::Space), repeat: false, .. } => {
-                        done = true;
-                        break;
+                        Event::KeyDown { keycode: Some(Keycode::Space), repeat: false, .. } => {
+                            done = true;
+                            break;
 
-                    },
+                        },
 
-                    _ => {}
+                        _ => {}
 
+                    }
                 }
             }
         }
