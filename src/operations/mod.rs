@@ -165,11 +165,11 @@ pub fn op_dxyn(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
     let mut rows: Vec<[bool; 8]> = Vec::with_capacity(n_size);
     let mut flipped = false;
     for i in 0..n {
-        let mem_val = machine::read_memory(mach, base_address + n_size);
+        let mem_val = machine::read_memory(mach, base_address + i as usize);
         println!("memory address: {:X}, value: {:X}", base_address + i as usize, mem_val);
         let mut row: [bool; 8] = [false; 8];
         for j in 0..8 {
-            row[j] = (mem_val & (1 << j)) != 0;
+            row[j] = (mem_val & (1 << (8 - j -1))) != 0;
         }
 
         flipped |= render::blit_texture_row(machine::get_screenbuffer(mach), x as u8, y as u8 + i as u8, &row);
