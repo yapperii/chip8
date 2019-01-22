@@ -248,23 +248,28 @@ pub fn op_fx33(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
     machine::write_memory(mach, base_address, hundreds);
     machine::write_memory(mach, base_address + 1, tens);
     machine::write_memory(mach, base_address + 2, ones);
+    println!("wrote hudreds address: {:X}, value: {:X}", base_address, hundreds);
+    println!("wrote hudreds address: {:X}, value: {:X}", base_address + 1, tens);
+    println!("wrote hudreds address: {:X}, value: {:X}", base_address + 2, ones);
     machine::increment_program_counter(mach);
 }
 
 pub fn op_fx55(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
     let base_address = machine::get_address_register(mach);
-    for i in 0..machine::NUM_REGISTERS {
+    for i in 0..((x + 1) as usize){
         let vi = machine::get_register(mach, i);
         machine::write_memory(mach, base_address + i, vi);
+        println!("write mem address: {:X}, value {:X}", base_address + i, vi);
     }
     machine::increment_program_counter(mach);
 }
 
 pub fn op_fx65(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
     let base_address = machine::get_address_register(mach);
-    for i in 0..machine::NUM_REGISTERS {
+    for i in 0..((x + 1) as usize) {
         let mem = machine::read_memory(mach, base_address + i);
         machine::set_register(mach, i, mem);
+        println!("read mem address: {:X}, value {:X}", base_address + i, mem);
     }
     machine::increment_program_counter(mach);
 }

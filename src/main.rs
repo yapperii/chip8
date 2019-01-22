@@ -60,6 +60,9 @@ pub fn main() {
 
     let mut dt: Duration = Duration::new(0, 0);
     let sixty_hz_time = Duration::from_millis(16);
+
+    let mut 
+    stopped = true;
     loop {
         let start_time = Instant::now();
         let pc = machine::get_program_counter(&machine);
@@ -82,10 +85,10 @@ pub fn main() {
         let opcode_part_b = machine::read_memory(&machine, pc + 1);
         
         let opcode = opcode::create_opcode(opcode_part_a, opcode_part_b, &op_code_lib);
-        println!("program counter: {:X}", machine::get_program_counter(&machine));
+        println!("program counter: {:X}", pc);
         println!("opcode: {:X}, index: {}", opcode.raw, opcode.operation_index);
         println!("address register: {:X}", machine::get_address_register(&machine));
-        println!("target register: {:X}", machine::get_target_register(&machine));
+        //println!("target register: {:X}", machine::get_target_register(&machine));
         opcode::execute_opcode(&opcode, &mut machine);
         
         for j in 0..machine::NUM_REGISTERS {
@@ -97,7 +100,8 @@ pub fn main() {
         //machine::increment_program_counter(&mut machine);
         dt = start_time.elapsed();
 
-        if opcode.operation_index == 23 {
+        if opcode.operation_index == 23  || stopped {
+            stopped = true;
             let mut done = false;
             while !done {
                 for event in event_pump.poll_iter() {
