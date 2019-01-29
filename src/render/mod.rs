@@ -46,10 +46,11 @@ pub fn blit_texture(screen_buffer: &mut ScreenBuffer, sprite: &Sprite) -> bool {
 pub fn blit_texture_row(screen_buffer: &mut ScreenBuffer, x: u8, y: u8, row: &[bool; 8]) -> bool {
     let mut flipped = false;
     for i in 0..8 {
-        flipped |= row[i] & screen_buffer.pixels[y as usize][x as usize + i];
-        screen_buffer.pixels[y as usize][x as usize + i] =
-            row[i] ^ screen_buffer.pixels[y as usize][x as usize + i];
-        println!("screen buffer[{}][{}] = {}", y, x + i as u8, screen_buffer.pixels[y as usize][x as usize + i]);
+        let wx: usize = (x as usize + i) % 64;
+        flipped |= row[i] & screen_buffer.pixels[y as usize][wx];
+        screen_buffer.pixels[y as usize][wx] =
+            row[i] ^ screen_buffer.pixels[y as usize][wx];
+        println!("screen buffer[{}][{}] = {}", y, wx as u8, screen_buffer.pixels[y as usize][wx]);
     }
     flipped
 }
