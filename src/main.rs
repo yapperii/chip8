@@ -62,7 +62,7 @@ pub fn main() {
     let sixty_hz_time = Duration::from_millis(16);
 
     let mut 
-    stopped = true;
+    stopped = false;
     loop {
         let start_time = Instant::now();
         let pc = machine::get_program_counter(&machine);
@@ -87,10 +87,10 @@ pub fn main() {
         let opcode = opcode::create_opcode(opcode_part_a, opcode_part_b, &op_code_lib);
         println!("program counter: {:X}", pc);
         println!("opcode: {:X}, index: {}", opcode.raw, opcode.operation_index);
-        println!("address register: {:X}", machine::get_address_register(&machine));
+        
         //println!("target register: {:X}", machine::get_target_register(&machine));
         opcode::execute_opcode(&opcode, &mut machine);
-        
+        println!("address register: {:X}", machine::get_address_register(&machine));
         for j in 0..machine::NUM_REGISTERS {
             println!("V{:X}: {:X}", j, machine::get_register(&machine, j));
         }

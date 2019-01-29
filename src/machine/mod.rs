@@ -40,116 +40,116 @@ pub struct Machine {
 
 fn init_font(mach: &mut Machine) {
     // zero
-    write_protected_space(mach, 0x0, 0xf0);
-    write_protected_space(mach, 0x1, 0x90);
-    write_protected_space(mach, 0x2, 0x90);
-    write_protected_space(mach, 0x3, 0x90);
-    write_protected_space(mach, 0x4, 0xf0);
+    write_protected_space(mach, 0x50 + 0x0, 0xf0);
+    write_protected_space(mach, 0x50 + 0x1, 0x90);
+    write_protected_space(mach, 0x50 + 0x2, 0x90);
+    write_protected_space(mach, 0x50 + 0x3, 0x90);
+    write_protected_space(mach, 0x50 + 0x4, 0xf0);
 
     // one
-    write_protected_space(mach, 0x5, 0x20);
-    write_protected_space(mach, 0x6, 0x60);
-    write_protected_space(mach, 0x7, 0x20);
-    write_protected_space(mach, 0x8, 0x20);
-    write_protected_space(mach, 0x9, 0x70);
+    write_protected_space(mach, 0x50 + 0x5, 0x20);
+    write_protected_space(mach, 0x50 + 0x6, 0x60);
+    write_protected_space(mach, 0x50 + 0x7, 0x20);
+    write_protected_space(mach, 0x50 + 0x8, 0x20);
+    write_protected_space(mach, 0x50 + 0x9, 0x70);
 
     // two
-    write_protected_space(mach, 0xa, 0xf0);
-    write_protected_space(mach, 0xb, 0x10);
-    write_protected_space(mach, 0xc, 0xf0);
-    write_protected_space(mach, 0xd, 0x80);
-    write_protected_space(mach, 0xe, 0xf0);
+    write_protected_space(mach, 0x50 + 0xa, 0xf0);
+    write_protected_space(mach, 0x50 + 0xb, 0x10);
+    write_protected_space(mach, 0x50 + 0xc, 0xf0);
+    write_protected_space(mach, 0x50 + 0xd, 0x80);
+    write_protected_space(mach, 0x50 + 0xe, 0xf0);
 
     // three
-    write_protected_space(mach, 0xf, 0xf0);
-    write_protected_space(mach, 0x10, 0x10);
-    write_protected_space(mach, 0x11, 0xf0);
-    write_protected_space(mach, 0x12, 0x10);
-    write_protected_space(mach, 0x13, 0xf0);
+    write_protected_space(mach, 0x50 + 0xf, 0xf0);
+    write_protected_space(mach, 0x50 + 0x10, 0x10);
+    write_protected_space(mach, 0x50 + 0x11, 0xf0);
+    write_protected_space(mach, 0x50 + 0x12, 0x10);
+    write_protected_space(mach, 0x50 + 0x13, 0xf0);
 
     // four
-    write_protected_space(mach, 0x14, 0x90);
-    write_protected_space(mach, 0x15, 0x90);
-    write_protected_space(mach, 0x16, 0xf0);
-    write_protected_space(mach, 0x17, 0x10);
-    write_protected_space(mach, 0x18, 0x10);
+    write_protected_space(mach, 0x50 + 0x14, 0x90);
+    write_protected_space(mach, 0x50 + 0x15, 0x90);
+    write_protected_space(mach, 0x50 + 0x16, 0xf0);
+    write_protected_space(mach, 0x50 + 0x17, 0x10);
+    write_protected_space(mach, 0x50 + 0x18, 0x10);
 
     // five
-    write_protected_space(mach, 0x19, 0xf0);
-    write_protected_space(mach, 0x1a, 0x80);
-    write_protected_space(mach, 0x1b, 0xf0);
-    write_protected_space(mach, 0x1c, 0x10);
-    write_protected_space(mach, 0x1e, 0xf0);
+    write_protected_space(mach, 0x50 + 0x19, 0xf0);
+    write_protected_space(mach, 0x50 + 0x1a, 0x80);
+    write_protected_space(mach, 0x50 + 0x1b, 0xf0);
+    write_protected_space(mach, 0x50 + 0x1c, 0x10);
+    write_protected_space(mach, 0x50 + 0x1e, 0xf0);
 
     // six
-    write_protected_space(mach, 0x1f, 0xf0);
-    write_protected_space(mach, 0x20, 0x80);
-    write_protected_space(mach, 0x21, 0xf0);
-    write_protected_space(mach, 0x22, 0x90);
-    write_protected_space(mach, 0x23, 0xf0);
+    write_protected_space(mach, 0x50 + 0x1f, 0xf0);
+    write_protected_space(mach, 0x50 + 0x20, 0x80);
+    write_protected_space(mach, 0x50 + 0x21, 0xf0);
+    write_protected_space(mach, 0x50 + 0x22, 0x90);
+    write_protected_space(mach, 0x50 + 0x23, 0xf0);
 
     // seven
-    write_protected_space(mach, 0x24, 0xf0);
-    write_protected_space(mach, 0x25, 0x10);
-    write_protected_space(mach, 0x26, 0x20);
-    write_protected_space(mach, 0x27, 0x40);
-    write_protected_space(mach, 0x28, 0x40);
+    write_protected_space(mach, 0x50 + 0x24, 0xf0);
+    write_protected_space(mach, 0x50 + 0x25, 0x10);
+    write_protected_space(mach, 0x50 + 0x26, 0x20);
+    write_protected_space(mach, 0x50 + 0x27, 0x40);
+    write_protected_space(mach, 0x50 + 0x28, 0x40);
 
     // eight
-    write_protected_space(mach, 0x29, 0xf0);
-    write_protected_space(mach, 0x2a, 0x90);
-    write_protected_space(mach, 0x2b, 0xf0);
-    write_protected_space(mach, 0x2c, 0x90);
-    write_protected_space(mach, 0x2d, 0xf0);
+    write_protected_space(mach, 0x50 + 0x29, 0xf0);
+    write_protected_space(mach, 0x50 + 0x2a, 0x90);
+    write_protected_space(mach, 0x50 + 0x2b, 0xf0);
+    write_protected_space(mach, 0x50 + 0x2c, 0x90);
+    write_protected_space(mach, 0x50 + 0x2d, 0xf0);
 
     // 9
-    write_protected_space(mach, 0x2e, 0xf0);
-    write_protected_space(mach, 0x2f, 0x90);
-    write_protected_space(mach, 0x30, 0xf0);
-    write_protected_space(mach, 0x31, 0x10);
-    write_protected_space(mach, 0x32, 0xf0);
+    write_protected_space(mach, 0x50 + 0x2e, 0xf0);
+    write_protected_space(mach, 0x50 + 0x2f, 0x90);
+    write_protected_space(mach, 0x50 + 0x30, 0xf0);
+    write_protected_space(mach, 0x50 + 0x31, 0x10);
+    write_protected_space(mach, 0x50 + 0x32, 0xf0);
 
     // a
-    write_protected_space(mach, 0x33, 0xf0);
-    write_protected_space(mach, 0x34, 0x90);
-    write_protected_space(mach, 0x35, 0xf0);
-    write_protected_space(mach, 0x36, 0x90);
-    write_protected_space(mach, 0x37, 0x90);
+    write_protected_space(mach, 0x50 + 0x33, 0xf0);
+    write_protected_space(mach, 0x50 + 0x34, 0x90);
+    write_protected_space(mach, 0x50 + 0x35, 0xf0);
+    write_protected_space(mach, 0x50 + 0x36, 0x90);
+    write_protected_space(mach, 0x50 + 0x37, 0x90);
 
     // b
-    write_protected_space(mach, 0x38, 0xe0);
-    write_protected_space(mach, 0x39, 0x90);
-    write_protected_space(mach, 0x3a, 0xe0);
-    write_protected_space(mach, 0x3b, 0x90);
-    write_protected_space(mach, 0x3c, 0xe0);
+    write_protected_space(mach, 0x50 + 0x38, 0xe0);
+    write_protected_space(mach, 0x50 + 0x39, 0x90);
+    write_protected_space(mach, 0x50 + 0x3a, 0xe0);
+    write_protected_space(mach, 0x50 + 0x3b, 0x90);
+    write_protected_space(mach, 0x50 + 0x3c, 0xe0);
 
     // c
-    write_protected_space(mach, 0x3d, 0xf0);
-    write_protected_space(mach, 0x3e, 0x80);
-    write_protected_space(mach, 0x3f, 0x80);
-    write_protected_space(mach, 0x40, 0x80);
-    write_protected_space(mach, 0x41, 0xf0);
+    write_protected_space(mach, 0x50 + 0x3d, 0xf0);
+    write_protected_space(mach, 0x50 + 0x3e, 0x80);
+    write_protected_space(mach, 0x50 + 0x3f, 0x80);
+    write_protected_space(mach, 0x50 + 0x40, 0x80);
+    write_protected_space(mach, 0x50 + 0x41, 0xf0);
 
     // d
-    write_protected_space(mach, 0x42, 0xe0);
-    write_protected_space(mach, 0x43, 0x90);
-    write_protected_space(mach, 0x44, 0x90);
-    write_protected_space(mach, 0x45, 0x90);
-    write_protected_space(mach, 0x46, 0xe0);
+    write_protected_space(mach, 0x50 + 0x42, 0xe0);
+    write_protected_space(mach, 0x50 + 0x43, 0x90);
+    write_protected_space(mach, 0x50 + 0x44, 0x90);
+    write_protected_space(mach, 0x50 + 0x45, 0x90);
+    write_protected_space(mach, 0x50 + 0x46, 0xe0);
 
     // e
-    write_protected_space(mach, 0x47, 0xf0);
-    write_protected_space(mach, 0x48, 0x80);
-    write_protected_space(mach, 0x49, 0xf0);
-    write_protected_space(mach, 0x4a, 0x80);
-    write_protected_space(mach, 0x4b, 0xf0);
+    write_protected_space(mach, 0x50 + 0x47, 0xf0);
+    write_protected_space(mach, 0x50 + 0x48, 0x80);
+    write_protected_space(mach, 0x50 + 0x49, 0xf0);
+    write_protected_space(mach, 0x50 + 0x4a, 0x80);
+    write_protected_space(mach, 0x50 + 0x4b, 0xf0);
 
     // f
-    write_protected_space(mach, 0x4c, 0xf0);
-    write_protected_space(mach, 0x4d, 0x80);
-    write_protected_space(mach, 0x4e, 0xf0);
-    write_protected_space(mach, 0x4f, 0x80);
-    write_protected_space(mach, 0x50, 0x80);
+    write_protected_space(mach, 0x50 + 0x4c, 0xf0);
+    write_protected_space(mach, 0x50 + 0x4d, 0x80);
+    write_protected_space(mach, 0x50 + 0x4e, 0xf0);
+    write_protected_space(mach, 0x50 + 0x4f, 0x80);
+    write_protected_space(mach, 0x50 + 0x50, 0x80);
 }
 
 pub fn create_machine() -> Machine {

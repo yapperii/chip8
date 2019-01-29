@@ -27,8 +27,8 @@ pub fn op_2nnn(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
 }
 
 pub fn op_3xnn(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
-    let rx = machine::get_register(mach, x as usize) as u16;
-    if rx == n {
+    let vx = machine::get_register(mach, x as usize) as u16;
+    if vx == n {
         machine::increment_program_counter(mach);
     }
     machine::increment_program_counter(mach);
@@ -120,7 +120,7 @@ pub fn op_8xy7(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
     let vy = machine::get_register(mach, y as usize);
     let difference: i16 = vy as i16 - vx as i16;
     machine::set_register(mach, x as usize, (0x100 + difference) as u8);
-    machine::set_register(mach, 0xf, if difference < 0 { 0 } else { 1 });
+    machine::set_register(mach, 0xf, if vy > vx { 1 } else { 0 });
     machine::increment_program_counter(mach);
 }
 
@@ -158,6 +158,8 @@ pub fn op_cxnn(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
 }
 
 pub fn op_dxyn(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
+    let vx = machine::get_register(mach, x as usize);
+    let vy = machine::get_register(mach, y as usize);
     let base_address = machine::get_address_register(mach);
     let n_size = n as usize;
     println!("op_dxyn. x: {}, y: {}, n: {}", x, y, n);
@@ -172,7 +174,7 @@ pub fn op_dxyn(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
             row[j] = (mem_val & (1 << (8 - j -1))) != 0;
         }
 
-        flipped |= render::blit_texture_row(machine::get_screenbuffer(mach), x as u8, y as u8 + i as u8, &row);
+        flipped |= render::blit_texture_row(machine::get_screenbuffer(mach), vx, vy + i as u8, &row);
     }
 
     //let sprite = render::create_sprite(x as u8, y as u8, &rows);
@@ -234,7 +236,7 @@ pub fn op_fx1e(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
 
 pub fn op_fx29(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
     let vx = machine::get_register(mach, x as usize);
-    let address = vx as usize * render::FONT_BYTES_PER_CHAR;
+    let address = 0x50 + (vx as usize * render::FONT_BYTES_PER_CHAR);
     machine::set_address_register(mach, address);
     machine::increment_program_counter(mach);
 }
@@ -249,8 +251,8 @@ pub fn op_fx33(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
     machine::write_memory(mach, base_address + 1, tens);
     machine::write_memory(mach, base_address + 2, ones);
     println!("wrote hudreds address: {:X}, value: {:X}", base_address, hundreds);
-    println!("wrote hudreds address: {:X}, value: {:X}", base_address + 1, tens);
-    println!("wrote hudreds address: {:X}, value: {:X}", base_address + 2, ones);
+    println!("wrote tens address: {:X}, value: {:X}", base_address + 1, tens);
+    println!("wrote ones address: {:X}, value: {:X}", base_address + 2, ones);
     machine::increment_program_counter(mach);
 }
 
