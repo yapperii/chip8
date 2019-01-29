@@ -236,7 +236,7 @@ pub fn op_fx1e(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
 
 pub fn op_fx29(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
     let vx = machine::get_register(mach, x as usize);
-    let address = 0x50 + (vx as usize * render::FONT_BYTES_PER_CHAR);
+    let address = machine::START_FONT + (vx as usize * render::FONT_BYTES_PER_CHAR);
     machine::set_address_register(mach, address);
     machine::increment_program_counter(mach);
 }
@@ -353,7 +353,7 @@ mod tests {
         machine::set_register(&mut mach, 0x0, 0x8);
         op_3xnn(&mut mach, 0x0, 0, 0x8);
 
-        assert_eq!(machine::START_USER_SPACE + 2, machine::get_program_counter(&mach));
+        assert_eq!(machine::START_USER_SPACE + 4, machine::get_program_counter(&mach));
     }
 
     #[test]
@@ -362,7 +362,7 @@ mod tests {
         machine::set_register(&mut mach, 0x0, 0x8);
         op_3xnn(&mut mach, 0x0, 0, 0x1);
 
-        assert_eq!(machine::START_USER_SPACE, machine::get_program_counter(&mach));
+        assert_eq!(machine::START_USER_SPACE + 2, machine::get_program_counter(&mach));
     }
 
      #[test]
@@ -371,7 +371,7 @@ mod tests {
         machine::set_register(&mut mach, 0x0, 0x8);
         op_4xnn(&mut mach, 0x0, 0, 0x1);
 
-        assert_eq!(machine::START_USER_SPACE + 2, machine::get_program_counter(&mach));
+        assert_eq!(machine::START_USER_SPACE + 4, machine::get_program_counter(&mach));
     }
 
     #[test]
@@ -380,7 +380,7 @@ mod tests {
         machine::set_register(&mut mach, 0x0, 0x8);
         op_4xnn(&mut mach, 0x0, 0, 0x8);
 
-        assert_eq!(machine::START_USER_SPACE, machine::get_program_counter(&mach));
+        assert_eq!(machine::START_USER_SPACE + 2, machine::get_program_counter(&mach));
     }
 
     #[test]
@@ -390,7 +390,7 @@ mod tests {
         machine::set_register(&mut mach, 0x1, 0x8);
         op_5xy0(&mut mach, 0x0, 0x1, 0);
 
-        assert_eq!(machine::START_USER_SPACE + 2, machine::get_program_counter(&mach));
+        assert_eq!(machine::START_USER_SPACE + 4, machine::get_program_counter(&mach));
     }
 
     #[test]
@@ -400,7 +400,7 @@ mod tests {
         machine::set_register(&mut mach, 0x1, 0x7);
         op_5xy0(&mut mach, 0x0, 0x1, 0);
 
-        assert_eq!(machine::START_USER_SPACE, machine::get_program_counter(&mach));
+        assert_eq!(machine::START_USER_SPACE + 2, machine::get_program_counter(&mach));
     }
 
     #[test]
@@ -558,7 +558,7 @@ mod tests {
         machine::set_register(&mut mach, 0x1, 0x7);
         op_9xy0(&mut mach, 0x0, 0x1, 0);
 
-        assert_eq!(machine::START_USER_SPACE + 2, machine::get_program_counter(&mach));
+        assert_eq!(machine::START_USER_SPACE + 4, machine::get_program_counter(&mach));
     }
 
     #[test]
@@ -568,7 +568,7 @@ mod tests {
         machine::set_register(&mut mach, 0x1, 0x8);
         op_9xy0(&mut mach, 0x0, 0x1, 0);
 
-        assert_eq!(machine::START_USER_SPACE, machine::get_program_counter(&mach));
+        assert_eq!(machine::START_USER_SPACE + 2, machine::get_program_counter(&mach));
     }
 
     #[test]
@@ -582,7 +582,7 @@ mod tests {
     #[test]
     fn test_op_bnnn() {
         let mut mach = machine::create_machine();
-        machine::set_register(&mut mach, 0, 0x50);
+        machine::set_register(&mut mach, 0x0, 0x50);
         op_bnnn(&mut mach, 0, 0, 0x300);
 
         assert_eq!(0x350, machine::get_program_counter(&mach));
@@ -594,7 +594,7 @@ mod tests {
         machine::set_key(&mut mach, 0, true);
         op_ex9e(&mut mach, 0x0, 0, 0);
 
-        assert_eq!(machine::START_USER_SPACE + 2, machine::get_program_counter(&mach));
+        assert_eq!(machine::START_USER_SPACE + 4, machine::get_program_counter(&mach));
     }
 
     #[test]
@@ -602,7 +602,7 @@ mod tests {
         let mut mach = machine::create_machine();
         op_ex9e(&mut mach, 0x0, 0, 0);
 
-        assert_eq!(machine::START_USER_SPACE, machine::get_program_counter(&mach));
+        assert_eq!(machine::START_USER_SPACE + 2, machine::get_program_counter(&mach));
     }
 
     #[test]
@@ -610,7 +610,7 @@ mod tests {
         let mut mach = machine::create_machine();
         op_exa1(&mut mach, 0x0, 0, 0);
 
-        assert_eq!(machine::START_USER_SPACE + 2, machine::get_program_counter(&mach));
+        assert_eq!(machine::START_USER_SPACE + 4, machine::get_program_counter(&mach));
     }
 
     #[test]
@@ -619,7 +619,7 @@ mod tests {
         machine::set_key(&mut mach, 0, true);
         op_exa1(&mut mach, 0x0, 0, 0);
 
-        assert_eq!(machine::START_USER_SPACE, machine::get_program_counter(&mach));
+        assert_eq!(machine::START_USER_SPACE + 2, machine::get_program_counter(&mach));
     }
 
     #[test]
@@ -674,7 +674,7 @@ mod tests {
         machine::set_register(&mut mach, 0x0, 0x1);
         op_fx29(&mut mach, 0x0, 0, 0);
 
-        assert_eq!(render::FONT_BYTES_PER_CHAR, machine::get_address_register(&mach));
+        assert_eq!(machine::START_FONT + render::FONT_BYTES_PER_CHAR, machine::get_address_register(&mach));
     }
 
     #[test]
@@ -697,7 +697,7 @@ mod tests {
             machine::set_register(&mut mach, x, x as u8);
         }
 
-        op_fx55(&mut mach, 0, 0, 0);
+        op_fx55(&mut mach, 0xf, 0, 0);
 
         for x in 0..machine::NUM_REGISTERS {
             assert_eq!(x as u8, machine::read_memory(&mach, machine::START_USER_SPACE + x));
@@ -708,11 +708,12 @@ mod tests {
     fn test_op_fx65() {
         let mut mach = machine::create_machine();
         machine::set_address_register(&mut mach, machine::START_USER_SPACE);
+
         for x in 0..machine::NUM_REGISTERS {
             machine::write_memory(&mut mach, machine::START_USER_SPACE + x, x as u8);
         }
 
-        op_fx65(&mut mach, 0, 0, 0);
+        op_fx65(&mut mach, 0xf, 0, 0);
 
         for x in 0..machine::NUM_REGISTERS {
             assert_eq!(x as u8, machine::get_register(&mach, x));
