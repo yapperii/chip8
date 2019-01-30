@@ -58,8 +58,7 @@ pub fn main() {
 
     let op_code_lib = opcode::create_op_code_lib();
 
-    let mut dt: Duration = Duration::from_millis(4);
-    let sixty_hz_time = Duration::from_millis(16);
+    let sixty_hz_time = Duration::from_millis(20);
 
     let key_map = [sdl2::keyboard::Scancode::A,
                    sdl2::keyboard::Scancode::Z,
@@ -78,12 +77,11 @@ pub fn main() {
                    sdl2::keyboard::Scancode::Semicolon,
                    sdl2::keyboard::Scancode::Period];
 
-    let mut dt_t = Duration::from_millis(0);
     let mut stopped = false;
+    let mut timer = Instant::now();
     loop {
         for event in event_pump.poll_iter() {}
 
-        let start_time = Instant::now();
         let pc = machine::get_program_counter(&machine);
 
         // update key state
@@ -93,8 +91,8 @@ pub fn main() {
         }
 
         // run timers
-        dt_t += dt;
-        while dt_t > sixty_hz_time {
+        let mut dt_t = timer.elapsed();
+        if dt_t > sixty_hz_time {
             let mut delay_timer = machine::get_delay_timer(&machine);
             if delay_timer > 0 {
                 delay_timer -= 1;
@@ -107,7 +105,7 @@ pub fn main() {
             }
             machine::set_sound_timer(&mut machine, if sound_timer > 0 { sound_timer } else { 0 });
 
-            dt_t -= sixty_hz_time;
+            timer = Instant::now();
         }
 
         let opcode_part_a = machine::read_memory(&machine, pc);
@@ -125,9 +123,6 @@ pub fn main() {
         //}
         
         render::render(&mut canvas, machine::get_screenbuffer(&mut machine));
-
-        //machine::increment_program_counter(&mut machine);
-        dt = start_time.elapsed();
 
         //if opcode.operation_index == 23  || stopped {
         if false {
