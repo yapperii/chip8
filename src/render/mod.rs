@@ -45,6 +45,9 @@ pub fn blit_texture(screen_buffer: &mut ScreenBuffer, sprite: &Sprite) -> bool {
 
 pub fn blit_texture_row(screen_buffer: &mut ScreenBuffer, x: u8, y: u8, row: &[bool; 8]) -> bool {
     let mut flipped = false;
+    if y >= 32 {
+        return flipped
+    }
     for i in 0..8 {
         let wx: usize = (x as usize + i) % 64;
         let wy: usize = (y as usize) % 32;
