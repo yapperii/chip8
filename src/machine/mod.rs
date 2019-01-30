@@ -80,77 +80,77 @@ fn init_font(mach: &mut Machine) {
     write_protected_space(mach, START_FONT + 0x1a, 0x80);
     write_protected_space(mach, START_FONT + 0x1b, 0xf0);
     write_protected_space(mach, START_FONT + 0x1c, 0x10);
-    write_protected_space(mach, START_FONT + 0x1e, 0xf0);
+    write_protected_space(mach, START_FONT + 0x1d, 0xf0);
 
     // six
-    write_protected_space(mach, START_FONT + 0x1f, 0xf0);
-    write_protected_space(mach, START_FONT + 0x20, 0x80);
-    write_protected_space(mach, START_FONT + 0x21, 0xf0);
-    write_protected_space(mach, START_FONT + 0x22, 0x90);
-    write_protected_space(mach, START_FONT + 0x23, 0xf0);
+    write_protected_space(mach, START_FONT + 0x1e, 0xf0);
+    write_protected_space(mach, START_FONT + 0x1f, 0x80);
+    write_protected_space(mach, START_FONT + 0x20, 0xf0);
+    write_protected_space(mach, START_FONT + 0x21, 0x90);
+    write_protected_space(mach, START_FONT + 0x22, 0xf0);
 
     // seven
-    write_protected_space(mach, START_FONT + 0x24, 0xf0);
-    write_protected_space(mach, START_FONT + 0x25, 0x10);
-    write_protected_space(mach, START_FONT + 0x26, 0x20);
+    write_protected_space(mach, START_FONT + 0x23, 0xf0);
+    write_protected_space(mach, START_FONT + 0x24, 0x10);
+    write_protected_space(mach, START_FONT + 0x25, 0x20);
+    write_protected_space(mach, START_FONT + 0x26, 0x40);
     write_protected_space(mach, START_FONT + 0x27, 0x40);
-    write_protected_space(mach, START_FONT + 0x28, 0x40);
 
     // eight
-    write_protected_space(mach, START_FONT + 0x29, 0xf0);
-    write_protected_space(mach, START_FONT + 0x2a, 0x90);
-    write_protected_space(mach, START_FONT + 0x2b, 0xf0);
-    write_protected_space(mach, START_FONT + 0x2c, 0x90);
-    write_protected_space(mach, START_FONT + 0x2d, 0xf0);
+    write_protected_space(mach, START_FONT + 0x28, 0xf0);
+    write_protected_space(mach, START_FONT + 0x29, 0x90);
+    write_protected_space(mach, START_FONT + 0x2a, 0xf0);
+    write_protected_space(mach, START_FONT + 0x2b, 0x90);
+    write_protected_space(mach, START_FONT + 0x2c, 0xf0);
 
     // 9
-    write_protected_space(mach, START_FONT + 0x2e, 0xf0);
-    write_protected_space(mach, START_FONT + 0x2f, 0x90);
-    write_protected_space(mach, START_FONT + 0x30, 0xf0);
-    write_protected_space(mach, START_FONT + 0x31, 0x10);
-    write_protected_space(mach, START_FONT + 0x32, 0xf0);
+    write_protected_space(mach, START_FONT + 0x2d, 0xf0);
+    write_protected_space(mach, START_FONT + 0x2e, 0x90);
+    write_protected_space(mach, START_FONT + 0x2f, 0xf0);
+    write_protected_space(mach, START_FONT + 0x30, 0x10);
+    write_protected_space(mach, START_FONT + 0x31, 0xf0);
 
     // a
-    write_protected_space(mach, START_FONT + 0x33, 0xf0);
-    write_protected_space(mach, START_FONT + 0x34, 0x90);
-    write_protected_space(mach, START_FONT + 0x35, 0xf0);
+    write_protected_space(mach, START_FONT + 0x32, 0xf0);
+    write_protected_space(mach, START_FONT + 0x33, 0x90);
+    write_protected_space(mach, START_FONT + 0x34, 0xf0);
+    write_protected_space(mach, START_FONT + 0x35, 0x90);
     write_protected_space(mach, START_FONT + 0x36, 0x90);
-    write_protected_space(mach, START_FONT + 0x37, 0x90);
 
     // b
-    write_protected_space(mach, START_FONT + 0x38, 0xe0);
-    write_protected_space(mach, START_FONT + 0x39, 0x90);
-    write_protected_space(mach, START_FONT + 0x3a, 0xe0);
-    write_protected_space(mach, START_FONT + 0x3b, 0x90);
-    write_protected_space(mach, START_FONT + 0x3c, 0xe0);
+    write_protected_space(mach, START_FONT + 0x37, 0xe0);
+    write_protected_space(mach, START_FONT + 0x38, 0x90);
+    write_protected_space(mach, START_FONT + 0x39, 0xe0);
+    write_protected_space(mach, START_FONT + 0x3a, 0x90);
+    write_protected_space(mach, START_FONT + 0x3b, 0xe0);
 
     // c
-    write_protected_space(mach, START_FONT + 0x3d, 0xf0);
+    write_protected_space(mach, START_FONT + 0x3c, 0xf0);
+    write_protected_space(mach, START_FONT + 0x3d, 0x80);
     write_protected_space(mach, START_FONT + 0x3e, 0x80);
     write_protected_space(mach, START_FONT + 0x3f, 0x80);
-    write_protected_space(mach, START_FONT + 0x40, 0x80);
-    write_protected_space(mach, START_FONT + 0x41, 0xf0);
+    write_protected_space(mach, START_FONT + 0x40, 0xf0);
 
     // d
-    write_protected_space(mach, START_FONT + 0x42, 0xe0);
+    write_protected_space(mach, START_FONT + 0x41, 0xe0);
+    write_protected_space(mach, START_FONT + 0x42, 0x90);
     write_protected_space(mach, START_FONT + 0x43, 0x90);
     write_protected_space(mach, START_FONT + 0x44, 0x90);
-    write_protected_space(mach, START_FONT + 0x45, 0x90);
-    write_protected_space(mach, START_FONT + 0x46, 0xe0);
+    write_protected_space(mach, START_FONT + 0x45, 0xe0);
 
     // e
-    write_protected_space(mach, START_FONT + 0x47, 0xf0);
-    write_protected_space(mach, START_FONT + 0x48, 0x80);
-    write_protected_space(mach, START_FONT + 0x49, 0xf0);
-    write_protected_space(mach, START_FONT + 0x4a, 0x80);
-    write_protected_space(mach, START_FONT + 0x4b, 0xf0);
+    write_protected_space(mach, START_FONT + 0x46, 0xf0);
+    write_protected_space(mach, START_FONT + 0x47, 0x80);
+    write_protected_space(mach, START_FONT + 0x48, 0xf0);
+    write_protected_space(mach, START_FONT + 0x49, 0x80);
+    write_protected_space(mach, START_FONT + 0x4a, 0xf0);
 
     // f
-    write_protected_space(mach, START_FONT + 0x4c, 0xf0);
-    write_protected_space(mach, START_FONT + 0x4d, 0x80);
-    write_protected_space(mach, START_FONT + 0x4e, 0xf0);
+    write_protected_space(mach, START_FONT + 0x4b, 0xf0);
+    write_protected_space(mach, START_FONT + 0x4c, 0x80);
+    write_protected_space(mach, START_FONT + 0x4d, 0xf0);
+    write_protected_space(mach, START_FONT + 0x4e, 0x80);
     write_protected_space(mach, START_FONT + 0x4f, 0x80);
-    write_protected_space(mach, START_FONT + 0x50, 0x80);
 }
 
 pub fn create_machine() -> Machine {
