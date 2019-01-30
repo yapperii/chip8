@@ -19,6 +19,7 @@ mod load {
 use std::io;
 use std::io::prelude::*;
 use std::fs::File;
+use std::collections::HashSet;
 
 use machine;
 
@@ -50,36 +51,64 @@ pub fn main() {
     let mut event_pump = sdl_context.event_pump().unwrap();
 
    
-
     let mut machine = machine::create_machine();
-    let filename = String::from("BC_test.ch8");
+    let filename = String::from("png.ch8");
     load::read(&mut machine, &filename);
 
 
     let op_code_lib = opcode::create_op_code_lib();
 
-    let mut dt: Duration = Duration::new(0, 0);
+    let mut dt: Duration = Duration::from_millis(4);
     let sixty_hz_time = Duration::from_millis(16);
 
-    let mut 
-    stopped = false;
+    let key_map = [sdl2::keyboard::Scancode::A,
+                   sdl2::keyboard::Scancode::Z,
+                   sdl2::keyboard::Scancode::S,
+                   sdl2::keyboard::Scancode::X,
+                   sdl2::keyboard::Scancode::D,
+                   sdl2::keyboard::Scancode::C,
+                   sdl2::keyboard::Scancode::F,
+                   sdl2::keyboard::Scancode::V,
+                   sdl2::keyboard::Scancode::J,
+                   sdl2::keyboard::Scancode::N,
+                   sdl2::keyboard::Scancode::K,
+                   sdl2::keyboard::Scancode::M,
+                   sdl2::keyboard::Scancode::L,
+                   sdl2::keyboard::Scancode::Comma,
+                   sdl2::keyboard::Scancode::Semicolon,
+                   sdl2::keyboard::Scancode::Period];
+
+    let mut dt_t = Duration::from_millis(0);
+    let mut stopped = false;
     loop {
+        for event in event_pump.poll_iter() {}
+
         let start_time = Instant::now();
         let pc = machine::get_program_counter(&machine);
 
         // update key state
+        for k in 0..16 {
+            let pressed = event_pump.keyboard_state().is_scancode_pressed(key_map[k]);
+            machine::set_key(&mut machine, k, pressed);
+        }
 
         // run timers
-        //let mut dt_t = dt;
-        //while dt_t > sixty_hz_time {
-        //    let delay_timer = machine::get_delay_timer(&machine) - 1;
-        //    machine::set_delay_timer(&mut machine, if delay_timer > 0 { delay_timer } else { 0 });
+        dt_t += dt;
+        while dt_t > sixty_hz_time {
+            let mut delay_timer = machine::get_delay_timer(&machine);
+            if delay_timer > 0 {
+                delay_timer -= 1;
+            }
+            machine::set_delay_timer(&mut machine, if delay_timer > 0 { delay_timer } else { 0 });
 
-        //    let sound_timer = machine::get_sound_timer(&machine) - 1;
-        //    machine::set_sound_timer(&mut machine, if sound_timer > 0 { sound_timer } else { 0 });
+            let mut sound_timer = machine::get_sound_timer(&machine);
+            if sound_timer > 0 {
+                sound_timer -= 1;
+            }
+            machine::set_sound_timer(&mut machine, if sound_timer > 0 { sound_timer } else { 0 });
 
-        //    dt_t -= sixty_hz_time;
-        //}
+            dt_t -= sixty_hz_time;
+        }
 
         let opcode_part_a = machine::read_memory(&machine, pc);
         let opcode_part_b = machine::read_memory(&machine, pc + 1);
@@ -100,7 +129,8 @@ pub fn main() {
         //machine::increment_program_counter(&mut machine);
         dt = start_time.elapsed();
 
-        if opcode.operation_index == 23  || stopped {
+        //if opcode.operation_index == 23  || stopped {
+        if false {
             stopped = true;
             let mut done = false;
             while !done {

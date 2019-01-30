@@ -50,18 +50,18 @@ pub fn blit_texture_row(screen_buffer: &mut ScreenBuffer, x: u8, y: u8, row: &[b
         flipped |= row[i] & screen_buffer.pixels[y as usize][wx];
         screen_buffer.pixels[y as usize][wx] =
             row[i] ^ screen_buffer.pixels[y as usize][wx];
-        println!("screen buffer[{}][{}] = {}", y, wx as u8, screen_buffer.pixels[y as usize][wx]);
+        //println!("screen buffer[{}][{}] = {}", y, wx as u8, screen_buffer.pixels[y as usize][wx]);
     }
     flipped
 }
 
 pub fn clear_screen(screen_buffer: &mut ScreenBuffer) {
-    println!("clearing screen");
+    //println!("clearing screen");
     screen_buffer.pixels = [[false; 64]; 32];
 }
 
 pub fn render(canvas: &mut Canvas<sdl2::video::Window>, screen_buffer: &ScreenBuffer) {
-    println!("rendering");
+    //println!("rendering");
     canvas.set_draw_color(Color::RGB(0, 0, 0));
     canvas.clear();
 

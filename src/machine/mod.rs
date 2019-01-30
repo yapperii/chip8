@@ -215,6 +215,7 @@ pub fn jump(machine: &mut Machine, address: usize) {
 }
 
 pub fn call(machine: &mut Machine, address: usize) {
+    increment_program_counter(machine);
     let pc = get_program_counter(machine);
     push_stack(machine, pc);
     set_program_counter(machine, address);
