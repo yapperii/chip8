@@ -11,30 +11,23 @@ mod render;
 use std::env;
 use std::time::{Duration, Instant};
 
-use sdl2::pixels::Color;
-use sdl2::event::Event;
-use sdl2::keyboard::Keycode;
-use sdl2::rect::Rect;
-
 mod load {
-use std::io;
 use std::io::prelude::*;
 use std::fs::File;
-use std::collections::HashSet;
 
 use machine;
 
 pub fn read(mach: &mut machine::Machine, filename: &String) -> bool {
     let mut f = File::open(filename).unwrap();
-    let mut buffer: [u8; machine::MEM_SIZE] = [0; machine::MEM_SIZE];
-    let success = f.read(&mut buffer);
+    let mut _buffer: [u8; machine::MEM_SIZE] = [0; machine::MEM_SIZE];
+    let success = f.read(&mut _buffer);
     match success {
-        Ok(buffer) => (),
+        Ok(_buffer) => (),
         _ => return false,
     }
 
     for i in 0..(machine::MEM_SIZE - machine::START_USER_SPACE) {
-        machine::write_memory(mach, machine::START_USER_SPACE + i, buffer[i]);
+        machine::write_memory(mach, machine::START_USER_SPACE + i, _buffer[i]);
     }
 
     true
@@ -61,8 +54,7 @@ pub fn main() {
 
     let mut canvas = window.into_canvas().build().unwrap();
 
-    let mut event_pump = sdl_context.event_pump().unwrap();
-
+    let event_pump = sdl_context.event_pump().unwrap();
    
     let mut machine = machine::create_machine();
     let filename = String::from(args[1].clone());
@@ -98,10 +90,9 @@ pub fn main() {
                    sdl2::keyboard::Scancode::Semicolon,
                    sdl2::keyboard::Scancode::Period];
 
-    let mut stopped = false;
     let mut timer = Instant::now();
     loop {
-        for event in event_pump.poll_iter() {}
+        //for event in event_pump.poll_iter() {}
 
         let pc = machine::get_program_counter(&machine);
 
@@ -116,8 +107,8 @@ pub fn main() {
         }
 
         // run timers
-        let mut dt_t = timer.elapsed();
-        if dt_t > sixty_hz_time {
+        let dt = timer.elapsed();
+        if dt > sixty_hz_time {
             let mut delay_timer = machine::get_delay_timer(&machine);
             if delay_timer > 0 {
                 delay_timer -= 1;
@@ -148,27 +139,6 @@ pub fn main() {
         //}
         
         render::render(&mut canvas, machine::get_screenbuffer(&mut machine));
-
-        //if opcode.operation_index == 23  || stopped {
-        if false {
-            stopped = true;
-            let mut done = false;
-            while !done {
-                for event in event_pump.poll_iter() {
-                    match event {
-
-                        Event::KeyDown { keycode: Some(Keycode::Space), repeat: false, .. } => {
-                            done = true;
-                            break;
-
-                        },
-
-                        _ => {}
-
-                    }
-                }
-            }
-        }
     }
 
 }

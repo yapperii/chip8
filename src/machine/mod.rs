@@ -488,7 +488,7 @@ mod tests {
     #[test]
     #[should_panic]
     fn test_read_memory_out_of_range() {
-        let mut machine = create_machine();
+        let machine = create_machine();
         read_memory(&machine, MEM_SIZE);
     }
 }
