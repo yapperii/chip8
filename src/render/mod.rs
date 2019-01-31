@@ -32,19 +32,6 @@ pub fn create_screen_buffer() -> ScreenBuffer {
     return screen_buffer;
 }
 
-pub fn blit_texture(screen_buffer: &mut ScreenBuffer, sprite: &Sprite) -> bool {
-    let mut flipped = false;
-    for row in &sprite.texture.rows {
-        for x in 0..8 {
-            flipped |= row[x] & screen_buffer.pixels[sprite.y as usize][sprite.x as usize + x];
-            screen_buffer.pixels[sprite.y as usize][sprite.x as usize + x] =
-                row[x] ^ screen_buffer.pixels[sprite.y as usize][sprite.x as usize + x];
-        }
-    }
-
-    return flipped;
-}
-
 pub fn blit_texture_row(screen_buffer: &mut ScreenBuffer, x: u8, y: u8, row: &[bool; 8]) -> bool {
     let mut flipped = false;
     if y >= SCREEN_HEIGHT as u8 {

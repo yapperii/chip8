@@ -161,14 +161,9 @@ pub fn op_dxyn(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
     let vx = machine::get_register(mach, x as usize);
     let vy = machine::get_register(mach, y as usize);
     let base_address = machine::get_address_register(mach);
-    let n_size = n as usize;
-    //println!("op_dxyn. x: {}, y: {}, n: {}", x, y, n);
-    //println!("base address: {:X}", base_address);
-    let mut rows: Vec<[bool; 8]> = Vec::with_capacity(n_size);
     let mut flipped = false;
     for i in 0..n {
         let mem_val = machine::read_memory(mach, base_address + i as usize);
-        //println!("memory address: {:X}, value: {:X}", base_address + i as usize, mem_val);
         let mut row: [bool; 8] = [false; 8];
         for j in 0..8 {
             row[j] = (mem_val & (1 << (8 - j -1))) != 0;
@@ -177,12 +172,6 @@ pub fn op_dxyn(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
         flipped |= render::blit_texture_row(machine::get_screenbuffer(mach), vx, vy + i as u8, &row);
     }
 
-    //let sprite = render::create_sprite(x as u8, y as u8, &rows);
-    //println!("created sprite");
-    //for r in &sprite.texture.rows { 
-    //    println!("sprite row: {}, {}, {}, {}, {}, {}, {}, {}", r[0], r[1], r[2], r[3], r[4], r[5], r[6], r[7]);
-    //}
-    //let flipped: bool = render::blit_texture(machine::get_screenbuffer(mach), &sprite);
     machine::set_register(mach, 0xf, if flipped { 1 } else { 0 });
     machine::increment_program_counter(mach);
 }
@@ -250,9 +239,6 @@ pub fn op_fx33(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
     machine::write_memory(mach, base_address, hundreds);
     machine::write_memory(mach, base_address + 1, tens);
     machine::write_memory(mach, base_address + 2, ones);
-    //println!("wrote hudreds address: {:X}, value: {:X}", base_address, hundreds);
-    //println!("wrote tens address: {:X}, value: {:X}", base_address + 1, tens);
-    //println!("wrote ones address: {:X}, value: {:X}", base_address + 2, ones);
     machine::increment_program_counter(mach);
 }
 
@@ -261,7 +247,6 @@ pub fn op_fx55(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
     for i in 0..((x + 1) as usize){
         let vi = machine::get_register(mach, i);
         machine::write_memory(mach, base_address + i, vi);
-        //println!("write mem address: {:X}, value {:X}", base_address + i, vi);
     }
     machine::increment_program_counter(mach);
 }
@@ -271,7 +256,6 @@ pub fn op_fx65(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
     for i in 0..((x + 1) as usize) {
         let mem = machine::read_memory(mach, base_address + i);
         machine::set_register(mach, i, mem);
-        //println!("read mem address: {:X}, value {:X}", base_address + i, mem);
     }
     machine::increment_program_counter(mach);
 }
