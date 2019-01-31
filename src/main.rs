@@ -23,14 +23,20 @@ use std::collections::HashSet;
 
 use machine;
 
-pub fn read(mach: &mut machine::Machine, filename: &String) {
+pub fn read(mach: &mut machine::Machine, filename: &String) -> bool {
     let mut f = File::open(filename).unwrap();
     let mut buffer: [u8; machine::MEM_SIZE] = [0; machine::MEM_SIZE];
-    f.read(&mut buffer);
+    let success = f.read(&mut buffer);
+    match success {
+        Ok(buffer) => (),
+        _ => return false,
+    }
 
     for i in 0..(machine::MEM_SIZE - machine::START_USER_SPACE) {
         machine::write_memory(mach, machine::START_USER_SPACE + i, buffer[i]);
     }
+
+    true
 }
 }
 
@@ -53,12 +59,18 @@ pub fn main() {
    
     let mut machine = machine::create_machine();
     let filename = String::from("png.ch8");
-    load::read(&mut machine, &filename);
-
+    let loaded = load::read(&mut machine, &filename);
+    if loaded {
+        println!("ROM loaded");
+    }
+    else {
+        println!("Failed to load ROM");
+        return;
+    }
 
     let op_code_lib = opcode::create_op_code_lib();
 
-    let sixty_hz_time = Duration::from_millis(20);
+    let sixty_hz_time = Duration::from_millis(20); // fudge the timing so that it's not too fast
 
     let key_map = [sdl2::keyboard::Scancode::A,
                    sdl2::keyboard::Scancode::Z,
@@ -83,6 +95,10 @@ pub fn main() {
         for event in event_pump.poll_iter() {}
 
         let pc = machine::get_program_counter(&machine);
+
+        if event_pump.keyboard_state().is_scancode_pressed(sdl2::keyboard::Scancode::Escape) {
+            return;
+        }
 
         // update key state
         for k in 0..16 {
