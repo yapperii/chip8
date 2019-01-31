@@ -71,7 +71,7 @@ pub fn main() {
 
     let op_code_lib = opcode::create_op_code_lib();
 
-    let sixty_hz_time = Duration::from_millis(20); // fudge the timing so that it's not too fast
+    let sixty_hz_time = Duration::from_millis(25); // fudge the timing so that it's not too fast
 
     let key_map = [sdl2::keyboard::Scancode::A,
                    sdl2::keyboard::Scancode::Z,
@@ -92,7 +92,7 @@ pub fn main() {
 
     let mut timer = Instant::now();
     loop {
-        for event in event_pump.poll_iter() {}
+        for _event in event_pump.poll_iter() {}
 
         let pc = machine::get_program_counter(&machine);
 
@@ -103,7 +103,16 @@ pub fn main() {
         // update key state
         for k in 0..16 {
             let pressed = event_pump.keyboard_state().is_scancode_pressed(key_map[k]);
+            if pressed && machine::get_flag(&machine) == machine::Flags::WaitingForKeypress {
+                let target_register = machine::get_target_register(&machine);
+                machine::set_register(&mut machine, target_register, k as u8);
+                machine::set_flag(&mut machine, machine::Flags::Running);
+            }
             machine::set_key(&mut machine, k, pressed);
+        }
+
+        if machine::get_flag(&machine) == machine::Flags::WaitingForKeypress {
+            continue;
         }
 
         // run timers
