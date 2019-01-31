@@ -11,22 +11,6 @@ pub struct ScreenBuffer
     pixels: [[bool; SCREEN_WIDTH]; SCREEN_HEIGHT],
 }
 
-pub struct Texture
-{
-    pub rows: Vec<[bool; 8]>,
-}
-
-pub struct Sprite {
-    x: u8,
-    y: u8,
-    pub texture: Texture,
-}
-
-pub fn create_sprite(x: u8, y: u8, rows: &Vec<[bool; 8]>) -> Sprite {
-    let texture = Texture{rows: rows.clone()};
-    Sprite{x: x, y: y, texture: texture}
-}
-
 pub fn create_screen_buffer() -> ScreenBuffer {
     let screen_buffer = ScreenBuffer{pixels: [[false; SCREEN_WIDTH]; SCREEN_HEIGHT]};
     return screen_buffer;

@@ -1,4 +1,4 @@
-#![allow(dead_code)]
+//#![allow(dead_code)]
 
 extern crate rand;
 extern crate sdl2;
@@ -54,7 +54,7 @@ pub fn main() {
 
     let mut canvas = window.into_canvas().build().unwrap();
 
-    let event_pump = sdl_context.event_pump().unwrap();
+    let mut event_pump = sdl_context.event_pump().unwrap();
    
     let mut machine = machine::create_machine();
     let filename = String::from(args[1].clone());
@@ -92,7 +92,7 @@ pub fn main() {
 
     let mut timer = Instant::now();
     loop {
-        //for event in event_pump.poll_iter() {}
+        for event in event_pump.poll_iter() {}
 
         let pc = machine::get_program_counter(&machine);
 

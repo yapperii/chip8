@@ -40,30 +40,21 @@ pub enum CodeMask {
     FXSixFive = 0xf065,
 }
 
-type OpFn = Fn(&mut machine::Machine, u16, u16, u16);
-
-//#[derive(Debug, Clone)]
 pub struct OpCodePrototype
 {
-    //raw: u16,
     code_mask: CodeMask,
     n_mask: u16,
     x_mask: u16,
     y_mask: u16,
-    //operation: Fn(&mut machine::Machine, u16, u16, u16),
-    // op function
 }
 
 pub struct OpCode
 {
     pub raw: u16,
-    code_mask: CodeMask,
     pub operation_index: usize,
     n_mask: u16,
     x_mask: u16,
     y_mask: u16,
-    //operation: Fn(&mut machine::Machine, u16, u16, u16),
-    // op function
 }
 
 const NUM_OPCODES: usize = 35;
@@ -130,7 +121,6 @@ pub fn create_opcode(a: u8, b: u8, lib: &OpCodeLib) -> OpCode {
     combined = (combined << 8) | b16;
     let opcode_index = identify_opcode(combined, lib);
     let opcode = OpCode{raw: combined,
-                        code_mask: lib.code_array[opcode_index].code_mask.clone(),
                         operation_index: opcode_index,
                         n_mask: lib.code_array[opcode_index].n_mask,
                         x_mask: lib.code_array[opcode_index].x_mask,
