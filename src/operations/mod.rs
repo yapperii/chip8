@@ -1,6 +1,3 @@
-//extern crate rand;
-//use rand::prelude::*;
-//use rand::Rng;
 use machine;
 use render;
 
