@@ -422,7 +422,7 @@ mod tests {
         
         assert_eq!(address, get_program_counter(&machine));
         assert_eq!(1, machine.stack.len());
-        assert_eq!(START_USER_SPACE, pop_stack(&mut machine));
+        assert_eq!(START_USER_SPACE + 2, pop_stack(&mut machine));
     }
 
     #[test]
@@ -432,7 +432,7 @@ mod tests {
         call(&mut machine, address);
         ret(&mut machine);
 
-        assert_eq!(START_USER_SPACE, get_program_counter(&machine));
+        assert_eq!(START_USER_SPACE + 2, get_program_counter(&machine));
         assert_eq!(0, machine.stack.len());
     }
 

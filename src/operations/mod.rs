@@ -311,7 +311,7 @@ mod tests {
         machine::call(&mut mach, 0x300);
         op_00ee(&mut mach, 0, 0, 0);
 
-        assert_eq!(machine::START_USER_SPACE, machine::get_program_counter(&mach));
+        assert_eq!(machine::START_USER_SPACE + 2, machine::get_program_counter(&mach));
     }
 
     #[test]
@@ -328,7 +328,7 @@ mod tests {
         op_2nnn(&mut mach, 0, 0, 0x300);
 
         assert_eq!(0x300, machine::get_program_counter(&mach));
-        assert_eq!(Some(machine::START_USER_SPACE), machine::peek_stack(&mut mach));
+        assert_eq!(Some(machine::START_USER_SPACE + 2), machine::peek_stack(&mut mach));
     }
 
     #[test]
