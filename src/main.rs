@@ -8,6 +8,7 @@ mod opcode;
 mod operations;
 mod render;
 
+use std::env;
 use std::time::{Duration, Instant};
 
 use sdl2::pixels::Color;
@@ -42,6 +43,12 @@ pub fn read(mach: &mut machine::Machine, filename: &String) -> bool {
 
 pub fn main() {
 
+    let args: Vec<String> = env::args().collect();
+    if args.len() < 2 {
+        println!("usage: chip8 <rom file>");
+        return;
+    }
+
     let sdl_context = sdl2::init().unwrap();
     let video_subsystem = sdl_context.video().unwrap();
 
@@ -58,7 +65,9 @@ pub fn main() {
 
    
     let mut machine = machine::create_machine();
-    let filename = String::from("png.ch8");
+    let filename = String::from(args[1].clone());
+
+    println!("loading {}", filename);
     let loaded = load::read(&mut machine, &filename);
     if loaded {
         println!("ROM loaded");
