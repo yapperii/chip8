@@ -46,6 +46,7 @@ pub struct OpCodePrototype
     n_mask: u16,
     x_mask: u16,
     y_mask: u16,
+    operation: Box<Fn(&mut machine::Machine, u16, u16, u16)>,
 }
 
 pub struct OpCode
@@ -55,6 +56,7 @@ pub struct OpCode
     n_mask: u16,
     x_mask: u16,
     y_mask: u16,
+    //op: &Box<Fn(&mut machine::Machine, u16, u16, u16)>,
 }
 
 const NUM_OPCODES: usize = 35;
@@ -65,41 +67,41 @@ pub struct OpCodeLib {
 
 pub fn create_op_code_lib() -> OpCodeLib {
     OpCodeLib {code_array: [
-        OpCodePrototype {code_mask: CodeMask::ZeroNNN, x_mask: 0x0, y_mask:0x0, n_mask: 0x0fff}, //, operation: operations::op_0nnn}, 
-        OpCodePrototype {code_mask: CodeMask::ZeroZeroEZero, x_mask: 0x0, y_mask:0x0, n_mask: 0x0}, //, operation: operations::op_00e0},
-        OpCodePrototype {code_mask: CodeMask::ZeroZeroEE, x_mask: 0x0, y_mask:0x0, n_mask: 0x0}, //, operation: operations::op_00ee},
-        OpCodePrototype {code_mask: CodeMask::OneNNN, x_mask: 0x0, y_mask:0x0, n_mask: 0x0fff}, //, operation: operations::op_1nnn},
-        OpCodePrototype {code_mask: CodeMask::TwoNNN, x_mask: 0x0, y_mask:0x0, n_mask: 0x0fff}, //, operation: operations::op_2nnn},
-        OpCodePrototype {code_mask: CodeMask::ThreeXNN, x_mask: 0x0f00, y_mask:0x0, n_mask: 0x00ff}, //, operation: operations::op_3xnn},
-        OpCodePrototype {code_mask: CodeMask::FourXNN, x_mask: 0x0f00, y_mask:0x0, n_mask: 0x00ff}, //, operation: operations::op_4xnn},
-        OpCodePrototype {code_mask: CodeMask::FiveXYZero, x_mask: 0x0f00, y_mask:0x00f0, n_mask: 0x0}, //, operation: operations::op_5xy0},
-        OpCodePrototype {code_mask: CodeMask::SixXNN, x_mask: 0x0f00, y_mask:0x0, n_mask: 0x00ff}, //, operation: operations::op_6xnn},
-        OpCodePrototype {code_mask: CodeMask::SevenXNN, x_mask: 0x0f00, y_mask:0x0, n_mask: 0x00ff}, //, operation: operations::op_7xnn},
-        OpCodePrototype {code_mask: CodeMask::EightXYZero, x_mask: 0x0f00, y_mask:0x00f0, n_mask: 0x0}, //, operation: operations::op_8xy0},
-        OpCodePrototype {code_mask: CodeMask::EightXYOne, x_mask: 0x0f00, y_mask:0x00f0, n_mask: 0x0}, //, operation: operations::op_8xy1},
-        OpCodePrototype {code_mask: CodeMask::EightXYTwo, x_mask: 0x0f00, y_mask:0x00f0, n_mask: 0x0}, //, operation: operations::op_8xy2},
-        OpCodePrototype {code_mask: CodeMask::EightXYThree, x_mask: 0x0f00, y_mask:0x00f0, n_mask: 0x0}, //, operation: operations::op_8xy3},
-        OpCodePrototype {code_mask: CodeMask::EightXYFour, x_mask: 0x0f00, y_mask:0x00f0, n_mask: 0x0}, //, operation: operations::op_8xy4},
-        OpCodePrototype {code_mask: CodeMask::EightXYFive, x_mask: 0x0f00, y_mask:0x00f0, n_mask: 0x0}, //, operation: operations::op_8xy5},
-        OpCodePrototype {code_mask: CodeMask::EightXYSix, x_mask: 0x0f00, y_mask:0x00f0, n_mask: 0x0}, //, operation: operations::op_8xy6},
-        OpCodePrototype {code_mask: CodeMask::EightXYSeven, x_mask: 0x0f00, y_mask:0x00f0, n_mask: 0x0}, //, operation: operations::op_8xy7},
-        OpCodePrototype {code_mask: CodeMask::EightXYE, x_mask: 0x0f00, y_mask:0x00f0, n_mask: 0x0}, //, operation: operations::op_8xye},
-        OpCodePrototype {code_mask: CodeMask::NineXYZero, x_mask: 0x0f00, y_mask:0x00f0, n_mask: 0x0}, //, operation: operations::op_9xy0},
-        OpCodePrototype {code_mask: CodeMask::ANNN, x_mask: 0x0, y_mask:0x0, n_mask: 0x0fff}, //, operation: operations::op_annn},
-        OpCodePrototype {code_mask: CodeMask::BNNN, x_mask: 0x0, y_mask:0x0, n_mask: 0x0fff}, //, operation: operations::op_bnnn},
-        OpCodePrototype {code_mask: CodeMask::CXNN, x_mask: 0x0f00, y_mask:0x0, n_mask: 0x00ff}, //, operation: operations::op_cxnn},
-        OpCodePrototype {code_mask: CodeMask::DXYN, x_mask: 0x0f00, y_mask:0x00f0, n_mask: 0x000f}, //, operation: operations::op_dxyn},
-        OpCodePrototype {code_mask: CodeMask::EXNineE, x_mask: 0x0f00, y_mask: 0x0, n_mask: 0x0}, //, operation: operations::op_ex9e},
-        OpCodePrototype {code_mask: CodeMask::EXAOne, x_mask: 0x0f00, y_mask: 0x0, n_mask: 0x0}, //, operation: operations::op_exa1},
-        OpCodePrototype {code_mask: CodeMask::FXZeroSeven, x_mask: 0x0f00, y_mask: 0x0, n_mask: 0x0}, //, operation: operations::op_fx07},
-        OpCodePrototype {code_mask: CodeMask::FXZeroA, x_mask: 0x0f00, y_mask: 0x0, n_mask: 0x0}, //, operation: operations::op_fx0a},
-        OpCodePrototype {code_mask: CodeMask::FXOneFive, x_mask: 0x0f00, y_mask: 0x0, n_mask: 0x0}, //, operation: operations::op_fx15},
-        OpCodePrototype {code_mask: CodeMask::FXOneEight, x_mask: 0x0f00, y_mask: 0x0, n_mask: 0x0}, //, operation: operations::op_fx18},
-        OpCodePrototype {code_mask: CodeMask::FXOneE, x_mask: 0x0f00, y_mask: 0x0, n_mask: 0x0}, //, operation: operations::op_fx1e},
-        OpCodePrototype {code_mask: CodeMask::FXTwoNine, x_mask: 0x0f00, y_mask: 0x0, n_mask: 0x0}, //, operation: operations::op_fx29},
-        OpCodePrototype {code_mask: CodeMask::FXThreeThree, x_mask: 0x0f00, y_mask: 0x0, n_mask: 0x0}, //, operation: operations::op_fx33},
-        OpCodePrototype {code_mask: CodeMask::FXFiveFive, x_mask: 0x0f00, y_mask: 0x0, n_mask: 0x0}, //, operation: operations::op_fx55},
-        OpCodePrototype {code_mask: CodeMask::FXSixFive, x_mask: 0x0f00, y_mask: 0x0, n_mask: 0x0}, //, operation: operations::op_fx65},
+        OpCodePrototype {code_mask: CodeMask::ZeroNNN, x_mask: 0x0, y_mask:0x0, n_mask: 0x0fff, operation: Box::new(operations::op_0nnn)}, 
+        OpCodePrototype {code_mask: CodeMask::ZeroZeroEZero, x_mask: 0x0, y_mask:0x0, n_mask: 0x0, operation: Box::new(operations::op_00e0)},
+        OpCodePrototype {code_mask: CodeMask::ZeroZeroEE, x_mask: 0x0, y_mask:0x0, n_mask: 0x0, operation: Box::new(operations::op_00ee)},
+        OpCodePrototype {code_mask: CodeMask::OneNNN, x_mask: 0x0, y_mask:0x0, n_mask: 0x0fff, operation: Box::new(operations::op_1nnn)},
+        OpCodePrototype {code_mask: CodeMask::TwoNNN, x_mask: 0x0, y_mask:0x0, n_mask: 0x0fff, operation: Box::new(operations::op_2nnn)},
+        OpCodePrototype {code_mask: CodeMask::ThreeXNN, x_mask: 0x0f00, y_mask:0x0, n_mask: 0x00ff, operation: Box::new(operations::op_3xnn)},
+        OpCodePrototype {code_mask: CodeMask::FourXNN, x_mask: 0x0f00, y_mask:0x0, n_mask: 0x00ff, operation: Box::new(operations::op_4xnn)},
+        OpCodePrototype {code_mask: CodeMask::FiveXYZero, x_mask: 0x0f00, y_mask:0x00f0, n_mask: 0x0, operation: Box::new(operations::op_5xy0)},
+        OpCodePrototype {code_mask: CodeMask::SixXNN, x_mask: 0x0f00, y_mask:0x0, n_mask: 0x00ff, operation: Box::new(operations::op_6xnn)},
+        OpCodePrototype {code_mask: CodeMask::SevenXNN, x_mask: 0x0f00, y_mask:0x0, n_mask: 0x00ff, operation: Box::new(operations::op_7xnn)},
+        OpCodePrototype {code_mask: CodeMask::EightXYZero, x_mask: 0x0f00, y_mask:0x00f0, n_mask: 0x0, operation: Box::new(operations::op_8xy0)},
+        OpCodePrototype {code_mask: CodeMask::EightXYOne, x_mask: 0x0f00, y_mask:0x00f0, n_mask: 0x0, operation: Box::new(operations::op_8xy1)},
+        OpCodePrototype {code_mask: CodeMask::EightXYTwo, x_mask: 0x0f00, y_mask:0x00f0, n_mask: 0x0, operation: Box::new(operations::op_8xy2)},
+        OpCodePrototype {code_mask: CodeMask::EightXYThree, x_mask: 0x0f00, y_mask:0x00f0, n_mask: 0x0, operation: Box::new(operations::op_8xy3)},
+        OpCodePrototype {code_mask: CodeMask::EightXYFour, x_mask: 0x0f00, y_mask:0x00f0, n_mask: 0x0, operation: Box::new(operations::op_8xy4)},
+        OpCodePrototype {code_mask: CodeMask::EightXYFive, x_mask: 0x0f00, y_mask:0x00f0, n_mask: 0x0, operation: Box::new(operations::op_8xy5)},
+        OpCodePrototype {code_mask: CodeMask::EightXYSix, x_mask: 0x0f00, y_mask:0x00f0, n_mask: 0x0, operation: Box::new(operations::op_8xy6)},
+        OpCodePrototype {code_mask: CodeMask::EightXYSeven, x_mask: 0x0f00, y_mask:0x00f0, n_mask: 0x0, operation: Box::new(operations::op_8xy7)},
+        OpCodePrototype {code_mask: CodeMask::EightXYE, x_mask: 0x0f00, y_mask:0x00f0, n_mask: 0x0, operation: Box::new(operations::op_8xye)},
+        OpCodePrototype {code_mask: CodeMask::NineXYZero, x_mask: 0x0f00, y_mask:0x00f0, n_mask: 0x0, operation: Box::new(operations::op_9xy0)},
+        OpCodePrototype {code_mask: CodeMask::ANNN, x_mask: 0x0, y_mask:0x0, n_mask: 0x0fff, operation: Box::new(operations::op_annn)},
+        OpCodePrototype {code_mask: CodeMask::BNNN, x_mask: 0x0, y_mask:0x0, n_mask: 0x0fff, operation: Box::new(operations::op_bnnn)},
+        OpCodePrototype {code_mask: CodeMask::CXNN, x_mask: 0x0f00, y_mask:0x0, n_mask: 0x00ff, operation: Box::new(operations::op_cxnn)},
+        OpCodePrototype {code_mask: CodeMask::DXYN, x_mask: 0x0f00, y_mask:0x00f0, n_mask: 0x000f, operation: Box::new(operations::op_dxyn)},
+        OpCodePrototype {code_mask: CodeMask::EXNineE, x_mask: 0x0f00, y_mask: 0x0, n_mask: 0x0, operation: Box::new(operations::op_ex9e)},
+        OpCodePrototype {code_mask: CodeMask::EXAOne, x_mask: 0x0f00, y_mask: 0x0, n_mask: 0x0, operation: Box::new(operations::op_exa1)},
+        OpCodePrototype {code_mask: CodeMask::FXZeroSeven, x_mask: 0x0f00, y_mask: 0x0, n_mask: 0x0, operation: Box::new(operations::op_fx07)},
+        OpCodePrototype {code_mask: CodeMask::FXZeroA, x_mask: 0x0f00, y_mask: 0x0, n_mask: 0x0, operation: Box::new(operations::op_fx0a)},
+        OpCodePrototype {code_mask: CodeMask::FXOneFive, x_mask: 0x0f00, y_mask: 0x0, n_mask: 0x0, operation: Box::new(operations::op_fx15)},
+        OpCodePrototype {code_mask: CodeMask::FXOneEight, x_mask: 0x0f00, y_mask: 0x0, n_mask: 0x0, operation: Box::new(operations::op_fx18)},
+        OpCodePrototype {code_mask: CodeMask::FXOneE, x_mask: 0x0f00, y_mask: 0x0, n_mask: 0x0, operation: Box::new(operations::op_fx1e)},
+        OpCodePrototype {code_mask: CodeMask::FXTwoNine, x_mask: 0x0f00, y_mask: 0x0, n_mask: 0x0, operation: Box::new(operations::op_fx29)},
+        OpCodePrototype {code_mask: CodeMask::FXThreeThree, x_mask: 0x0f00, y_mask: 0x0, n_mask: 0x0, operation: Box::new(operations::op_fx33)},
+        OpCodePrototype {code_mask: CodeMask::FXFiveFive, x_mask: 0x0f00, y_mask: 0x0, n_mask: 0x0, operation: Box::new(operations::op_fx55)},
+        OpCodePrototype {code_mask: CodeMask::FXSixFive, x_mask: 0x0f00, y_mask: 0x0, n_mask: 0x0, operation: Box::new(operations::op_fx65)},
     ]}
 }
 
@@ -115,18 +117,16 @@ fn identify_opcode(val: u16, lib: &OpCodeLib) -> usize {
     panic!("unknown opcode");
 }
 
-pub fn create_opcode(a: u8, b: u8, lib: &OpCodeLib) -> OpCode {
+pub fn decode_and_execute(mach: &mut machine::Machine, a: u8, b: u8, lib: &OpCodeLib) {
     let mut combined: u16 = a as u16;
     let b16 = b as u16;
     combined = (combined << 8) | b16;
     let opcode_index = identify_opcode(combined, lib);
-    let opcode = OpCode{raw: combined,
-                        operation_index: opcode_index,
-                        n_mask: lib.code_array[opcode_index].n_mask,
-                        x_mask: lib.code_array[opcode_index].x_mask,
-                        y_mask: lib.code_array[opcode_index].y_mask,};
 
-    return opcode;
+    let x: u16 = extract_value(combined, lib.code_array[opcode_index].x_mask);
+    let y: u16 = extract_value(combined, lib.code_array[opcode_index].y_mask);
+    let n: u16 = extract_value(combined, lib.code_array[opcode_index].n_mask);
+    (lib.code_array[opcode_index].operation)(mach, x, y, n);
 }
 
 pub fn extract_value(raw: u16, mask: u16) -> u16 {
@@ -140,6 +140,7 @@ pub fn execute_opcode(opcode: &OpCode, mach: &mut machine::Machine) {
     let y: u16 = extract_value(opcode.raw, opcode.y_mask);
     let n: u16 = extract_value(opcode.raw, opcode.n_mask);
     operations::execute_by_index(opcode.operation_index, mach, x, y, n);
+ //   (opcode.op)(mach, x, y, n);
 }
 
 #[cfg(test)]

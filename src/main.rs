@@ -136,12 +136,13 @@ pub fn main() {
         let opcode_part_a = machine::read_memory(&machine, pc);
         let opcode_part_b = machine::read_memory(&machine, pc + 1);
         
-        let opcode = opcode::create_opcode(opcode_part_a, opcode_part_b, &op_code_lib);
+        opcode::decode_and_execute(&mut machine, opcode_part_a, opcode_part_b, &op_code_lib);
+        //  let opcode = opcode::create_opcode(opcode_part_a, opcode_part_b, &op_code_lib);
         //println!("program counter: {:X}", pc);
         //println!("opcode: {:X}, index: {}", opcode.raw, opcode.operation_index);
         
         //println!("target register: {:X}", machine::get_target_register(&machine));
-        opcode::execute_opcode(&opcode, &mut machine);
+        //  opcode::execute_opcode(&opcode, &mut machine);
         //println!("address register: {:X}", machine::get_address_register(&machine));
         //for j in 0..machine::NUM_REGISTERS {
         //    println!("V{:X}: {:X}", j, machine::get_register(&machine, j));
