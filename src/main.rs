@@ -4,6 +4,7 @@ extern crate sdl2;
 mod machine;
 mod opcode;
 mod operations;
+mod screen_buffer;
 mod render;
 
 use std::env;

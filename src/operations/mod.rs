@@ -1,5 +1,5 @@
 use machine;
-use render;
+use screen_buffer;
 
 pub fn op_0nnn(mach: &mut machine::Machine, _x: u16, _y: u16, _n: u16) {
     // probably not needed
@@ -222,7 +222,7 @@ pub fn op_fx1e(mach: &mut machine::Machine, x: u16, _y: u16, _n: u16) {
 
 pub fn op_fx29(mach: &mut machine::Machine, x: u16, _y: u16, _n: u16) {
     let vx = mach.get_register(x as usize);
-    let address = machine::START_FONT + (vx as usize * render::FONT_BYTES_PER_CHAR);
+    let address = machine::START_FONT + (vx as usize * screen_buffer::FONT_BYTES_PER_CHAR);
     mach.set_address_register(address);
     mach.increment_program_counter();
 }
@@ -614,7 +614,7 @@ mod tests {
         mach.set_register(0x0, 0x1);
         op_fx29(&mut mach, 0x0, 0, 0);
 
-        assert_eq!(machine::START_FONT + render::FONT_BYTES_PER_CHAR, mach.get_address_register());
+        assert_eq!(machine::START_FONT + screen_buffer::FONT_BYTES_PER_CHAR, mach.get_address_register());
     }
 
     #[test]

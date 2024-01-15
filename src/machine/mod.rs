@@ -1,4 +1,4 @@
-use render;
+use screen_buffer;
 
 pub const MEM_SIZE: usize = 4096;
 pub const START_FONT: usize = 0x50;
@@ -36,7 +36,7 @@ pub struct Machine {
     timers: Timers,
     flag: Flags,
     target_register: usize,
-    screen_buffer: render::ScreenBuffer,
+    screen_buffer: screen_buffer::ScreenBuffer,
 }
 
 impl Machine {
@@ -51,7 +51,7 @@ impl Machine {
                 timers: Timers{delay_timer: 0, sound_timer: 0},
                 flag: Flags::Running,
                 target_register: NUM_REGISTERS,
-                screen_buffer: render::ScreenBuffer::new()};
+                screen_buffer: screen_buffer::ScreenBuffer::new()};
     
         mach.init_font();
         return mach;
@@ -301,7 +301,7 @@ pub fn set_target_register(&mut self, register: usize) {
     self.target_register = register;
 }
 
-pub fn get_screenbuffer(&mut self) -> &mut render::ScreenBuffer {
+pub fn get_screenbuffer(&mut self) -> &mut screen_buffer::ScreenBuffer {
     &mut self.screen_buffer
 }
 }
