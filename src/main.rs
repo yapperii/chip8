@@ -11,6 +11,9 @@ use std::env;
 use std::time::{Duration, Instant};
 //use std::thread::{sleep};
 
+use sdl2::event::Event;
+use sdl2::keyboard::Keycode;
+
 mod load {
     use std::fs::File;
     use std::io::prelude::*;
@@ -92,12 +95,16 @@ pub fn main() {
 
     let mut timer = Instant::now();
     loop {
-        for _event in event_pump.poll_iter() {}
-        if event_pump
-            .keyboard_state()
-            .is_scancode_pressed(sdl2::keyboard::Scancode::Escape)
-        {
-            return;
+        // check for quit
+        for event in event_pump.poll_iter() {
+            match event {
+                Event::Quit { .. }
+                | Event::KeyDown {
+                    keycode: Some(Keycode::Escape),
+                    ..
+                } => return,
+                _ => {}
+            }
         }
 
         // update key state
@@ -140,6 +147,5 @@ pub fn main() {
         opcode::decode_and_execute(&mut machine, opcode_part_a, opcode_part_b, &op_code_lib);
 
         render::render(&mut canvas, machine.get_screenbuffer());
-        //std::thread::sleep(Duration::from_millis(1));
     }
 }
