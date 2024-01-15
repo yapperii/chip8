@@ -325,338 +325,338 @@ mod tests {
 
     #[test]
     fn test_op_5xy0_pass() {
-        let mut mach = machine::create_machine();
-        machine::set_register(&mut mach, 0x0, 0x8);
-        machine::set_register(&mut mach, 0x1, 0x8);
+        let mut mach = machine::Machine::new();
+        mach.set_register(0x0, 0x8);
+        mach.set_register(0x1, 0x8);
         op_5xy0(&mut mach, 0x0, 0x1, 0);
 
-        assert_eq!(machine::START_USER_SPACE + 4, machine::get_program_counter(&mach));
+        assert_eq!(machine::START_USER_SPACE + 4, mach.get_program_counter());
     }
 
     #[test]
     fn test_op_5xy0_fail() {
-        let mut mach = machine::create_machine();
-        machine::set_register(&mut mach, 0x0, 0x8);
-        machine::set_register(&mut mach, 0x1, 0x7);
+        let mut mach = machine::Machine::new();
+        mach.set_register(0x0, 0x8);
+        mach.set_register(0x1, 0x7);
         op_5xy0(&mut mach, 0x0, 0x1, 0);
 
-        assert_eq!(machine::START_USER_SPACE + 2, machine::get_program_counter(&mach));
+        assert_eq!(machine::START_USER_SPACE + 2, mach.get_program_counter());
     }
 
     #[test]
     fn test_op_6xnn() {
-        let mut machine = machine::create_machine();
+        let mut machine = machine::Machine::new();
         op_6xnn(&mut machine, 0x0, 0, 0x8);
 
-        assert_eq!(0x8, machine::get_register(&machine, 0x0));
+        assert_eq!(0x8, machine.get_register(0x0));
     }
 
     #[test]
     fn test_op_7xnn() {
-        let mut machine = machine::create_machine();
-        machine::set_register(&mut machine, 0x0, 0x4);
+        let mut machine = machine::Machine::new();
+        machine.set_register(0x0, 0x4);
         op_7xnn(&mut machine, 0x0, 0, 0x4);
 
-        assert_eq!(0x8, machine::get_register(&machine, 0x0));
+        assert_eq!(0x8, machine.get_register(0x0));
 
         op_7xnn(&mut machine, 0x0, 0, 0xfe);
 
-        assert_eq!(0x6, machine::get_register(&machine, 0x0));
-        assert_eq!(0x0, machine::get_register(&machine, 0xf));
+        assert_eq!(0x6, machine.get_register(0x0));
+        assert_eq!(0x0, machine.get_register(0xf));
     }
 
     #[test]
     fn test_op_8xy0() {
-        let mut machine = machine::create_machine();
-        machine::set_register(&mut machine, 0x0, 0x1);
-        machine::set_register(&mut machine, 0x1, 0x8);
+        let mut machine = machine::Machine::new();
+        machine.set_register(0x0, 0x1);
+        machine.set_register(0x1, 0x8);
         op_8xy0(&mut machine, 0x0, 0x1, 0);
 
-        assert_eq!(0x8, machine::get_register(&machine, 0x0));
+        assert_eq!(0x8, machine.get_register(0x0));
     }
 
     #[test]
     fn test_op_8xy1() {
-        let mut machine = machine::create_machine();
-        machine::set_register(&mut machine, 0x0, 0x4);
-        machine::set_register(&mut machine, 0x1, 0x1);
+        let mut machine = machine::Machine::new();
+        machine.set_register(0x0, 0x4);
+        machine.set_register(0x1, 0x1);
         op_8xy1(&mut machine, 0x0, 0x1, 0);
 
-        assert_eq!(0x5, machine::get_register(&machine, 0x0));
+        assert_eq!(0x5, machine.get_register(0x0));
 
-        machine::set_register(&mut machine, 0x0, 0x1);
+        machine.set_register(0x0, 0x1);
         op_8xy1(&mut machine, 0x0, 0x1, 0);
 
-        assert_eq!(0x1, machine::get_register(&machine, 0x0));
+        assert_eq!(0x1, machine.get_register(0x0));
     }
 
     #[test]
     fn test_op_8xy2() {
-        let mut machine = machine::create_machine();
-        machine::set_register(&mut machine, 0x0, 0x4);
-        machine::set_register(&mut machine, 0x1, 0x1);
+        let mut machine = machine::Machine::new();
+        machine.set_register(0x0, 0x4);
+        machine.set_register(0x1, 0x1);
         op_8xy2(&mut machine, 0x0, 0x1, 0);
 
-        assert_eq!(0x0, machine::get_register(&machine, 0x0));
+        assert_eq!(0x0, machine.get_register(0x0));
 
-        machine::set_register(&mut machine, 0x0, 0x5);
+        machine.set_register(0x0, 0x5);
         op_8xy2(&mut machine, 0x0, 0x1, 0);
 
-        assert_eq!(0x1, machine::get_register(&machine, 0x0));
+        assert_eq!(0x1, machine.get_register(0x0));
     }
 
     #[test]
     fn test_op_8xy3() {
-        let mut machine = machine::create_machine();
-        machine::set_register(&mut machine, 0x0, 0x4);
-        machine::set_register(&mut machine, 0x1, 0x1);
+        let mut machine = machine::Machine::new();
+        machine.set_register(0x0, 0x4);
+        machine.set_register(0x1, 0x1);
         op_8xy3(&mut machine, 0x0, 0x1, 0);
 
-        assert_eq!(0x5, machine::get_register(&machine, 0x0));
+        assert_eq!(0x5, machine.get_register(0x0));
 
-        machine::set_register(&mut machine, 0x0, 0x5);
+        machine.set_register(0x0, 0x5);
         op_8xy3(&mut machine, 0x0, 0x1, 0);
 
-        assert_eq!(0x4, machine::get_register(&machine, 0x0));
+        assert_eq!(0x4, machine.get_register(0x0));
     }
 
     #[test]
     fn test_op_8xy4() {
-        let mut machine = machine::create_machine();
-        machine::set_register(&mut machine, 0x0, 0x8);
-        machine::set_register(&mut machine, 0x1, 0x9);
+        let mut machine = machine::Machine::new();
+        machine.set_register(0x0, 0x8);
+        machine.set_register(0x1, 0x9);
         op_8xy4(&mut machine, 0x0, 0x1, 0);
 
-        assert_eq!(0x11, machine::get_register(&machine, 0x0));
-        assert_eq!(0x0, machine::get_register(&machine, 0xf));
+        assert_eq!(0x11, machine.get_register(0x0));
+        assert_eq!(0x0, machine.get_register(0xf));
 
-        machine::set_register(&mut machine, 0x0, 0xf8);
+        machine.set_register(0x0, 0xf8);
         op_8xy4(&mut machine, 0x0, 0x1, 0);
 
-        assert_eq!(0x1, machine::get_register(&machine, 0x0));
-        assert_eq!(0x1, machine::get_register(&machine, 0xf));
+        assert_eq!(0x1, machine.get_register(0x0));
+        assert_eq!(0x1, machine.get_register(0xf));
     }
 
     #[test]
     fn test_op_8xy5() {
-        let mut machine = machine::create_machine();
-        machine::set_register(&mut machine, 0x0, 0x9);
-        machine::set_register(&mut machine, 0x1, 0x8);
+        let mut machine = machine::Machine::new();
+        machine.set_register(0x0, 0x9);
+        machine.set_register(0x1, 0x8);
         op_8xy5(&mut machine, 0x0, 0x1, 0);
 
-        assert_eq!(0x1, machine::get_register(&machine, 0x0));
-        assert_eq!(0x1, machine::get_register(&machine, 0xf));
+        assert_eq!(0x1, machine.get_register(0x0));
+        assert_eq!(0x1, machine.get_register(0xf));
 
-        machine::set_register(&mut machine, 0x0, 0x1);
+        machine.set_register(0x0, 0x1);
         op_8xy5(&mut machine, 0x0, 0x1, 0);
 
-        assert_eq!(0xf9, machine::get_register(&machine, 0x0));
-        assert_eq!(0x0, machine::get_register(&machine, 0xf));
+        assert_eq!(0xf9, machine.get_register(0x0));
+        assert_eq!(0x0, machine.get_register(0xf));
     }
 
     #[test]
     fn test_op_8xy6() {
-        let mut machine = machine::create_machine();
-        machine::set_register(&mut machine, 0x0, 0x3);
+        let mut machine = machine::Machine::new();
+        machine.set_register(0x0, 0x3);
         op_8xy6(&mut machine, 0x0, 0, 0);
 
-        assert_eq!(0x1, machine::get_register(&machine, 0xf));
-        assert_eq!(0x1, machine::get_register(&machine, 0x0));
+        assert_eq!(0x1, machine.get_register(0xf));
+        assert_eq!(0x1, machine.get_register(0x0));
     }
 
     #[test]
     fn test_op_8xy7() {
-        let mut machine = machine::create_machine();
-        machine::set_register(&mut machine, 0x0, 0x8);
-        machine::set_register(&mut machine, 0x1, 0x9);
+        let mut machine = machine::Machine::new();
+        machine.set_register(0x0, 0x8);
+        machine.set_register(0x1, 0x9);
         op_8xy7(&mut machine, 0x0, 0x1, 0);
 
-        assert_eq!(0x1, machine::get_register(&machine, 0x0));
-        assert_eq!(0x1, machine::get_register(&machine, 0xf));
+        assert_eq!(0x1, machine.get_register(0x0));
+        assert_eq!(0x1, machine.get_register(0xf));
 
-        machine::set_register(&mut machine, 0x0, 0xa);
+        machine.set_register(0x0, 0xa);
         op_8xy7(&mut machine, 0x0, 0x1, 0);
 
-        assert_eq!(0xff, machine::get_register(&machine, 0x0));
-        assert_eq!(0x0, machine::get_register(&machine, 0xf));
+        assert_eq!(0xff, machine.get_register(0x0));
+        assert_eq!(0x0, machine.get_register(0xf));
     }
 
     #[test]
     fn test_op_8xye() {
-        let mut machine = machine::create_machine();
-        machine::set_register(&mut machine, 0x0, 0xff);
+        let mut machine = machine::Machine::new();
+        machine.set_register(0x0, 0xff);
         op_8xye(&mut machine, 0x0, 0, 0);
 
-        assert_eq!(0x1, machine::get_register(&machine, 0xf));
-        assert_eq!(0xfe, machine::get_register(&machine, 0x0));
+        assert_eq!(0x1, machine.get_register(0xf));
+        assert_eq!(0xfe, machine.get_register(0x0));
     }
 
     #[test]
     fn test_op_9xy0_pass() {
-        let mut mach = machine::create_machine();
-        machine::set_register(&mut mach, 0x0, 0x8);
-        machine::set_register(&mut mach, 0x1, 0x7);
+        let mut mach = machine::Machine::new();
+        mach.set_register(0x0, 0x8);
+        mach.set_register(0x1, 0x7);
         op_9xy0(&mut mach, 0x0, 0x1, 0);
 
-        assert_eq!(machine::START_USER_SPACE + 4, machine::get_program_counter(&mach));
+        assert_eq!(machine::START_USER_SPACE + 4, mach.get_program_counter());
     }
 
     #[test]
     fn test_op_9xy0_fail() {
-        let mut mach = machine::create_machine();
-        machine::set_register(&mut mach, 0x0, 0x8);
-        machine::set_register(&mut mach, 0x1, 0x8);
+        let mut mach = machine::Machine::new();
+        mach.set_register(0x0, 0x8);
+        mach.set_register(0x1, 0x8);
         op_9xy0(&mut mach, 0x0, 0x1, 0);
 
-        assert_eq!(machine::START_USER_SPACE + 2, machine::get_program_counter(&mach));
+        assert_eq!(machine::START_USER_SPACE + 2, mach.get_program_counter());
     }
 
     #[test]
     fn test_op_annn() {
-        let mut mach = machine::create_machine();
+        let mut mach = machine::Machine::new();
         op_annn(&mut mach, 0, 0, 0x300);
 
-        assert_eq!(0x300, machine::get_address_register(&mach));
+        assert_eq!(0x300, mach.get_address_register());
     }
 
     #[test]
     fn test_op_bnnn() {
-        let mut mach = machine::create_machine();
-        machine::set_register(&mut mach, 0x0, 0x50);
+        let mut mach = machine::Machine::new();
+        mach.set_register(0x0, 0x50);
         op_bnnn(&mut mach, 0, 0, 0x300);
 
-        assert_eq!(0x350, machine::get_program_counter(&mach));
+        assert_eq!(0x350, mach.get_program_counter());
     }
 
     #[test]
     fn test_op_ex9e_pass() {
-        let mut mach = machine::create_machine();
-        machine::set_key(&mut mach, 0, true);
+        let mut mach = machine::Machine::new();
+        mach.set_key(0, true);
         op_ex9e(&mut mach, 0x0, 0, 0);
 
-        assert_eq!(machine::START_USER_SPACE + 4, machine::get_program_counter(&mach));
+        assert_eq!(machine::START_USER_SPACE + 4, mach.get_program_counter());
     }
 
     #[test]
     fn test_op_ex9e_fail() {
-        let mut mach = machine::create_machine();
+        let mut mach = machine::Machine::new();
         op_ex9e(&mut mach, 0x0, 0, 0);
 
-        assert_eq!(machine::START_USER_SPACE + 2, machine::get_program_counter(&mach));
+        assert_eq!(machine::START_USER_SPACE + 2, mach.get_program_counter());
     }
 
     #[test]
     fn test_op_exa1_pass() {
-        let mut mach = machine::create_machine();
+        let mut mach = machine::Machine::new();
         op_exa1(&mut mach, 0x0, 0, 0);
 
-        assert_eq!(machine::START_USER_SPACE + 4, machine::get_program_counter(&mach));
+        assert_eq!(machine::START_USER_SPACE + 4, mach.get_program_counter());
     }
 
     #[test]
     fn test_op_exa1_fail() {
-        let mut mach = machine::create_machine();
-        machine::set_key(&mut mach, 0, true);
+        let mut mach = machine::Machine::new();
+        mach.set_key(0, true);
         op_exa1(&mut mach, 0x0, 0, 0);
 
-        assert_eq!(machine::START_USER_SPACE + 2, machine::get_program_counter(&mach));
+        assert_eq!(machine::START_USER_SPACE + 2, mach.get_program_counter());
     }
 
     #[test]
     fn test_op_fx07() {
-        let mut mach = machine::create_machine();
-        machine::set_delay_timer(&mut mach, 10);
+        let mut mach = machine::Machine::new();
+        mach.set_delay_timer(10);
         op_fx07(&mut mach, 0xa, 0, 0);
 
-        assert_eq!(10, machine::get_delay_timer(&mach));
+        assert_eq!(10, mach.get_delay_timer());
     }
 
     #[test]
     fn test_op_fx0a() {
-        let mut mach = machine::create_machine();
+        let mut mach = machine::Machine::new();
         op_fx0a(&mut mach, 0x1, 0, 0);
 
-        assert_eq!(machine::Flags::WaitingForKeypress, machine::get_flag(&mach));
-        assert_eq!(1, machine::get_target_register(&mach));
+        assert_eq!(machine::Flags::WaitingForKeypress, mach.get_flag());
+        assert_eq!(1, mach.get_target_register());
     }
 
     #[test]
     fn test_op_fx15() {
-        let mut mach = machine::create_machine();
-        machine::set_register(&mut mach, 0x0, 0xa);
+        let mut mach = machine::Machine::new();
+        mach.set_register(0x0, 0xa);
         op_fx15(&mut mach, 0x0, 0, 0);
 
-        assert_eq!(10, machine::get_delay_timer(&mach));
+        assert_eq!(10, mach.get_delay_timer());
     }
 
     #[test]
     fn test_op_fx18() {
-        let mut mach = machine::create_machine();
-        machine::set_register(&mut mach, 0x0, 0xa);
+        let mut mach = machine::Machine::new();
+        mach.set_register(0x0, 0xa);
         op_fx18(&mut mach, 0x0, 0, 0);
 
-        assert_eq!(10, machine::get_sound_timer(&mach));
+        assert_eq!(10, mach.get_sound_timer());
     }
 
     #[test]
     fn test_op_fx1e() {
-        let mut mach = machine::create_machine();
-        machine::set_address_register(&mut mach, 0x9);
-        machine::set_register(&mut mach, 0x0, 0x2);
+        let mut mach = machine::Machine::new();
+        mach.set_address_register(0x9);
+        mach.set_register(0x0, 0x2);
         op_fx1e(&mut mach, 0x0, 0, 0);
 
-        assert_eq!(0xb, machine::get_address_register(&mach));
+        assert_eq!(0xb, mach.get_address_register());
     }
 
     #[test]
     fn test_op_fx29() {
-        let mut mach = machine::create_machine();
-        machine::set_register(&mut mach, 0x0, 0x1);
+        let mut mach = machine::Machine::new();
+        mach.set_register(0x0, 0x1);
         op_fx29(&mut mach, 0x0, 0, 0);
 
-        assert_eq!(machine::START_FONT + render::FONT_BYTES_PER_CHAR, machine::get_address_register(&mach));
+        assert_eq!(machine::START_FONT + render::FONT_BYTES_PER_CHAR, mach.get_address_register());
     }
 
     #[test]
     fn test_op_fx33() {
-        let mut mach = machine::create_machine();
-        machine::set_address_register(&mut mach, machine::START_USER_SPACE);
-        machine::set_register(&mut mach, 0x0, 0xfe);
+        let mut mach = machine::Machine::new();
+        mach.set_address_register(machine::START_USER_SPACE);
+        mach.set_register(0x0, 0xfe);
         op_fx33(&mut mach, 0x0, 0, 0);
 
-        assert_eq!(2, machine::read_memory(&mach, machine::START_USER_SPACE));
-        assert_eq!(5, machine::read_memory(&mach, machine::START_USER_SPACE + 1));
-        assert_eq!(4, machine::read_memory(&mach, machine::START_USER_SPACE + 2));
+        assert_eq!(2, mach.read_memory(machine::START_USER_SPACE));
+        assert_eq!(5, mach.read_memory(machine::START_USER_SPACE + 1));
+        assert_eq!(4, mach.read_memory(machine::START_USER_SPACE + 2));
     }
 
     #[test]
     fn test_op_fx55() {
-        let mut mach = machine::create_machine();
-        machine::set_address_register(&mut mach, machine::START_USER_SPACE);
+        let mut mach = machine::Machine::new();
+        mach.set_address_register(machine::START_USER_SPACE);
         for x in 0..machine::NUM_REGISTERS {
-            machine::set_register(&mut mach, x, x as u8);
+            mach.set_register(x, x as u8);
         }
 
         op_fx55(&mut mach, 0xf, 0, 0);
 
         for x in 0..machine::NUM_REGISTERS {
-            assert_eq!(x as u8, machine::read_memory(&mach, machine::START_USER_SPACE + x));
+            assert_eq!(x as u8, mach.read_memory(machine::START_USER_SPACE + x));
         }
     }
 
     #[test]
     fn test_op_fx65() {
-        let mut mach = machine::create_machine();
-        machine::set_address_register(&mut mach, machine::START_USER_SPACE);
+        let mut mach = machine::Machine::new();
+        mach.set_address_register(machine::START_USER_SPACE);
 
         for x in 0..machine::NUM_REGISTERS {
-            machine::write_memory(&mut mach, machine::START_USER_SPACE + x, x as u8);
+            mach.write_memory(machine::START_USER_SPACE + x, x as u8);
         }
 
         op_fx65(&mut mach, 0xf, 0, 0);
 
         for x in 0..machine::NUM_REGISTERS {
-            assert_eq!(x as u8, machine::get_register(&mach, x));
+            assert_eq!(x as u8, mach.get_register(x));
         }
     }
 }

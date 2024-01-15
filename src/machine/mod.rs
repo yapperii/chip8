@@ -456,7 +456,7 @@ mod tests {
     #[test]
     #[should_panic]
     fn test_get_regist_out_of_range() {
-        let mut machine = Machine::new();
+        let machine = Machine::new();
         machine.get_register(16);
     }
 
