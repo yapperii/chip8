@@ -26,7 +26,7 @@ pub fn read(mach: &mut machine::Machine, filename: &String) -> bool {
     }
 
     for i in 0..(machine::MEM_SIZE - machine::START_USER_SPACE) {
-        machine::write_memory(mach, machine::START_USER_SPACE + i, _buffer[i]);
+        mach.write_memory(machine::START_USER_SPACE + i, _buffer[i]);
     }
 
     true
@@ -55,7 +55,7 @@ pub fn main() {
 
     let mut event_pump = sdl_context.event_pump().unwrap();
    
-    let mut machine = machine::create_machine();
+    let mut machine = machine::Machine::new();
     let filename = String::from(args[1].clone());
 
     println!("loading {}", filename);
@@ -99,43 +99,43 @@ pub fn main() {
         // update key state
         for k in 0..16 {
             let pressed = event_pump.keyboard_state().is_scancode_pressed(key_map[k]);
-            if pressed && machine::get_flag(&machine) == machine::Flags::WaitingForKeypress {
-                let target_register = machine::get_target_register(&machine);
-                machine::set_register(&mut machine, target_register, k as u8);
-                machine::set_flag(&mut machine, machine::Flags::Running);
+            if pressed && machine.get_flag() == machine::Flags::WaitingForKeypress {
+                let target_register = machine.get_target_register();
+                machine.set_register(target_register, k as u8);
+                machine.set_flag(machine::Flags::Running);
             }
-            machine::set_key(&mut machine, k, pressed);
+            machine.set_key(k, pressed);
         }
 
-        if machine::get_flag(&machine) == machine::Flags::WaitingForKeypress {
+        if machine.get_flag() == machine::Flags::WaitingForKeypress {
             continue;
         }
         
         // run timers
         let dt = timer.elapsed();
         if dt > sixty_hz_time {
-            let mut delay_timer = machine::get_delay_timer(&machine);
+            let mut delay_timer = machine.get_delay_timer();
             if delay_timer > 0 {
                 delay_timer -= 1;
             }
-            machine::set_delay_timer(&mut machine, if delay_timer > 0 { delay_timer } else { 0 });
+            machine.set_delay_timer(if delay_timer > 0 { delay_timer } else { 0 });
 
-            let mut sound_timer = machine::get_sound_timer(&machine);
+            let mut sound_timer = machine.get_sound_timer();
             if sound_timer > 0 {
                 sound_timer -= 1;
             }
-            machine::set_sound_timer(&mut machine, if sound_timer > 0 { sound_timer } else { 0 });
+            machine.set_sound_timer(if sound_timer > 0 { sound_timer } else { 0 });
 
             timer = Instant::now();
         }
 
-        let pc = machine::get_program_counter(&machine);
-        let opcode_part_a = machine::read_memory(&machine, pc);
-        let opcode_part_b = machine::read_memory(&machine, pc + 1);
+        let pc = machine.get_program_counter();
+        let opcode_part_a = machine.read_memory(pc);
+        let opcode_part_b = machine.read_memory(pc + 1);
         
         opcode::decode_and_execute(&mut machine, opcode_part_a, opcode_part_b, &op_code_lib);
         
-        render::render(&mut canvas, machine::get_screenbuffer(&mut machine));
+        render::render(&mut canvas, machine.get_screenbuffer());
         //std::thread::sleep(Duration::from_millis(1));
     }
 
