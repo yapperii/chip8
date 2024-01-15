@@ -163,10 +163,12 @@ pub fn op_dxyn(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
         let mem_val = mach.read_memory(base_address + i as usize);
         let mut row: [bool; 8] = [false; 8];
         for j in 0..8 {
-            row[j] = (mem_val & (1 << (8 - j -1))) != 0;
+            row[j] = (mem_val & (1 << (8 - j - 1))) != 0;
         }
 
-        flipped |= mach.get_screenbuffer().blit_texture_row(vx, vy + i as u8, &row);
+        flipped |= mach
+            .get_screenbuffer()
+            .blit_texture_row(vx, vy + i as u8, &row);
     }
 
     mach.set_register(0xf, if flipped { 1 } else { 0 });
@@ -241,7 +243,7 @@ pub fn op_fx33(mach: &mut machine::Machine, x: u16, _y: u16, _n: u16) {
 
 pub fn op_fx55(mach: &mut machine::Machine, x: u16, _y: u16, _n: u16) {
     let base_address = mach.get_address_register();
-    for i in 0..((x + 1) as usize){
+    for i in 0..((x + 1) as usize) {
         let vi = mach.get_register(i);
         mach.write_memory(base_address + i, vi);
     }
@@ -305,7 +307,7 @@ mod tests {
         assert_eq!(machine::START_USER_SPACE + 2, mach.get_program_counter());
     }
 
-     #[test]
+    #[test]
     fn test_op_4xnn_pass() {
         let mut mach = machine::Machine::new();
         mach.set_register(0x0, 0x8);
@@ -614,7 +616,10 @@ mod tests {
         mach.set_register(0x0, 0x1);
         op_fx29(&mut mach, 0x0, 0, 0);
 
-        assert_eq!(machine::START_FONT + screen_buffer::FONT_BYTES_PER_CHAR, mach.get_address_register());
+        assert_eq!(
+            machine::START_FONT + screen_buffer::FONT_BYTES_PER_CHAR,
+            mach.get_address_register()
+        );
     }
 
     #[test]
