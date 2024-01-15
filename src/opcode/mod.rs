@@ -46,17 +46,7 @@ pub struct OpCodePrototype
     n_mask: u16,
     x_mask: u16,
     y_mask: u16,
-    operation: Box<Fn(&mut machine::Machine, u16, u16, u16)>,
-}
-
-pub struct OpCode
-{
-    pub raw: u16,
-    pub operation_index: usize,
-    n_mask: u16,
-    x_mask: u16,
-    y_mask: u16,
-    //op: &Box<Fn(&mut machine::Machine, u16, u16, u16)>,
+    operation: Box<dyn Fn(&mut machine::Machine, u16, u16, u16)>,
 }
 
 const NUM_OPCODES: usize = 35;
@@ -117,6 +107,12 @@ fn identify_opcode(val: u16, lib: &OpCodeLib) -> usize {
     panic!("unknown opcode");
 }
 
+pub fn extract_value(raw: u16, mask: u16) -> u16 {
+    let bits: u16 = raw & mask;
+    let trailing = mask.trailing_zeros();
+    bits.wrapping_shr(trailing)
+}
+
 pub fn decode_and_execute(mach: &mut machine::Machine, a: u8, b: u8, lib: &OpCodeLib) {
     let mut combined: u16 = a as u16;
     let b16 = b as u16;
@@ -129,31 +125,10 @@ pub fn decode_and_execute(mach: &mut machine::Machine, a: u8, b: u8, lib: &OpCod
     (lib.code_array[opcode_index].operation)(mach, x, y, n);
 }
 
-pub fn extract_value(raw: u16, mask: u16) -> u16 {
-    let bits: u16 = raw & mask;
-    let trailing = mask.trailing_zeros();
-    bits.wrapping_shr(trailing)
-}
-
-pub fn execute_opcode(opcode: &OpCode, mach: &mut machine::Machine) {
-    let x: u16 = extract_value(opcode.raw, opcode.x_mask);
-    let y: u16 = extract_value(opcode.raw, opcode.y_mask);
-    let n: u16 = extract_value(opcode.raw, opcode.n_mask);
-    operations::execute_by_index(opcode.operation_index, mach, x, y, n);
- //   (opcode.op)(mach, x, y, n);
-}
-
 #[cfg(test)]
 
 mod tests {
     use super::*;
-
-    #[test]
-    fn creation_combined() {
-        let lib = create_op_code_lib();
-        let opcode = create_opcode(1, 2, &lib);
-        assert_eq!(258, opcode.raw);
-    }
 
     #[test]
     fn identify_opcodes() {

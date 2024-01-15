@@ -186,6 +186,7 @@ fn pop_stack(machine: &mut Machine) -> usize {
     }
 }
 
+#[allow(dead_code)]
 pub fn peek_stack(machine: &mut Machine) -> Option<usize> {
     match machine.stack.len() {
         0 => None,

@@ -1,5 +1,3 @@
-//#![allow(dead_code)]
-
 extern crate rand;
 extern crate sdl2;
 
@@ -10,6 +8,7 @@ mod render;
 
 use std::env;
 use std::time::{Duration, Instant};
+//use std::thread::{sleep};
 
 mod load {
 use std::io::prelude::*;
@@ -93,9 +92,6 @@ pub fn main() {
     let mut timer = Instant::now();
     loop {
         for _event in event_pump.poll_iter() {}
-
-        let pc = machine::get_program_counter(&machine);
-
         if event_pump.keyboard_state().is_scancode_pressed(sdl2::keyboard::Scancode::Escape) {
             return;
         }
@@ -114,7 +110,7 @@ pub fn main() {
         if machine::get_flag(&machine) == machine::Flags::WaitingForKeypress {
             continue;
         }
-
+        
         // run timers
         let dt = timer.elapsed();
         if dt > sixty_hz_time {
@@ -133,22 +129,14 @@ pub fn main() {
             timer = Instant::now();
         }
 
+        let pc = machine::get_program_counter(&machine);
         let opcode_part_a = machine::read_memory(&machine, pc);
         let opcode_part_b = machine::read_memory(&machine, pc + 1);
         
         opcode::decode_and_execute(&mut machine, opcode_part_a, opcode_part_b, &op_code_lib);
-        //  let opcode = opcode::create_opcode(opcode_part_a, opcode_part_b, &op_code_lib);
-        //println!("program counter: {:X}", pc);
-        //println!("opcode: {:X}, index: {}", opcode.raw, opcode.operation_index);
-        
-        //println!("target register: {:X}", machine::get_target_register(&machine));
-        //  opcode::execute_opcode(&opcode, &mut machine);
-        //println!("address register: {:X}", machine::get_address_register(&machine));
-        //for j in 0..machine::NUM_REGISTERS {
-        //    println!("V{:X}: {:X}", j, machine::get_register(&machine, j));
-        //}
         
         render::render(&mut canvas, machine::get_screenbuffer(&mut machine));
+        //std::thread::sleep(Duration::from_millis(1));
     }
 
 }
