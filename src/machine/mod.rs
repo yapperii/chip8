@@ -51,7 +51,7 @@ impl Machine {
                 timers: Timers{delay_timer: 0, sound_timer: 0},
                 flag: Flags::Running,
                 target_register: NUM_REGISTERS,
-                screen_buffer: render::create_screen_buffer()};
+                screen_buffer: render::ScreenBuffer::new()};
     
         mach.init_font();
         return mach;

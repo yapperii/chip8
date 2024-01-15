@@ -7,7 +7,7 @@ pub fn op_0nnn(mach: &mut machine::Machine, _x: u16, _y: u16, _n: u16) {
 }
 
 pub fn op_00e0(mach: &mut machine::Machine, _x: u16, _y: u16, _n: u16) {
-    render::clear_screen(mach.get_screenbuffer());
+    mach.get_screenbuffer().clear_screen();
     mach.increment_program_counter();
 }
 
@@ -166,7 +166,7 @@ pub fn op_dxyn(mach: &mut machine::Machine, x: u16, y: u16, n: u16) {
             row[j] = (mem_val & (1 << (8 - j -1))) != 0;
         }
 
-        flipped |= render::blit_texture_row(mach.get_screenbuffer(), vx, vy + i as u8, &row);
+        flipped |= mach.get_screenbuffer().blit_texture_row(vx, vy + i as u8, &row);
     }
 
     mach.set_register(0xf, if flipped { 1 } else { 0 });
