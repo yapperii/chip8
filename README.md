@@ -14,4 +14,6 @@ You'll also need to download ROM files.
 
 ## Usage
 
+```
 chip8 <ROM path>
+```
